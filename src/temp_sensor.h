@@ -25,6 +25,7 @@ private:
     DS18B20* tempSensor;           // DS18B20传感器对象
     VoltageController* voltCtrl;   // 电压控制器
     float current_temp;            // 当前温度
+    uint32_t target_rpm;           // 当前温度对应的目标转速
     bool sensor_ready;             // 传感器就绪标志
     
     /**
@@ -46,15 +47,17 @@ private:
      * 特点：低温时缓慢增加，高温时快速提升
      */
     float mapTempToVoltageQuadratic(float temp);
-    
-public:
+
     /**
-     * @brief 初始化温度控制器
-     * @param sensor DS18B20传感器对象
-     * @param vc 电压控制器
+     * @brief 线性映射：温度 → 目标转速
+     * @param temp 温度(°C)
+     * @return 目标转速(RPM)
+     *
+     * 公式：RPM = RPM_TARGET_MIN + (RPM_TARGET_MAX - RPM_TARGET_MIN)
+     *              * (T - TEMP_MIN) / (TEMP_MAX - TEMP_MIN)
+     * 超出生效范围时自动截断到两端
      */
-    void begin(DS18B20* sensor, VoltageController* vc);
-    
+    uint32_t mapTempToRPM(float temp);
     /**
      * @brief 更新温度并调节电压
      * @return true=成功，false=失败
@@ -66,6 +69,12 @@ public:
      * @return 温度(°C)
      */
     float getTemperature() const { return current_temp; }
+
+    /**
+     * @brief 获取当前温度对应的目标转速
+     * @return 目标转速(RPM)
+     */
+    uint32_t getTargetRPM() const { return target_rpm; }
     
     /**
      * @brief 传感器是否就绪

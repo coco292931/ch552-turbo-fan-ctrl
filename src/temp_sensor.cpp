@@ -9,6 +9,7 @@ void TempController::begin(DS18B20* sensor, VoltageController* vc) {
     tempSensor = sensor;
     voltCtrl = vc;
     current_temp = 25.0;  // 默认温度
+    target_rpm = RPM_TARGET_MIN;
     sensor_ready = false;
     
     // 初始化DS18B20
@@ -74,10 +75,21 @@ bool TempController::update() {
     
     // 设置电压
     voltCtrl->setVoltage(target_voltage);
+
+    // 更新当前温度对应的目标转速（线性映射）
+    target_rpm = mapTempToRPM(temp);
     
     return true;
 }
 
 bool TempController::isOverheat() {
     return (current_temp >= TEMP_OVERHEAT);
+}
+
+uint32_t TempController::mapTempToRPM(float temp) {
+    // 线性映射：RPM = RPM_TARGET_MIN + (RPM_TARGET_MAX - RPM_TARGET_MIN) * (T - TEMP_MIN) / (TEMP_MAX - TEMP_MIN)
+    float norm = (temp - TEMP_MIN) / (TEMP_MAX - TEMP_MIN);
+    norm = (norm < 0.0f) ? 0.0f : (norm > 1.0f) ? 1.0f : norm;  // 截断到 [0,1]
+    uint32_t rpm = (uint32_t)(RPM_TARGET_MIN + (RPM_TARGET_MAX - RPM_TARGET_MIN) * norm);
+    return rpm;
 }

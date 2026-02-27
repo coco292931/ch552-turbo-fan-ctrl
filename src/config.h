@@ -37,6 +37,8 @@
 // 风扇转速
 #define RPM_MIN           500     // 最小有效转速(RPM)
 #define RPM_STALL_THRESH  100     // 堵转判定阈值(RPM)
+#define RPM_TARGET_MIN    600     // 温度最低时的目标转速(RPM)，对应TEMP_MIN
+#define RPM_TARGET_MAX    3000    // 温度最高时的目标转速(RPM)，对应TEMP_MAX
 
 // PWM参数
 #define PWM_FREQ          10000   // PWM频率 10kHz (避免音频噪声)

@@ -82,6 +82,7 @@ void setup() {
     sysStatus.voltage = init_voltage;
     sysStatus.target_voltage = VOUT_DEFAULT;
     sysStatus.rpm = 0;
+    sysStatus.target_rpm = RPM_TARGET_MIN;
     sysStatus.pwm_duty = 0;
     sysStatus.error_flags = ERROR_NONE;
     sysStatus.auto_mode = true;
@@ -180,9 +181,9 @@ void loop() {
             stall_retry_count++;
             
             if (stall_retry_count >= STALL_MAX_RETRIES) {
-                // 超过最大重试次数，锁定
-                Serial.println("[ERROR] Fan stall retry limit reached!");
-                // 保持当前状态，等待人工干预或上位机指令
+                // 超过最大重试次数，锁定输出等待上位机指令
+                Serial.println("[ERROR] Fan stall retry limit reached! Output locked.");
+                voltageCtrl.lockOutput();  // 真正锁定输出
             } else {
                 // 重试
                 Serial.print("[INFO] Fan stall retry ");
@@ -206,15 +207,19 @@ void loop() {
     if (tempCtrl.isOverheat()) {
         sysStatus.error_flags |= ERROR_OVERHEAT;
         Serial.println("[WARN] Overheating detected!");
-        
-        // 如果是USB控制模式且无响应，切换到自主模式
-        if (usb_control_mode && !usbCtrl.isConnected()) {
-            // USB超时，强制切换自主模式
-            Serial.println("[INFO] USB timeout, switching to AUTO mode");
+
+        // 超温时如果处于 USB 控制模式，强制切回自主模式
+        // （自主模式的温度映射会自动提升电压加快散热）
+        if (usb_control_mode) {
+            usbCtrl.override_active = false;
+            Serial.println("[INFO] Overheat: forced AUTO mode");
         }
-        // 自主模式会根据温度映射自动提升电压
     } else {
-        sysStatus.error_flags &= ~ERROR_OVERHEAT;
+        // 温度恢复正常，清除超温标志
+        if (sysStatus.error_flags & ERROR_OVERHEAT) {
+            sysStatus.error_flags &= ~ERROR_OVERHEAT;
+            Serial.println("[OK] Temperature recovered, external control allowed again");
+        }
     }
     
     // ========== 7. 更新系统状态 ==========
@@ -222,9 +227,16 @@ void loop() {
     sysStatus.voltage = voltageCtrl.getCurrentVoltage();
     sysStatus.target_voltage = voltageCtrl.getTargetVoltage();
     sysStatus.rpm = fanMonitor.getRPM();
+    sysStatus.target_rpm = tempCtrl.getTargetRPM();
     sysStatus.pwm_duty = voltageCtrl.getPWMDuty();
     
     // ========== 8. 状态上报 ==========
+    // GET:STATUS 命令立即响应
+    if (usbCtrl.status_requested) {
+        usbCtrl.sendStatus(&sysStatus);
+        usbCtrl.status_requested = false;
+    }
+
     if (now - last_status_send >= STATUS_SEND_INTERVAL) {
         if (usbCtrl.isConnected()) {
             usbCtrl.sendStatus(&sysStatus);
