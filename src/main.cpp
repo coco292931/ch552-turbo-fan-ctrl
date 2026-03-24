@@ -256,5 +256,5 @@ void loop() {
     }
     
     // 短暂延时，避免CPU满载
-    delay(10);
+    delay(50);
 }

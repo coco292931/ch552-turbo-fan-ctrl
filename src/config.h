@@ -26,13 +26,13 @@
 
 // 输出电压范围
 #define VOUT_MIN          5.0f    // 最小输出电压(V)
-#define VOUT_MAX          12.0f   // 最大输出电压(V)
+#define VOUT_MAX          12.0f   // 最大输出电压(V) 硬件锁死了，不要改这里
 #define VOUT_DEFAULT      12.0f   // 默认电压(Fail-Safe)
 
 // 温度阈值
-#define TEMP_MIN          25.0f   // 最低温度阈值(°C)
-#define TEMP_MAX          80.0f   // 最高温度阈值(°C)
-#define TEMP_OVERHEAT     85.0f   // 超温保护阈值(°C)
+#define TEMP_MIN          30.0f   // 最低温度阈值(°C) 起转温度
+#define TEMP_MAX          45.0f   // 最高温度阈值(°C) 满转温度
+#define TEMP_OVERHEAT     50.0f   // 超温保护阈值(°C) 报警温度
 
 // 风扇转速
 #define RPM_MIN           500     // 最小有效转速(RPM)
@@ -51,11 +51,13 @@
 #define TEMP_MAPPING_MODE  0
 
 // 一次函数参数: V = k*T + b
-#define TEMP_VOLTAGE_K    0.127f   // 斜率 (约7V变化/55°C温差)
-#define TEMP_VOLTAGE_B    4.825f   // 截距 (25°C时约8V)
+//计算参数 5V~30°C,12V~45°C
+#define TEMP_VOLTAGE_K    0.5f   // 斜率
+#define TEMP_VOLTAGE_B    10    // 截距
 
 // 二次函数参数: V = Vmin + (Vmax-Vmin) * ((T-Tmin)/(Tmax-Tmin))^2
 // 通过TEMP_MIN, TEMP_MAX, VOUT_MIN, VOUT_MAX自动计算
+// 扯淡，2个参数写什么二次函数，还双曲线
 
 
 // ==================== 系统参数 ====================
@@ -80,7 +82,7 @@
 // 分压比: (10kΩ + 5.1kΩ) / 5.1kΩ = 2.96
 #define ADC_VOLTAGE_RATIO     2.96f
 #define ADC_REF_VOLTAGE       5.0f    // CH552 ADC参考电压
-#define ADC_RESOLUTION        1024    // 10位ADC
+#define ADC_RESOLUTION        255     // 8位ADC
 
 // PWM-电压映射校准系数 (需要实测后调整)
 // 这些系数需要通过实际测试确定
