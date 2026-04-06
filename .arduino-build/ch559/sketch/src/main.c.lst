@@ -1,0 +1,2448 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.2 #13407 (MINGW32)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module main
+                                      6 	.optsdcc -mmcs51 --model-large
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _serial_println_str
+                                     12 	.globl _serial_print_float
+                                     13 	.globl _serial_print_uint
+                                     14 	.globl _serial_print_int
+                                     15 	.globl _serial_print_str
+                                     16 	.globl _USBController_isOverrideActive
+                                     17 	.globl _USBController_getTargetVoltage
+                                     18 	.globl _USBController_isConnected
+                                     19 	.globl _USBController_sendStatus
+                                     20 	.globl _USBController_update
+                                     21 	.globl _USBController_begin
+                                     22 	.globl _FanMonitor_resetStall
+                                     23 	.globl _FanMonitor_isStalled
+                                     24 	.globl _FanMonitor_getRPM
+                                     25 	.globl _FanMonitor_updateRPM
+                                     26 	.globl _FanMonitor_begin
+                                     27 	.globl _TempController_isOverheat
+                                     28 	.globl _TempController_isReady
+                                     29 	.globl _TempController_getTargetRPM
+                                     30 	.globl _TempController_getTemperature
+                                     31 	.globl _TempController_update
+                                     32 	.globl _TempController_begin
+                                     33 	.globl _DS18B20_init
+                                     34 	.globl _VoltageController_unlockOutput
+                                     35 	.globl _VoltageController_lockOutput
+                                     36 	.globl _VoltageController_isVoltageAbnormal
+                                     37 	.globl _VoltageController_getPWMDuty
+                                     38 	.globl _VoltageController_getCurrentVoltage
+                                     39 	.globl _VoltageController_getTargetVoltage
+                                     40 	.globl _VoltageController_updateVoltage
+                                     41 	.globl _VoltageController_readVoltage
+                                     42 	.globl _VoltageController_setVoltage
+                                     43 	.globl _VoltageController_begin
+                                     44 	.globl _delay
+                                     45 	.globl _millis
+                                     46 	.globl _UIF_BUS_RST
+                                     47 	.globl _UIF_DETECT
+                                     48 	.globl _UIF_TRANSFER
+                                     49 	.globl _UIF_SUSPEND
+                                     50 	.globl _UIF_HST_SOF
+                                     51 	.globl _UIF_FIFO_OV
+                                     52 	.globl _U_SIE_FREE
+                                     53 	.globl _U_TOG_OK
+                                     54 	.globl _U_IS_NAK
+                                     55 	.globl _S0_R_FIFO0
+                                     56 	.globl _S0_R_FIFO1
+                                     57 	.globl _S0_T_FIFO
+                                     58 	.globl _S0_FREE
+                                     59 	.globl _S0_IF_BYTE
+                                     60 	.globl _S0_IF_FIRST
+                                     61 	.globl _S0_IF_OV
+                                     62 	.globl _S0_FST_ACT
+                                     63 	.globl _CP_RL2
+                                     64 	.globl _C_T2
+                                     65 	.globl _TR2
+                                     66 	.globl _EXEN2
+                                     67 	.globl _TCLK
+                                     68 	.globl _RCLK
+                                     69 	.globl _EXF2
+                                     70 	.globl _CAP1F
+                                     71 	.globl _TF2
+                                     72 	.globl _RI
+                                     73 	.globl _TI
+                                     74 	.globl _RB8
+                                     75 	.globl _TB8
+                                     76 	.globl _REN
+                                     77 	.globl _SM2
+                                     78 	.globl _SM1
+                                     79 	.globl _SM0
+                                     80 	.globl _IT0
+                                     81 	.globl _IE0
+                                     82 	.globl _IT1
+                                     83 	.globl _IE1
+                                     84 	.globl _TR0
+                                     85 	.globl _TF0
+                                     86 	.globl _TR1
+                                     87 	.globl _TF1
+                                     88 	.globl _P4_OUT_0
+                                     89 	.globl _P4_OUT_1
+                                     90 	.globl _P4_OUT_2
+                                     91 	.globl _P4_OUT_3
+                                     92 	.globl _P4_OUT_4
+                                     93 	.globl _P4_OUT_5
+                                     94 	.globl _P4_OUT_6
+                                     95 	.globl _P4_OUT_7
+                                     96 	.globl _RXD1_
+                                     97 	.globl _LED2
+                                     98 	.globl _CAP3_
+                                     99 	.globl _PWM3_
+                                    100 	.globl _PWM1_
+                                    101 	.globl _TXD1_
+                                    102 	.globl _TNOW_
+                                    103 	.globl _LED3
+                                    104 	.globl _PWM2_
+                                    105 	.globl _SCS_
+                                    106 	.globl _SCK_
+                                    107 	.globl _P3_0
+                                    108 	.globl _P3_1
+                                    109 	.globl _P3_2
+                                    110 	.globl _P3_3
+                                    111 	.globl _P3_4
+                                    112 	.globl _P3_5
+                                    113 	.globl _P3_6
+                                    114 	.globl _P3_7
+                                    115 	.globl _RXD
+                                    116 	.globl _TXD
+                                    117 	.globl _INT0
+                                    118 	.globl _LED0
+                                    119 	.globl _INT1
+                                    120 	.globl _LED1
+                                    121 	.globl _T0
+                                    122 	.globl _XCS0
+                                    123 	.globl _LEDC
+                                    124 	.globl _T1
+                                    125 	.globl _DA6
+                                    126 	.globl _WR
+                                    127 	.globl _RD
+                                    128 	.globl _P2_0
+                                    129 	.globl _P2_1
+                                    130 	.globl _P2_2
+                                    131 	.globl _P2_3
+                                    132 	.globl _P2_4
+                                    133 	.globl _P2_5
+                                    134 	.globl _P2_6
+                                    135 	.globl _P2_7
+                                    136 	.globl _MOSI1
+                                    137 	.globl _MISO1
+                                    138 	.globl _SCK1
+                                    139 	.globl _PWM1
+                                    140 	.globl _CAP2_
+                                    141 	.globl _T2EX_
+                                    142 	.globl _PWM2
+                                    143 	.globl _TNOW
+                                    144 	.globl _RXD1
+                                    145 	.globl _DA7
+                                    146 	.globl _TXD1
+                                    147 	.globl _P1_0
+                                    148 	.globl _P1_1
+                                    149 	.globl _P1_2
+                                    150 	.globl _P1_3
+                                    151 	.globl _P1_4
+                                    152 	.globl _P1_5
+                                    153 	.globl _P1_6
+                                    154 	.globl _P1_7
+                                    155 	.globl _CAP1
+                                    156 	.globl _T2
+                                    157 	.globl _CAP2
+                                    158 	.globl _T2EX
+                                    159 	.globl _CAP3
+                                    160 	.globl _PWM3
+                                    161 	.globl _SCS
+                                    162 	.globl _MOSI
+                                    163 	.globl _MISO
+                                    164 	.globl _SCK
+                                    165 	.globl _AIN0
+                                    166 	.globl _AIN1
+                                    167 	.globl _AIN2
+                                    168 	.globl _AIN3
+                                    169 	.globl _AIN4
+                                    170 	.globl _AIN5
+                                    171 	.globl _AIN6
+                                    172 	.globl _AIN7
+                                    173 	.globl _P0_0
+                                    174 	.globl _P0_1
+                                    175 	.globl _P0_2
+                                    176 	.globl _P0_3
+                                    177 	.globl _P0_4
+                                    178 	.globl _P0_5
+                                    179 	.globl _P0_6
+                                    180 	.globl _P0_7
+                                    181 	.globl _UDTR
+                                    182 	.globl _URTS
+                                    183 	.globl _RXD_
+                                    184 	.globl _TXD_
+                                    185 	.globl _UCTS
+                                    186 	.globl _UDSR
+                                    187 	.globl _URI
+                                    188 	.globl _UDCD
+                                    189 	.globl _IE_SPI0
+                                    190 	.globl _IE_TMR3
+                                    191 	.globl _IE_USB
+                                    192 	.globl _IE_ADC
+                                    193 	.globl _IE_UART1
+                                    194 	.globl _IE_PWM1
+                                    195 	.globl _IE_GPIO
+                                    196 	.globl _IE_WDOG
+                                    197 	.globl _PX0
+                                    198 	.globl _PT0
+                                    199 	.globl _PX1
+                                    200 	.globl _PT1
+                                    201 	.globl _PS
+                                    202 	.globl _PT2
+                                    203 	.globl _PL_FLAG
+                                    204 	.globl _PH_FLAG
+                                    205 	.globl _EX0
+                                    206 	.globl _ET0
+                                    207 	.globl _EX1
+                                    208 	.globl _ET1
+                                    209 	.globl _ES
+                                    210 	.globl _ET2
+                                    211 	.globl _E_DIS
+                                    212 	.globl _EA
+                                    213 	.globl _P
+                                    214 	.globl _F1
+                                    215 	.globl _OV
+                                    216 	.globl _RS0
+                                    217 	.globl _RS1
+                                    218 	.globl _F0
+                                    219 	.globl _AC
+                                    220 	.globl _CY
+                                    221 	.globl _USB_DMA_AH
+                                    222 	.globl _USB_DMA_AL
+                                    223 	.globl _USB_DMA
+                                    224 	.globl _UHUB1_CTRL
+                                    225 	.globl _UDEV_CTRL
+                                    226 	.globl _USB_DEV_AD
+                                    227 	.globl _USB_CTRL
+                                    228 	.globl _USB_INT_EN
+                                    229 	.globl _UEP4_T_LEN
+                                    230 	.globl _UEP4_CTRL
+                                    231 	.globl _UEP0_T_LEN
+                                    232 	.globl _UEP0_CTRL
+                                    233 	.globl _USB_HUB_ST
+                                    234 	.globl _USB_MIS_ST
+                                    235 	.globl _USB_INT_ST
+                                    236 	.globl _USB_INT_FG
+                                    237 	.globl _UEP3_T_LEN
+                                    238 	.globl _UEP3_CTRL
+                                    239 	.globl _UEP2_T_LEN
+                                    240 	.globl _UEP2_CTRL
+                                    241 	.globl _UEP1_T_LEN
+                                    242 	.globl _UEP1_CTRL
+                                    243 	.globl _USB_RX_LEN
+                                    244 	.globl _ADC_EX_SW
+                                    245 	.globl _ADC_SETUP
+                                    246 	.globl _ADC_FIFO_H
+                                    247 	.globl _ADC_FIFO_L
+                                    248 	.globl _ADC_FIFO
+                                    249 	.globl _ADC_CHANN
+                                    250 	.globl _ADC_CTRL
+                                    251 	.globl _ADC_STAT
+                                    252 	.globl _ADC_CK_SE
+                                    253 	.globl _ADC_DMA_CN
+                                    254 	.globl _ADC_DMA_AH
+                                    255 	.globl _ADC_DMA_AL
+                                    256 	.globl _ADC_DMA
+                                    257 	.globl _SER1_ADDR
+                                    258 	.globl _SER1_MSR
+                                    259 	.globl _SER1_LSR
+                                    260 	.globl _SER1_MCR
+                                    261 	.globl _SER1_LCR
+                                    262 	.globl _SER1_IIR
+                                    263 	.globl _SER1_IER
+                                    264 	.globl _SER1_FIFO
+                                    265 	.globl _SPI1_CK_SE
+                                    266 	.globl _SPI1_CTRL
+                                    267 	.globl _SPI1_DATA
+                                    268 	.globl _SPI1_STAT
+                                    269 	.globl _SPI0_SETUP
+                                    270 	.globl _SPI0_CK_SE
+                                    271 	.globl _SPI0_CTRL
+                                    272 	.globl _SPI0_DATA
+                                    273 	.globl _SPI0_STAT
+                                    274 	.globl _PWM_CYCLE
+                                    275 	.globl _PWM_CK_SE
+                                    276 	.globl _PWM_CTRL
+                                    277 	.globl _PWM_DATA
+                                    278 	.globl _PWM_DATA2
+                                    279 	.globl _T3_FIFO_H
+                                    280 	.globl _T3_FIFO_L
+                                    281 	.globl _T3_FIFO
+                                    282 	.globl _T3_DMA_AH
+                                    283 	.globl _T3_DMA_AL
+                                    284 	.globl _T3_DMA
+                                    285 	.globl _T3_DMA_CN
+                                    286 	.globl _T3_CTRL
+                                    287 	.globl _T3_STAT
+                                    288 	.globl _T3_END_H
+                                    289 	.globl _T3_END_L
+                                    290 	.globl _T3_END
+                                    291 	.globl _T3_COUNT_H
+                                    292 	.globl _T3_COUNT_L
+                                    293 	.globl _T3_COUNT
+                                    294 	.globl _T3_SETUP
+                                    295 	.globl _TH2
+                                    296 	.globl _TL2
+                                    297 	.globl _T2COUNT
+                                    298 	.globl _RCAP2H
+                                    299 	.globl _RCAP2L
+                                    300 	.globl _RCAP2
+                                    301 	.globl _T2MOD
+                                    302 	.globl _T2CON
+                                    303 	.globl _SBUF
+                                    304 	.globl _SCON
+                                    305 	.globl _TH1
+                                    306 	.globl _TH0
+                                    307 	.globl _TL1
+                                    308 	.globl _TL0
+                                    309 	.globl _TMOD
+                                    310 	.globl _TCON
+                                    311 	.globl _XBUS_SPEED
+                                    312 	.globl _XBUS_AUX
+                                    313 	.globl _PIN_FUNC
+                                    314 	.globl _PORT_CFG
+                                    315 	.globl _P5_IN
+                                    316 	.globl _P4_PU
+                                    317 	.globl _P4_DIR
+                                    318 	.globl _P4_IN
+                                    319 	.globl _P4_OUT
+                                    320 	.globl _P3_PU
+                                    321 	.globl _P3_DIR
+                                    322 	.globl _P3
+                                    323 	.globl _P2_PU
+                                    324 	.globl _P2_DIR
+                                    325 	.globl _P2
+                                    326 	.globl _P1_PU
+                                    327 	.globl _P1_DIR
+                                    328 	.globl _P1_IE
+                                    329 	.globl _P1
+                                    330 	.globl _P0_PU
+                                    331 	.globl _P0_DIR
+                                    332 	.globl _P0
+                                    333 	.globl _ROM_CTRL
+                                    334 	.globl _ROM_DATA_H
+                                    335 	.globl _ROM_DATA_L
+                                    336 	.globl _ROM_DATA
+                                    337 	.globl _ROM_ADDR_H
+                                    338 	.globl _ROM_ADDR_L
+                                    339 	.globl _ROM_ADDR
+                                    340 	.globl _GPIO_IE
+                                    341 	.globl _IP_EX
+                                    342 	.globl _IE_EX
+                                    343 	.globl _IP
+                                    344 	.globl _IE
+                                    345 	.globl _WDOG_COUNT
+                                    346 	.globl _RESET_KEEP
+                                    347 	.globl _WAKE_CTRL
+                                    348 	.globl _SLEEP_CTRL
+                                    349 	.globl _CLOCK_CFG
+                                    350 	.globl _PLL_CFG
+                                    351 	.globl _PCON
+                                    352 	.globl _GLOBAL_CFG
+                                    353 	.globl _SAFE_MOD
+                                    354 	.globl _DPH
+                                    355 	.globl _DPL
+                                    356 	.globl _SP
+                                    357 	.globl _B
+                                    358 	.globl _ACC
+                                    359 	.globl _PSW
+                                    360 	.globl _usb_was_connected
+                                    361 	.globl _stall_retry_count
+                                    362 	.globl _stall_detect_time
+                                    363 	.globl _last_voltage_check
+                                    364 	.globl _last_status_send
+                                    365 	.globl _last_temp_update
+                                    366 	.globl _sysStatus
+                                    367 	.globl _usbCtrl
+                                    368 	.globl _fanMonitor
+                                    369 	.globl _tempCtrl
+                                    370 	.globl _voltageCtrl
+                                    371 	.globl _tempSensor
+                                    372 	.globl _LED_DMA_XL
+                                    373 	.globl _LED_DMA_XH
+                                    374 	.globl _LED_DMA_CN
+                                    375 	.globl _LED_DMA_AL
+                                    376 	.globl _LED_DMA_AH
+                                    377 	.globl _LED_CK_SE
+                                    378 	.globl _LED_DATA
+                                    379 	.globl _LED_CTRL
+                                    380 	.globl _LED_STAT
+                                    381 	.globl _UEP3_DMA_L
+                                    382 	.globl _UEP3_DMA_H
+                                    383 	.globl _UEP2_DMA_L
+                                    384 	.globl _UEP2_DMA_H
+                                    385 	.globl _UEP1_DMA_L
+                                    386 	.globl _UEP1_DMA_H
+                                    387 	.globl _UEP0_DMA_L
+                                    388 	.globl _UEP0_DMA_H
+                                    389 	.globl _UEP2_3_MOD
+                                    390 	.globl _UEP4_1_MOD
+                                    391 	.globl _pLED_DMA_XL
+                                    392 	.globl _pLED_DMA_XH
+                                    393 	.globl _pLED_DMA_CN
+                                    394 	.globl _pLED_DMA_AL
+                                    395 	.globl _pLED_DMA_AH
+                                    396 	.globl _pLED_CK_SE
+                                    397 	.globl _pLED_DATA
+                                    398 	.globl _pLED_CTRL
+                                    399 	.globl _pLED_STAT
+                                    400 	.globl _pUEP3_DMA_L
+                                    401 	.globl _pUEP3_DMA_H
+                                    402 	.globl _pUEP2_DMA_L
+                                    403 	.globl _pUEP2_DMA_H
+                                    404 	.globl _pUEP1_DMA_L
+                                    405 	.globl _pUEP1_DMA_H
+                                    406 	.globl _pUEP0_DMA_L
+                                    407 	.globl _pUEP0_DMA_H
+                                    408 	.globl _pUEP2_3_MOD
+                                    409 	.globl _pUEP4_1_MOD
+                                    410 	.globl _setup
+                                    411 	.globl _loop
+                                    412 ;--------------------------------------------------------
+                                    413 ; special function registers
+                                    414 ;--------------------------------------------------------
+                                    415 	.area RSEG    (ABS,DATA)
+      000000                        416 	.org 0x0000
+                           0000D0   417 _PSW	=	0x00d0
+                           0000E0   418 _ACC	=	0x00e0
+                           0000F0   419 _B	=	0x00f0
+                           000081   420 _SP	=	0x0081
+                           000082   421 _DPL	=	0x0082
+                           000083   422 _DPH	=	0x0083
+                           0000A1   423 _SAFE_MOD	=	0x00a1
+                           0000B1   424 _GLOBAL_CFG	=	0x00b1
+                           000087   425 _PCON	=	0x0087
+                           0000B2   426 _PLL_CFG	=	0x00b2
+                           0000B3   427 _CLOCK_CFG	=	0x00b3
+                           0000EA   428 _SLEEP_CTRL	=	0x00ea
+                           0000EB   429 _WAKE_CTRL	=	0x00eb
+                           0000FE   430 _RESET_KEEP	=	0x00fe
+                           0000FF   431 _WDOG_COUNT	=	0x00ff
+                           0000A8   432 _IE	=	0x00a8
+                           0000B8   433 _IP	=	0x00b8
+                           0000E8   434 _IE_EX	=	0x00e8
+                           0000E9   435 _IP_EX	=	0x00e9
+                           0000CF   436 _GPIO_IE	=	0x00cf
+                           008584   437 _ROM_ADDR	=	0x8584
+                           000084   438 _ROM_ADDR_L	=	0x0084
+                           000085   439 _ROM_ADDR_H	=	0x0085
+                           008F8E   440 _ROM_DATA	=	0x8f8e
+                           00008E   441 _ROM_DATA_L	=	0x008e
+                           00008F   442 _ROM_DATA_H	=	0x008f
+                           000086   443 _ROM_CTRL	=	0x0086
+                           000080   444 _P0	=	0x0080
+                           0000C4   445 _P0_DIR	=	0x00c4
+                           0000C5   446 _P0_PU	=	0x00c5
+                           000090   447 _P1	=	0x0090
+                           0000B9   448 _P1_IE	=	0x00b9
+                           0000BA   449 _P1_DIR	=	0x00ba
+                           0000BB   450 _P1_PU	=	0x00bb
+                           0000A0   451 _P2	=	0x00a0
+                           0000BC   452 _P2_DIR	=	0x00bc
+                           0000BD   453 _P2_PU	=	0x00bd
+                           0000B0   454 _P3	=	0x00b0
+                           0000BE   455 _P3_DIR	=	0x00be
+                           0000BF   456 _P3_PU	=	0x00bf
+                           0000C0   457 _P4_OUT	=	0x00c0
+                           0000C1   458 _P4_IN	=	0x00c1
+                           0000C2   459 _P4_DIR	=	0x00c2
+                           0000C3   460 _P4_PU	=	0x00c3
+                           0000C7   461 _P5_IN	=	0x00c7
+                           0000C6   462 _PORT_CFG	=	0x00c6
+                           0000CE   463 _PIN_FUNC	=	0x00ce
+                           0000A2   464 _XBUS_AUX	=	0x00a2
+                           0000FD   465 _XBUS_SPEED	=	0x00fd
+                           000088   466 _TCON	=	0x0088
+                           000089   467 _TMOD	=	0x0089
+                           00008A   468 _TL0	=	0x008a
+                           00008B   469 _TL1	=	0x008b
+                           00008C   470 _TH0	=	0x008c
+                           00008D   471 _TH1	=	0x008d
+                           000098   472 _SCON	=	0x0098
+                           000099   473 _SBUF	=	0x0099
+                           0000C8   474 _T2CON	=	0x00c8
+                           0000C9   475 _T2MOD	=	0x00c9
+                           00CBCA   476 _RCAP2	=	0xcbca
+                           0000CA   477 _RCAP2L	=	0x00ca
+                           0000CB   478 _RCAP2H	=	0x00cb
+                           00CDCC   479 _T2COUNT	=	0xcdcc
+                           0000CC   480 _TL2	=	0x00cc
+                           0000CD   481 _TH2	=	0x00cd
+                           0000A3   482 _T3_SETUP	=	0x00a3
+                           00A5A4   483 _T3_COUNT	=	0xa5a4
+                           0000A4   484 _T3_COUNT_L	=	0x00a4
+                           0000A5   485 _T3_COUNT_H	=	0x00a5
+                           00A7A6   486 _T3_END	=	0xa7a6
+                           0000A6   487 _T3_END_L	=	0x00a6
+                           0000A7   488 _T3_END_H	=	0x00a7
+                           0000A9   489 _T3_STAT	=	0x00a9
+                           0000AA   490 _T3_CTRL	=	0x00aa
+                           0000AB   491 _T3_DMA_CN	=	0x00ab
+                           00ADAC   492 _T3_DMA	=	0xadac
+                           0000AC   493 _T3_DMA_AL	=	0x00ac
+                           0000AD   494 _T3_DMA_AH	=	0x00ad
+                           00AFAE   495 _T3_FIFO	=	0xafae
+                           0000AE   496 _T3_FIFO_L	=	0x00ae
+                           0000AF   497 _T3_FIFO_H	=	0x00af
+                           00009B   498 _PWM_DATA2	=	0x009b
+                           00009C   499 _PWM_DATA	=	0x009c
+                           00009D   500 _PWM_CTRL	=	0x009d
+                           00009E   501 _PWM_CK_SE	=	0x009e
+                           00009F   502 _PWM_CYCLE	=	0x009f
+                           0000F8   503 _SPI0_STAT	=	0x00f8
+                           0000F9   504 _SPI0_DATA	=	0x00f9
+                           0000FA   505 _SPI0_CTRL	=	0x00fa
+                           0000FB   506 _SPI0_CK_SE	=	0x00fb
+                           0000FC   507 _SPI0_SETUP	=	0x00fc
+                           0000B4   508 _SPI1_STAT	=	0x00b4
+                           0000B5   509 _SPI1_DATA	=	0x00b5
+                           0000B6   510 _SPI1_CTRL	=	0x00b6
+                           0000B7   511 _SPI1_CK_SE	=	0x00b7
+                           00009A   512 _SER1_FIFO	=	0x009a
+                           000091   513 _SER1_IER	=	0x0091
+                           000092   514 _SER1_IIR	=	0x0092
+                           000093   515 _SER1_LCR	=	0x0093
+                           000094   516 _SER1_MCR	=	0x0094
+                           000095   517 _SER1_LSR	=	0x0095
+                           000096   518 _SER1_MSR	=	0x0096
+                           000097   519 _SER1_ADDR	=	0x0097
+                           00EDEC   520 _ADC_DMA	=	0xedec
+                           0000EC   521 _ADC_DMA_AL	=	0x00ec
+                           0000ED   522 _ADC_DMA_AH	=	0x00ed
+                           0000EE   523 _ADC_DMA_CN	=	0x00ee
+                           0000EF   524 _ADC_CK_SE	=	0x00ef
+                           0000F1   525 _ADC_STAT	=	0x00f1
+                           0000F2   526 _ADC_CTRL	=	0x00f2
+                           0000F3   527 _ADC_CHANN	=	0x00f3
+                           00F5F4   528 _ADC_FIFO	=	0xf5f4
+                           0000F4   529 _ADC_FIFO_L	=	0x00f4
+                           0000F5   530 _ADC_FIFO_H	=	0x00f5
+                           0000F6   531 _ADC_SETUP	=	0x00f6
+                           0000F7   532 _ADC_EX_SW	=	0x00f7
+                           0000D1   533 _USB_RX_LEN	=	0x00d1
+                           0000D2   534 _UEP1_CTRL	=	0x00d2
+                           0000D3   535 _UEP1_T_LEN	=	0x00d3
+                           0000D4   536 _UEP2_CTRL	=	0x00d4
+                           0000D5   537 _UEP2_T_LEN	=	0x00d5
+                           0000D6   538 _UEP3_CTRL	=	0x00d6
+                           0000D7   539 _UEP3_T_LEN	=	0x00d7
+                           0000D8   540 _USB_INT_FG	=	0x00d8
+                           0000D9   541 _USB_INT_ST	=	0x00d9
+                           0000DA   542 _USB_MIS_ST	=	0x00da
+                           0000DB   543 _USB_HUB_ST	=	0x00db
+                           0000DC   544 _UEP0_CTRL	=	0x00dc
+                           0000DD   545 _UEP0_T_LEN	=	0x00dd
+                           0000DE   546 _UEP4_CTRL	=	0x00de
+                           0000DF   547 _UEP4_T_LEN	=	0x00df
+                           0000E1   548 _USB_INT_EN	=	0x00e1
+                           0000E2   549 _USB_CTRL	=	0x00e2
+                           0000E3   550 _USB_DEV_AD	=	0x00e3
+                           0000E4   551 _UDEV_CTRL	=	0x00e4
+                           0000E5   552 _UHUB1_CTRL	=	0x00e5
+                           00E7E6   553 _USB_DMA	=	0xe7e6
+                           0000E6   554 _USB_DMA_AL	=	0x00e6
+                           0000E7   555 _USB_DMA_AH	=	0x00e7
+                                    556 ;--------------------------------------------------------
+                                    557 ; special function bits
+                                    558 ;--------------------------------------------------------
+                                    559 	.area RSEG    (ABS,DATA)
+      000000                        560 	.org 0x0000
+                           0000D7   561 _CY	=	0x00d7
+                           0000D6   562 _AC	=	0x00d6
+                           0000D5   563 _F0	=	0x00d5
+                           0000D4   564 _RS1	=	0x00d4
+                           0000D3   565 _RS0	=	0x00d3
+                           0000D2   566 _OV	=	0x00d2
+                           0000D1   567 _F1	=	0x00d1
+                           0000D0   568 _P	=	0x00d0
+                           0000AF   569 _EA	=	0x00af
+                           0000AE   570 _E_DIS	=	0x00ae
+                           0000AD   571 _ET2	=	0x00ad
+                           0000AC   572 _ES	=	0x00ac
+                           0000AB   573 _ET1	=	0x00ab
+                           0000AA   574 _EX1	=	0x00aa
+                           0000A9   575 _ET0	=	0x00a9
+                           0000A8   576 _EX0	=	0x00a8
+                           0000BF   577 _PH_FLAG	=	0x00bf
+                           0000BE   578 _PL_FLAG	=	0x00be
+                           0000BD   579 _PT2	=	0x00bd
+                           0000BC   580 _PS	=	0x00bc
+                           0000BB   581 _PT1	=	0x00bb
+                           0000BA   582 _PX1	=	0x00ba
+                           0000B9   583 _PT0	=	0x00b9
+                           0000B8   584 _PX0	=	0x00b8
+                           0000EF   585 _IE_WDOG	=	0x00ef
+                           0000EE   586 _IE_GPIO	=	0x00ee
+                           0000ED   587 _IE_PWM1	=	0x00ed
+                           0000EC   588 _IE_UART1	=	0x00ec
+                           0000EB   589 _IE_ADC	=	0x00eb
+                           0000EA   590 _IE_USB	=	0x00ea
+                           0000E9   591 _IE_TMR3	=	0x00e9
+                           0000E8   592 _IE_SPI0	=	0x00e8
+                           000087   593 _UDCD	=	0x0087
+                           000086   594 _URI	=	0x0086
+                           000085   595 _UDSR	=	0x0085
+                           000084   596 _UCTS	=	0x0084
+                           000083   597 _TXD_	=	0x0083
+                           000082   598 _RXD_	=	0x0082
+                           000081   599 _URTS	=	0x0081
+                           000080   600 _UDTR	=	0x0080
+                           000087   601 _P0_7	=	0x0087
+                           000086   602 _P0_6	=	0x0086
+                           000085   603 _P0_5	=	0x0085
+                           000084   604 _P0_4	=	0x0084
+                           000083   605 _P0_3	=	0x0083
+                           000082   606 _P0_2	=	0x0082
+                           000081   607 _P0_1	=	0x0081
+                           000080   608 _P0_0	=	0x0080
+                           000097   609 _AIN7	=	0x0097
+                           000096   610 _AIN6	=	0x0096
+                           000095   611 _AIN5	=	0x0095
+                           000094   612 _AIN4	=	0x0094
+                           000093   613 _AIN3	=	0x0093
+                           000092   614 _AIN2	=	0x0092
+                           000091   615 _AIN1	=	0x0091
+                           000090   616 _AIN0	=	0x0090
+                           000097   617 _SCK	=	0x0097
+                           000096   618 _MISO	=	0x0096
+                           000095   619 _MOSI	=	0x0095
+                           000094   620 _SCS	=	0x0094
+                           000092   621 _PWM3	=	0x0092
+                           000092   622 _CAP3	=	0x0092
+                           000091   623 _T2EX	=	0x0091
+                           000091   624 _CAP2	=	0x0091
+                           000090   625 _T2	=	0x0090
+                           000090   626 _CAP1	=	0x0090
+                           000097   627 _P1_7	=	0x0097
+                           000096   628 _P1_6	=	0x0096
+                           000095   629 _P1_5	=	0x0095
+                           000094   630 _P1_4	=	0x0094
+                           000093   631 _P1_3	=	0x0093
+                           000092   632 _P1_2	=	0x0092
+                           000091   633 _P1_1	=	0x0091
+                           000090   634 _P1_0	=	0x0090
+                           0000A7   635 _TXD1	=	0x00a7
+                           0000A7   636 _DA7	=	0x00a7
+                           0000A6   637 _RXD1	=	0x00a6
+                           0000A5   638 _TNOW	=	0x00a5
+                           0000A5   639 _PWM2	=	0x00a5
+                           0000A5   640 _T2EX_	=	0x00a5
+                           0000A5   641 _CAP2_	=	0x00a5
+                           0000A4   642 _PWM1	=	0x00a4
+                           0000A3   643 _SCK1	=	0x00a3
+                           0000A2   644 _MISO1	=	0x00a2
+                           0000A1   645 _MOSI1	=	0x00a1
+                           0000A7   646 _P2_7	=	0x00a7
+                           0000A6   647 _P2_6	=	0x00a6
+                           0000A5   648 _P2_5	=	0x00a5
+                           0000A4   649 _P2_4	=	0x00a4
+                           0000A3   650 _P2_3	=	0x00a3
+                           0000A2   651 _P2_2	=	0x00a2
+                           0000A1   652 _P2_1	=	0x00a1
+                           0000A0   653 _P2_0	=	0x00a0
+                           0000B7   654 _RD	=	0x00b7
+                           0000B6   655 _WR	=	0x00b6
+                           0000B5   656 _DA6	=	0x00b5
+                           0000B5   657 _T1	=	0x00b5
+                           0000B4   658 _LEDC	=	0x00b4
+                           0000B4   659 _XCS0	=	0x00b4
+                           0000B4   660 _T0	=	0x00b4
+                           0000B3   661 _LED1	=	0x00b3
+                           0000B3   662 _INT1	=	0x00b3
+                           0000B2   663 _LED0	=	0x00b2
+                           0000B2   664 _INT0	=	0x00b2
+                           0000B1   665 _TXD	=	0x00b1
+                           0000B0   666 _RXD	=	0x00b0
+                           0000B7   667 _P3_7	=	0x00b7
+                           0000B6   668 _P3_6	=	0x00b6
+                           0000B5   669 _P3_5	=	0x00b5
+                           0000B4   670 _P3_4	=	0x00b4
+                           0000B3   671 _P3_3	=	0x00b3
+                           0000B2   672 _P3_2	=	0x00b2
+                           0000B1   673 _P3_1	=	0x00b1
+                           0000B0   674 _P3_0	=	0x00b0
+                           0000C7   675 _SCK_	=	0x00c7
+                           0000C6   676 _SCS_	=	0x00c6
+                           0000C5   677 _PWM2_	=	0x00c5
+                           0000C4   678 _LED3	=	0x00c4
+                           0000C4   679 _TNOW_	=	0x00c4
+                           0000C4   680 _TXD1_	=	0x00c4
+                           0000C3   681 _PWM1_	=	0x00c3
+                           0000C2   682 _PWM3_	=	0x00c2
+                           0000C2   683 _CAP3_	=	0x00c2
+                           0000C0   684 _LED2	=	0x00c0
+                           0000C0   685 _RXD1_	=	0x00c0
+                           0000C7   686 _P4_OUT_7	=	0x00c7
+                           0000C6   687 _P4_OUT_6	=	0x00c6
+                           0000C5   688 _P4_OUT_5	=	0x00c5
+                           0000C4   689 _P4_OUT_4	=	0x00c4
+                           0000C3   690 _P4_OUT_3	=	0x00c3
+                           0000C2   691 _P4_OUT_2	=	0x00c2
+                           0000C1   692 _P4_OUT_1	=	0x00c1
+                           0000C0   693 _P4_OUT_0	=	0x00c0
+                           00008F   694 _TF1	=	0x008f
+                           00008E   695 _TR1	=	0x008e
+                           00008D   696 _TF0	=	0x008d
+                           00008C   697 _TR0	=	0x008c
+                           00008B   698 _IE1	=	0x008b
+                           00008A   699 _IT1	=	0x008a
+                           000089   700 _IE0	=	0x0089
+                           000088   701 _IT0	=	0x0088
+                           00009F   702 _SM0	=	0x009f
+                           00009E   703 _SM1	=	0x009e
+                           00009D   704 _SM2	=	0x009d
+                           00009C   705 _REN	=	0x009c
+                           00009B   706 _TB8	=	0x009b
+                           00009A   707 _RB8	=	0x009a
+                           000099   708 _TI	=	0x0099
+                           000098   709 _RI	=	0x0098
+                           0000CF   710 _TF2	=	0x00cf
+                           0000CF   711 _CAP1F	=	0x00cf
+                           0000CE   712 _EXF2	=	0x00ce
+                           0000CD   713 _RCLK	=	0x00cd
+                           0000CC   714 _TCLK	=	0x00cc
+                           0000CB   715 _EXEN2	=	0x00cb
+                           0000CA   716 _TR2	=	0x00ca
+                           0000C9   717 _C_T2	=	0x00c9
+                           0000C8   718 _CP_RL2	=	0x00c8
+                           0000FF   719 _S0_FST_ACT	=	0x00ff
+                           0000FE   720 _S0_IF_OV	=	0x00fe
+                           0000FD   721 _S0_IF_FIRST	=	0x00fd
+                           0000FC   722 _S0_IF_BYTE	=	0x00fc
+                           0000FB   723 _S0_FREE	=	0x00fb
+                           0000FA   724 _S0_T_FIFO	=	0x00fa
+                           0000F9   725 _S0_R_FIFO1	=	0x00f9
+                           0000F8   726 _S0_R_FIFO0	=	0x00f8
+                           0000DF   727 _U_IS_NAK	=	0x00df
+                           0000DE   728 _U_TOG_OK	=	0x00de
+                           0000DD   729 _U_SIE_FREE	=	0x00dd
+                           0000DC   730 _UIF_FIFO_OV	=	0x00dc
+                           0000DB   731 _UIF_HST_SOF	=	0x00db
+                           0000DA   732 _UIF_SUSPEND	=	0x00da
+                           0000D9   733 _UIF_TRANSFER	=	0x00d9
+                           0000D8   734 _UIF_DETECT	=	0x00d8
+                           0000D8   735 _UIF_BUS_RST	=	0x00d8
+                                    736 ;--------------------------------------------------------
+                                    737 ; overlayable register banks
+                                    738 ;--------------------------------------------------------
+                                    739 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        740 	.ds 8
+                                    741 ;--------------------------------------------------------
+                                    742 ; internal ram data
+                                    743 ;--------------------------------------------------------
+                                    744 	.area DSEG    (DATA)
+                                    745 ;--------------------------------------------------------
+                                    746 ; overlayable items in internal ram
+                                    747 ;--------------------------------------------------------
+                                    748 ;--------------------------------------------------------
+                                    749 ; indirectly addressable internal ram data
+                                    750 ;--------------------------------------------------------
+                                    751 	.area ISEG    (DATA)
+                                    752 ;--------------------------------------------------------
+                                    753 ; absolute internal ram data
+                                    754 ;--------------------------------------------------------
+                                    755 	.area IABS    (ABS,DATA)
+                                    756 	.area IABS    (ABS,DATA)
+                                    757 ;--------------------------------------------------------
+                                    758 ; bit data
+                                    759 ;--------------------------------------------------------
+                                    760 	.area BSEG    (BIT)
+      000000                        761 _loop_sloc0_1_0:
+      000000                        762 	.ds 1
+                                    763 ;--------------------------------------------------------
+                                    764 ; paged external ram data
+                                    765 ;--------------------------------------------------------
+                                    766 	.area PSEG    (PAG,XDATA)
+                           002546   767 _pUEP4_1_MOD	=	0x2546
+                           002547   768 _pUEP2_3_MOD	=	0x2547
+                           002548   769 _pUEP0_DMA_H	=	0x2548
+                           002549   770 _pUEP0_DMA_L	=	0x2549
+                           00254A   771 _pUEP1_DMA_H	=	0x254a
+                           00254B   772 _pUEP1_DMA_L	=	0x254b
+                           00254C   773 _pUEP2_DMA_H	=	0x254c
+                           00254D   774 _pUEP2_DMA_L	=	0x254d
+                           00254E   775 _pUEP3_DMA_H	=	0x254e
+                           00254F   776 _pUEP3_DMA_L	=	0x254f
+                           002980   777 _pLED_STAT	=	0x2980
+                           002981   778 _pLED_CTRL	=	0x2981
+                           002982   779 _pLED_DATA	=	0x2982
+                           002983   780 _pLED_CK_SE	=	0x2983
+                           002984   781 _pLED_DMA_AH	=	0x2984
+                           002985   782 _pLED_DMA_AL	=	0x2985
+                           002986   783 _pLED_DMA_CN	=	0x2986
+                           002988   784 _pLED_DMA_XH	=	0x2988
+                           002989   785 _pLED_DMA_XL	=	0x2989
+                                    786 ;--------------------------------------------------------
+                                    787 ; uninitialized external ram data
+                                    788 ;--------------------------------------------------------
+                                    789 	.area XSEG    (XDATA)
+                           002446   790 _UEP4_1_MOD	=	0x2446
+                           002447   791 _UEP2_3_MOD	=	0x2447
+                           002448   792 _UEP0_DMA_H	=	0x2448
+                           002449   793 _UEP0_DMA_L	=	0x2449
+                           00244A   794 _UEP1_DMA_H	=	0x244a
+                           00244B   795 _UEP1_DMA_L	=	0x244b
+                           00244C   796 _UEP2_DMA_H	=	0x244c
+                           00244D   797 _UEP2_DMA_L	=	0x244d
+                           00244E   798 _UEP3_DMA_H	=	0x244e
+                           00244F   799 _UEP3_DMA_L	=	0x244f
+                           002880   800 _LED_STAT	=	0x2880
+                           002881   801 _LED_CTRL	=	0x2881
+                           002882   802 _LED_DATA	=	0x2882
+                           002883   803 _LED_CK_SE	=	0x2883
+                           002884   804 _LED_DMA_AH	=	0x2884
+                           002885   805 _LED_DMA_AL	=	0x2885
+                           002886   806 _LED_DMA_CN	=	0x2886
+                           002888   807 _LED_DMA_XH	=	0x2888
+                           002889   808 _LED_DMA_XL	=	0x2889
+      000000                        809 _tempSensor::
+      000000                        810 	.ds 1
+      000001                        811 _voltageCtrl::
+      000001                        812 	.ds 12
+      00000D                        813 _tempCtrl::
+      00000D                        814 	.ds 15
+      00001C                        815 _fanMonitor::
+      00001C                        816 	.ds 15
+      00002B                        817 _usbCtrl::
+      00002B                        818 	.ds 99
+      00008E                        819 _sysStatus::
+      00008E                        820 	.ds 23
+      0000A5                        821 _loop_usb_control_mode_65538_225:
+      0000A5                        822 	.ds 1
+                                    823 ;--------------------------------------------------------
+                                    824 ; absolute external ram data
+                                    825 ;--------------------------------------------------------
+                                    826 	.area XABS    (ABS,XDATA)
+                                    827 ;--------------------------------------------------------
+                                    828 ; initialized external ram data
+                                    829 ;--------------------------------------------------------
+                                    830 	.area XISEG   (XDATA)
+      000000                        831 _last_temp_update::
+      000000                        832 	.ds 4
+      000004                        833 _last_status_send::
+      000004                        834 	.ds 4
+      000008                        835 _last_voltage_check::
+      000008                        836 	.ds 4
+      00000C                        837 _stall_detect_time::
+      00000C                        838 	.ds 4
+      000010                        839 _stall_retry_count::
+      000010                        840 	.ds 1
+      000011                        841 _usb_was_connected::
+      000011                        842 	.ds 1
+                                    843 	.area HOME    (CODE)
+                                    844 	.area GSINIT0 (CODE)
+                                    845 	.area GSINIT1 (CODE)
+                                    846 	.area GSINIT2 (CODE)
+                                    847 	.area GSINIT3 (CODE)
+                                    848 	.area GSINIT4 (CODE)
+                                    849 	.area GSINIT5 (CODE)
+                                    850 	.area GSINIT  (CODE)
+                                    851 	.area GSFINAL (CODE)
+                                    852 	.area CSEG    (CODE)
+                                    853 ;--------------------------------------------------------
+                                    854 ; global & static initialisations
+                                    855 ;--------------------------------------------------------
+                                    856 	.area HOME    (CODE)
+                                    857 	.area GSINIT  (CODE)
+                                    858 	.area GSFINAL (CODE)
+                                    859 	.area GSINIT  (CODE)
+                                    860 ;--------------------------------------------------------
+                                    861 ; Home
+                                    862 ;--------------------------------------------------------
+                                    863 	.area HOME    (CODE)
+                                    864 	.area HOME    (CODE)
+                                    865 ;--------------------------------------------------------
+                                    866 ; code
+                                    867 ;--------------------------------------------------------
+                                    868 	.area CSEG    (CODE)
+                                    869 ;------------------------------------------------------------
+                                    870 ;Allocation info for local variables in function 'setup'
+                                    871 ;------------------------------------------------------------
+                                    872 ;init_voltage              Allocated with name '_setup_init_voltage_65537_221'
+                                    873 ;------------------------------------------------------------
+                                    874 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:50: void setup() {
+                                    875 ;	-----------------------------------------
+                                    876 ;	 function setup
+                                    877 ;	-----------------------------------------
+      000000                        878 _setup:
+                           000007   879 	ar7 = 0x07
+                           000006   880 	ar6 = 0x06
+                           000005   881 	ar5 = 0x05
+                           000004   882 	ar4 = 0x04
+                           000003   883 	ar3 = 0x03
+                           000002   884 	ar2 = 0x02
+                           000001   885 	ar1 = 0x01
+                           000000   886 	ar0 = 0x00
+                                    887 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:52: DS18B20_init(&tempSensor, PIN_TEMP_SENSOR);
+      000000 90r00r00         [24]  888 	mov	dptr,#_DS18B20_init_PARM_2
+      000003 74 0F            [12]  889 	mov	a,#0x0f
+      000005 F0               [24]  890 	movx	@dptr,a
+      000006 90r00r00         [24]  891 	mov	dptr,#_tempSensor
+      000009 75 F0 00         [24]  892 	mov	b,#0x00
+      00000C 12r00r00         [24]  893 	lcall	_DS18B20_init
+                                    894 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:56: USBController_begin(&usbCtrl);
+      00000F 90r00r2B         [24]  895 	mov	dptr,#_usbCtrl
+      000012 75 F0 00         [24]  896 	mov	b,#0x00
+      000015 12r00r00         [24]  897 	lcall	_USBController_begin
+                                    898 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:57: delay(500);
+      000018 90 01 F4         [24]  899 	mov	dptr,#0x01f4
+      00001B E4               [12]  900 	clr	a
+      00001C F5 F0            [12]  901 	mov	b,a
+      00001E 12r00r00         [24]  902 	lcall	_delay
+                                    903 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:59: LOG_LINE("=================================");
+      000021 90r00r00         [24]  904 	mov	dptr,#___str_0
+      000024 75 F0 80         [24]  905 	mov	b,#0x80
+      000027 12r00r00         [24]  906 	lcall	_serial_println_str
+                                    907 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:60: LOG_LINE("CH552G Fan Control System v1.0");
+      00002A 90r00r22         [24]  908 	mov	dptr,#___str_1
+      00002D 75 F0 80         [24]  909 	mov	b,#0x80
+      000030 12r00r00         [24]  910 	lcall	_serial_println_str
+                                    911 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:61: LOG_LINE("=================================");
+      000033 90r00r00         [24]  912 	mov	dptr,#___str_0
+      000036 75 F0 80         [24]  913 	mov	b,#0x80
+      000039 12r00r00         [24]  914 	lcall	_serial_println_str
+                                    915 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:64: LOG_LINE("[INIT] Voltage controller...");
+      00003C 90r00r41         [24]  916 	mov	dptr,#___str_2
+      00003F 75 F0 80         [24]  917 	mov	b,#0x80
+      000042 12r00r00         [24]  918 	lcall	_serial_println_str
+                                    919 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:65: VoltageController_begin(&voltageCtrl, PIN_PWM_OUTPUT, PIN_VOLTAGE_ADC);
+      000045 90r00r00         [24]  920 	mov	dptr,#_VoltageController_begin_PARM_2
+      000048 74 22            [12]  921 	mov	a,#0x22
+      00004A F0               [24]  922 	movx	@dptr,a
+      00004B 90r00r00         [24]  923 	mov	dptr,#_VoltageController_begin_PARM_3
+      00004E 74 0B            [12]  924 	mov	a,#0x0b
+      000050 F0               [24]  925 	movx	@dptr,a
+      000051 90r00r01         [24]  926 	mov	dptr,#_voltageCtrl
+      000054 75 F0 00         [24]  927 	mov	b,#0x00
+      000057 12r00r00         [24]  928 	lcall	_VoltageController_begin
+                                    929 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:66: delay(100);
+      00005A 90 00 64         [24]  930 	mov	dptr,#(0x64&0x00ff)
+      00005D E4               [12]  931 	clr	a
+      00005E F5 F0            [12]  932 	mov	b,a
+      000060 12r00r00         [24]  933 	lcall	_delay
+                                    934 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:70: LOG_LINE("[INIT] Temperature sensor...");
+      000063 90r00r5E         [24]  935 	mov	dptr,#___str_3
+      000066 75 F0 80         [24]  936 	mov	b,#0x80
+      000069 12r00r00         [24]  937 	lcall	_serial_println_str
+                                    938 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:71: TempController_begin(&tempCtrl, &tempSensor, &voltageCtrl);
+      00006C 90r00r00         [24]  939 	mov	dptr,#_TempController_begin_PARM_2
+      00006F 74r00            [12]  940 	mov	a,#_tempSensor
+      000071 F0               [24]  941 	movx	@dptr,a
+      000072 74s00            [12]  942 	mov	a,#(_tempSensor >> 8)
+      000074 A3               [24]  943 	inc	dptr
+      000075 F0               [24]  944 	movx	@dptr,a
+      000076 E4               [12]  945 	clr	a
+      000077 A3               [24]  946 	inc	dptr
+      000078 F0               [24]  947 	movx	@dptr,a
+      000079 90r00r00         [24]  948 	mov	dptr,#_TempController_begin_PARM_3
+      00007C 74r01            [12]  949 	mov	a,#_voltageCtrl
+      00007E F0               [24]  950 	movx	@dptr,a
+      00007F 74s00            [12]  951 	mov	a,#(_voltageCtrl >> 8)
+      000081 A3               [24]  952 	inc	dptr
+      000082 F0               [24]  953 	movx	@dptr,a
+      000083 E4               [12]  954 	clr	a
+      000084 A3               [24]  955 	inc	dptr
+      000085 F0               [24]  956 	movx	@dptr,a
+      000086 90r00r0D         [24]  957 	mov	dptr,#_tempCtrl
+      000089 75 F0 00         [24]  958 	mov	b,#0x00
+      00008C 12r00r00         [24]  959 	lcall	_TempController_begin
+                                    960 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:72: delay(200);
+      00008F 90 00 C8         [24]  961 	mov	dptr,#(0xc8&0x00ff)
+      000092 E4               [12]  962 	clr	a
+      000093 F5 F0            [12]  963 	mov	b,a
+      000095 12r00r00         [24]  964 	lcall	_delay
+                                    965 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:74: if (TempController_isReady(&tempCtrl)) {
+      000098 90r00r0D         [24]  966 	mov	dptr,#_tempCtrl
+      00009B 75 F0 00         [24]  967 	mov	b,#0x00
+      00009E 12r00r00         [24]  968 	lcall	_TempController_isReady
+      0000A1 E5 82            [12]  969 	mov	a,dpl
+      0000A3 60 37            [24]  970 	jz	00102$
+                                    971 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:76: serial_print_str("[OK] Temp sensor ready: ");
+      0000A5 90r00r7B         [24]  972 	mov	dptr,#___str_4
+      0000A8 75 F0 80         [24]  973 	mov	b,#0x80
+      0000AB 12r00r00         [24]  974 	lcall	_serial_print_str
+                                    975 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:77: serial_print_float(TempController_getTemperature(&tempCtrl), 2);
+      0000AE 90r00r0D         [24]  976 	mov	dptr,#_tempCtrl
+      0000B1 75 F0 00         [24]  977 	mov	b,#0x00
+      0000B4 12r00r00         [24]  978 	lcall	_TempController_getTemperature
+      0000B7 AC 82            [24]  979 	mov	r4,dpl
+      0000B9 AD 83            [24]  980 	mov	r5,dph
+      0000BB AE F0            [24]  981 	mov	r6,b
+      0000BD FF               [12]  982 	mov	r7,a
+      0000BE 90r00r00         [24]  983 	mov	dptr,#_serial_print_float_PARM_2
+      0000C1 74 02            [12]  984 	mov	a,#0x02
+      0000C3 F0               [24]  985 	movx	@dptr,a
+      0000C4 E4               [12]  986 	clr	a
+      0000C5 A3               [24]  987 	inc	dptr
+      0000C6 F0               [24]  988 	movx	@dptr,a
+      0000C7 8C 82            [24]  989 	mov	dpl,r4
+      0000C9 8D 83            [24]  990 	mov	dph,r5
+      0000CB 8E F0            [24]  991 	mov	b,r6
+      0000CD EF               [12]  992 	mov	a,r7
+      0000CE 12r00r00         [24]  993 	lcall	_serial_print_float
+                                    994 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:78: serial_println_str(" C");
+      0000D1 90r00r94         [24]  995 	mov	dptr,#___str_5
+      0000D4 75 F0 80         [24]  996 	mov	b,#0x80
+      0000D7 12r00r00         [24]  997 	lcall	_serial_println_str
+      0000DA 80 09            [24]  998 	sjmp	00103$
+      0000DC                        999 00102$:
+                                   1000 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:81: LOG_LINE("[WARN] Temp sensor not ready!");
+      0000DC 90r00r97         [24] 1001 	mov	dptr,#___str_6
+      0000DF 75 F0 80         [24] 1002 	mov	b,#0x80
+      0000E2 12r00r00         [24] 1003 	lcall	_serial_println_str
+      0000E5                       1004 00103$:
+                                   1005 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:90: LOG_LINE("[INIT] Fan monitor...");
+      0000E5 90r00rB5         [24] 1006 	mov	dptr,#___str_7
+      0000E8 75 F0 80         [24] 1007 	mov	b,#0x80
+      0000EB 12r00r00         [24] 1008 	lcall	_serial_println_str
+                                   1009 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:91: FanMonitor_begin(&fanMonitor, PIN_FAN_TACH);
+      0000EE 90r00r00         [24] 1010 	mov	dptr,#_FanMonitor_begin_PARM_2
+      0000F1 74 20            [12] 1011 	mov	a,#0x20
+      0000F3 F0               [24] 1012 	movx	@dptr,a
+      0000F4 90r00r1C         [24] 1013 	mov	dptr,#_fanMonitor
+      0000F7 75 F0 00         [24] 1014 	mov	b,#0x00
+      0000FA 12r00r00         [24] 1015 	lcall	_FanMonitor_begin
+                                   1016 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:92: delay(100);
+      0000FD 90 00 64         [24] 1017 	mov	dptr,#(0x64&0x00ff)
+      000100 E4               [12] 1018 	clr	a
+      000101 F5 F0            [12] 1019 	mov	b,a
+      000103 12r00r00         [24] 1020 	lcall	_delay
+                                   1021 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:95: float init_voltage = VoltageController_readVoltage(&voltageCtrl);
+      000106 90r00r01         [24] 1022 	mov	dptr,#_voltageCtrl
+      000109 75 F0 00         [24] 1023 	mov	b,#0x00
+      00010C 12r00r00         [24] 1024 	lcall	_VoltageController_readVoltage
+      00010F AC 82            [24] 1025 	mov	r4,dpl
+      000111 AD 83            [24] 1026 	mov	r5,dph
+      000113 AE F0            [24] 1027 	mov	r6,b
+      000115 FF               [12] 1028 	mov	r7,a
+                                   1029 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:97: serial_print_str("[INFO] Initial voltage: ");
+      000116 90r00rCB         [24] 1030 	mov	dptr,#___str_8
+      000119 75 F0 80         [24] 1031 	mov	b,#0x80
+      00011C C0 07            [24] 1032 	push	ar7
+      00011E C0 06            [24] 1033 	push	ar6
+      000120 C0 05            [24] 1034 	push	ar5
+      000122 C0 04            [24] 1035 	push	ar4
+      000124 12r00r00         [24] 1036 	lcall	_serial_print_str
+      000127 D0 04            [24] 1037 	pop	ar4
+      000129 D0 05            [24] 1038 	pop	ar5
+      00012B D0 06            [24] 1039 	pop	ar6
+      00012D D0 07            [24] 1040 	pop	ar7
+                                   1041 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:98: serial_print_float(init_voltage, 2);
+      00012F 90r00r00         [24] 1042 	mov	dptr,#_serial_print_float_PARM_2
+      000132 74 02            [12] 1043 	mov	a,#0x02
+      000134 F0               [24] 1044 	movx	@dptr,a
+      000135 E4               [12] 1045 	clr	a
+      000136 A3               [24] 1046 	inc	dptr
+      000137 F0               [24] 1047 	movx	@dptr,a
+      000138 8C 82            [24] 1048 	mov	dpl,r4
+      00013A 8D 83            [24] 1049 	mov	dph,r5
+      00013C 8E F0            [24] 1050 	mov	b,r6
+      00013E EF               [12] 1051 	mov	a,r7
+      00013F C0 07            [24] 1052 	push	ar7
+      000141 C0 06            [24] 1053 	push	ar6
+      000143 C0 05            [24] 1054 	push	ar5
+      000145 C0 04            [24] 1055 	push	ar4
+      000147 12r00r00         [24] 1056 	lcall	_serial_print_float
+                                   1057 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:99: serial_println_str(" V");
+      00014A 90r00rE4         [24] 1058 	mov	dptr,#___str_9
+      00014D 75 F0 80         [24] 1059 	mov	b,#0x80
+      000150 12r00r00         [24] 1060 	lcall	_serial_println_str
+                                   1061 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:103: sysStatus.temperature = TempController_getTemperature(&tempCtrl);
+      000153 90r00r0D         [24] 1062 	mov	dptr,#_tempCtrl
+      000156 75 F0 00         [24] 1063 	mov	b,#0x00
+      000159 12r00r00         [24] 1064 	lcall	_TempController_getTemperature
+      00015C A8 82            [24] 1065 	mov	r0,dpl
+      00015E A9 83            [24] 1066 	mov	r1,dph
+      000160 AA F0            [24] 1067 	mov	r2,b
+      000162 FB               [12] 1068 	mov	r3,a
+      000163 D0 04            [24] 1069 	pop	ar4
+      000165 D0 05            [24] 1070 	pop	ar5
+      000167 D0 06            [24] 1071 	pop	ar6
+      000169 D0 07            [24] 1072 	pop	ar7
+      00016B 90r00r8E         [24] 1073 	mov	dptr,#_sysStatus
+      00016E E8               [12] 1074 	mov	a,r0
+      00016F F0               [24] 1075 	movx	@dptr,a
+      000170 E9               [12] 1076 	mov	a,r1
+      000171 A3               [24] 1077 	inc	dptr
+      000172 F0               [24] 1078 	movx	@dptr,a
+      000173 EA               [12] 1079 	mov	a,r2
+      000174 A3               [24] 1080 	inc	dptr
+      000175 F0               [24] 1081 	movx	@dptr,a
+      000176 EB               [12] 1082 	mov	a,r3
+      000177 A3               [24] 1083 	inc	dptr
+      000178 F0               [24] 1084 	movx	@dptr,a
+                                   1085 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:104: sysStatus.voltage = init_voltage;
+      000179 90r00r92         [24] 1086 	mov	dptr,#(_sysStatus + 0x0004)
+      00017C EC               [12] 1087 	mov	a,r4
+      00017D F0               [24] 1088 	movx	@dptr,a
+      00017E ED               [12] 1089 	mov	a,r5
+      00017F A3               [24] 1090 	inc	dptr
+      000180 F0               [24] 1091 	movx	@dptr,a
+      000181 EE               [12] 1092 	mov	a,r6
+      000182 A3               [24] 1093 	inc	dptr
+      000183 F0               [24] 1094 	movx	@dptr,a
+      000184 EF               [12] 1095 	mov	a,r7
+      000185 A3               [24] 1096 	inc	dptr
+      000186 F0               [24] 1097 	movx	@dptr,a
+                                   1098 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:105: sysStatus.target_voltage = VOUT_DEFAULT;
+      000187 90r00r96         [24] 1099 	mov	dptr,#(_sysStatus + 0x0008)
+      00018A E4               [12] 1100 	clr	a
+      00018B F0               [24] 1101 	movx	@dptr,a
+      00018C A3               [24] 1102 	inc	dptr
+      00018D F0               [24] 1103 	movx	@dptr,a
+      00018E 74 40            [12] 1104 	mov	a,#0x40
+      000190 A3               [24] 1105 	inc	dptr
+      000191 F0               [24] 1106 	movx	@dptr,a
+      000192 04               [12] 1107 	inc	a
+      000193 A3               [24] 1108 	inc	dptr
+      000194 F0               [24] 1109 	movx	@dptr,a
+                                   1110 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:106: sysStatus.rpm = 0;
+      000195 90r00r9A         [24] 1111 	mov	dptr,#(_sysStatus + 0x000c)
+      000198 E4               [12] 1112 	clr	a
+      000199 F0               [24] 1113 	movx	@dptr,a
+      00019A A3               [24] 1114 	inc	dptr
+      00019B F0               [24] 1115 	movx	@dptr,a
+      00019C A3               [24] 1116 	inc	dptr
+      00019D F0               [24] 1117 	movx	@dptr,a
+      00019E A3               [24] 1118 	inc	dptr
+      00019F F0               [24] 1119 	movx	@dptr,a
+                                   1120 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:107: sysStatus.target_rpm = RPM_TARGET_MIN;
+      0001A0 90r00r9E         [24] 1121 	mov	dptr,#(_sysStatus + 0x0010)
+      0001A3 74 58            [12] 1122 	mov	a,#0x58
+      0001A5 F0               [24] 1123 	movx	@dptr,a
+      0001A6 74 02            [12] 1124 	mov	a,#0x02
+      0001A8 A3               [24] 1125 	inc	dptr
+      0001A9 F0               [24] 1126 	movx	@dptr,a
+      0001AA E4               [12] 1127 	clr	a
+      0001AB A3               [24] 1128 	inc	dptr
+      0001AC F0               [24] 1129 	movx	@dptr,a
+      0001AD A3               [24] 1130 	inc	dptr
+      0001AE F0               [24] 1131 	movx	@dptr,a
+                                   1132 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:108: sysStatus.pwm_duty = 0;
+      0001AF 90r00rA2         [24] 1133 	mov	dptr,#(_sysStatus + 0x0014)
+      0001B2 F0               [24] 1134 	movx	@dptr,a
+                                   1135 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:109: sysStatus.error_flags = ERROR_NONE;
+      0001B3 90r00rA3         [24] 1136 	mov	dptr,#(_sysStatus + 0x0015)
+      0001B6 F0               [24] 1137 	movx	@dptr,a
+                                   1138 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:110: sysStatus.auto_mode = true;
+      0001B7 90r00rA4         [24] 1139 	mov	dptr,#(_sysStatus + 0x0016)
+      0001BA 04               [12] 1140 	inc	a
+      0001BB F0               [24] 1141 	movx	@dptr,a
+                                   1142 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:112: LOG_LINE("[READY] System started!");
+      0001BC 90r00rE7         [24] 1143 	mov	dptr,#___str_10
+      0001BF 75 F0 80         [24] 1144 	mov	b,#0x80
+      0001C2 12r00r00         [24] 1145 	lcall	_serial_println_str
+                                   1146 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:113: LOG_LINE("=================================");
+      0001C5 90r00r00         [24] 1147 	mov	dptr,#___str_0
+      0001C8 75 F0 80         [24] 1148 	mov	b,#0x80
+                                   1149 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:114: }
+      0001CB 02r00r00         [24] 1150 	ljmp	_serial_println_str
+                                   1151 ;------------------------------------------------------------
+                                   1152 ;Allocation info for local variables in function 'loop'
+                                   1153 ;------------------------------------------------------------
+                                   1154 ;now                       Allocated with name '_loop_now_65536_222'
+                                   1155 ;usb_connected             Allocated with name '_loop_usb_connected_65537_223'
+                                   1156 ;usb_control_mode          Allocated with name '_loop_usb_control_mode_65538_225'
+                                   1157 ;target_v                  Allocated with name '_loop_target_v_196610_231'
+                                   1158 ;------------------------------------------------------------
+                                   1159 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:118: void loop() {
+                                   1160 ;	-----------------------------------------
+                                   1161 ;	 function loop
+                                   1162 ;	-----------------------------------------
+      0001CE                       1163 _loop:
+                                   1164 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:119: unsigned long now = millis();
+      0001CE 12r00r00         [24] 1165 	lcall	_millis
+      0001D1 AC 82            [24] 1166 	mov	r4,dpl
+      0001D3 AD 83            [24] 1167 	mov	r5,dph
+      0001D5 AE F0            [24] 1168 	mov	r6,b
+      0001D7 FF               [12] 1169 	mov	r7,a
+                                   1170 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:123: USBController_update(&usbCtrl);
+      0001D8 90r00r2B         [24] 1171 	mov	dptr,#_usbCtrl
+      0001DB 75 F0 00         [24] 1172 	mov	b,#0x00
+      0001DE C0 07            [24] 1173 	push	ar7
+      0001E0 C0 06            [24] 1174 	push	ar6
+      0001E2 C0 05            [24] 1175 	push	ar5
+      0001E4 C0 04            [24] 1176 	push	ar4
+      0001E6 12r00r00         [24] 1177 	lcall	_USBController_update
+                                   1178 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:126: bool usb_connected = USBController_isConnected(&usbCtrl);
+      0001E9 90r00r2B         [24] 1179 	mov	dptr,#_usbCtrl
+      0001EC 75 F0 00         [24] 1180 	mov	b,#0x00
+      0001EF 12r00r00         [24] 1181 	lcall	_USBController_isConnected
+      0001F2 AB 82            [24] 1182 	mov	r3,dpl
+      0001F4 D0 04            [24] 1183 	pop	ar4
+      0001F6 D0 05            [24] 1184 	pop	ar5
+      0001F8 D0 06            [24] 1185 	pop	ar6
+      0001FA D0 07            [24] 1186 	pop	ar7
+                                   1187 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:127: if (usb_was_connected && !usb_connected) {
+      0001FC 90r00r11         [24] 1188 	mov	dptr,#_usb_was_connected
+      0001FF E0               [24] 1189 	movx	a,@dptr
+      000200 60 28            [24] 1190 	jz	00102$
+      000202 EB               [12] 1191 	mov	a,r3
+      000203 70 25            [24] 1192 	jnz	00102$
+                                   1193 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:129: serial_println_str("[WARN] USB disconnected! Switching to AUTO mode");
+      000205 90r00rFF         [24] 1194 	mov	dptr,#___str_11
+      000208 75 F0 80         [24] 1195 	mov	b,#0x80
+      00020B C0 07            [24] 1196 	push	ar7
+      00020D C0 06            [24] 1197 	push	ar6
+      00020F C0 05            [24] 1198 	push	ar5
+      000211 C0 04            [24] 1199 	push	ar4
+      000213 C0 03            [24] 1200 	push	ar3
+      000215 12r00r00         [24] 1201 	lcall	_serial_println_str
+      000218 D0 03            [24] 1202 	pop	ar3
+      00021A D0 04            [24] 1203 	pop	ar4
+      00021C D0 05            [24] 1204 	pop	ar5
+      00021E D0 06            [24] 1205 	pop	ar6
+      000220 D0 07            [24] 1206 	pop	ar7
+                                   1207 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:130: sysStatus.error_flags |= ERROR_USB_TIMEOUT;
+      000222 90r00rA3         [24] 1208 	mov	dptr,#(_sysStatus + 0x0015)
+      000225 E0               [24] 1209 	movx	a,@dptr
+      000226 44 10            [12] 1210 	orl	a,#0x10
+      000228 FA               [12] 1211 	mov	r2,a
+      000229 F0               [24] 1212 	movx	@dptr,a
+      00022A                       1213 00102$:
+                                   1214 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:133: usb_was_connected = usb_connected;
+      00022A 90r00r11         [24] 1215 	mov	dptr,#_usb_was_connected
+      00022D EB               [12] 1216 	mov	a,r3
+      00022E F0               [24] 1217 	movx	@dptr,a
+                                   1218 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:136: bool usb_control_mode = usb_connected && USBController_isOverrideActive(&usbCtrl);
+      00022F EB               [12] 1219 	mov	a,r3
+      000230 60 1D            [24] 1220 	jz	00147$
+      000232 90r00r2B         [24] 1221 	mov	dptr,#_usbCtrl
+      000235 75 F0 00         [24] 1222 	mov	b,#0x00
+      000238 C0 07            [24] 1223 	push	ar7
+      00023A C0 06            [24] 1224 	push	ar6
+      00023C C0 05            [24] 1225 	push	ar5
+      00023E C0 04            [24] 1226 	push	ar4
+      000240 12r00r00         [24] 1227 	lcall	_USBController_isOverrideActive
+      000243 E5 82            [12] 1228 	mov	a,dpl
+      000245 D0 04            [24] 1229 	pop	ar4
+      000247 D0 05            [24] 1230 	pop	ar5
+      000249 D0 06            [24] 1231 	pop	ar6
+      00024B D0 07            [24] 1232 	pop	ar7
+      00024D 70 04            [24] 1233 	jnz	00148$
+      00024F                       1234 00147$:
+                                   1235 ;	assignBit
+      00024F C2*00            [12] 1236 	clr	_loop_sloc0_1_0
+      000251 80 02            [24] 1237 	sjmp	00149$
+      000253                       1238 00148$:
+                                   1239 ;	assignBit
+      000253 D2*00            [12] 1240 	setb	_loop_sloc0_1_0
+      000255                       1241 00149$:
+      000255 90r00rA5         [24] 1242 	mov	dptr,#_loop_usb_control_mode_65538_225
+      000258 A2*00            [12] 1243 	mov	c,_loop_sloc0_1_0
+      00025A E4               [12] 1244 	clr	a
+      00025B 33               [12] 1245 	rlc	a
+      00025C F0               [24] 1246 	movx	@dptr,a
+                                   1247 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:137: sysStatus.auto_mode = !usb_control_mode;
+      00025D 90r00rA5         [24] 1248 	mov	dptr,#_loop_usb_control_mode_65538_225
+      000260 E0               [24] 1249 	movx	a,@dptr
+      000261 B4 01 00         [24] 1250 	cjne	a,#0x01,00240$
+      000264                       1251 00240$:
+      000264 92*00            [24] 1252 	mov	_loop_sloc0_1_0,c
+      000266 90r00rA4         [24] 1253 	mov	dptr,#(_sysStatus + 0x0016)
+      000269 E4               [12] 1254 	clr	a
+      00026A 33               [12] 1255 	rlc	a
+      00026B F0               [24] 1256 	movx	@dptr,a
+                                   1257 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:140: if (usbCtrl.reset_requested) {
+      00026C 90r00r8C         [24] 1258 	mov	dptr,#(_usbCtrl + 0x0061)
+      00026F E0               [24] 1259 	movx	a,@dptr
+      000270 60 39            [24] 1260 	jz	00105$
+                                   1261 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:141: LOG_LINE("[INFO] Reset command received, unlocking output");
+      000272 90r01r2F         [24] 1262 	mov	dptr,#___str_12
+      000275 75 F0 80         [24] 1263 	mov	b,#0x80
+      000278 C0 07            [24] 1264 	push	ar7
+      00027A C0 06            [24] 1265 	push	ar6
+      00027C C0 05            [24] 1266 	push	ar5
+      00027E C0 04            [24] 1267 	push	ar4
+      000280 12r00r00         [24] 1268 	lcall	_serial_println_str
+                                   1269 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:142: VoltageController_unlockOutput(&voltageCtrl);
+      000283 90r00r01         [24] 1270 	mov	dptr,#_voltageCtrl
+      000286 75 F0 00         [24] 1271 	mov	b,#0x00
+      000289 12r00r00         [24] 1272 	lcall	_VoltageController_unlockOutput
+      00028C D0 04            [24] 1273 	pop	ar4
+      00028E D0 05            [24] 1274 	pop	ar5
+      000290 D0 06            [24] 1275 	pop	ar6
+      000292 D0 07            [24] 1276 	pop	ar7
+                                   1277 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:143: sysStatus.error_flags = ERROR_NONE;  // 清除所有错误标志
+      000294 90r00rA3         [24] 1278 	mov	dptr,#(_sysStatus + 0x0015)
+      000297 E4               [12] 1279 	clr	a
+      000298 F0               [24] 1280 	movx	@dptr,a
+                                   1281 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:144: stall_retry_count = 0;
+      000299 90r00r10         [24] 1282 	mov	dptr,#_stall_retry_count
+      00029C F0               [24] 1283 	movx	@dptr,a
+                                   1284 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:145: stall_detect_time = 0;
+      00029D 90r00r0C         [24] 1285 	mov	dptr,#_stall_detect_time
+      0002A0 F0               [24] 1286 	movx	@dptr,a
+      0002A1 A3               [24] 1287 	inc	dptr
+      0002A2 F0               [24] 1288 	movx	@dptr,a
+      0002A3 A3               [24] 1289 	inc	dptr
+      0002A4 F0               [24] 1290 	movx	@dptr,a
+      0002A5 A3               [24] 1291 	inc	dptr
+      0002A6 F0               [24] 1292 	movx	@dptr,a
+                                   1293 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:146: usbCtrl.reset_requested = false;
+      0002A7 90r00r8C         [24] 1294 	mov	dptr,#(_usbCtrl + 0x0061)
+      0002AA F0               [24] 1295 	movx	@dptr,a
+      0002AB                       1296 00105$:
+                                   1297 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:153: if (now - last_temp_update >= TEMP_UPDATE_INTERVAL) {
+      0002AB 90r00r00         [24] 1298 	mov	dptr,#_last_temp_update
+      0002AE E0               [24] 1299 	movx	a,@dptr
+      0002AF F8               [12] 1300 	mov	r0,a
+      0002B0 A3               [24] 1301 	inc	dptr
+      0002B1 E0               [24] 1302 	movx	a,@dptr
+      0002B2 F9               [12] 1303 	mov	r1,a
+      0002B3 A3               [24] 1304 	inc	dptr
+      0002B4 E0               [24] 1305 	movx	a,@dptr
+      0002B5 FA               [12] 1306 	mov	r2,a
+      0002B6 A3               [24] 1307 	inc	dptr
+      0002B7 E0               [24] 1308 	movx	a,@dptr
+      0002B8 FB               [12] 1309 	mov	r3,a
+      0002B9 EC               [12] 1310 	mov	a,r4
+      0002BA C3               [12] 1311 	clr	c
+      0002BB 98               [12] 1312 	subb	a,r0
+      0002BC F8               [12] 1313 	mov	r0,a
+      0002BD ED               [12] 1314 	mov	a,r5
+      0002BE 99               [12] 1315 	subb	a,r1
+      0002BF F9               [12] 1316 	mov	r1,a
+      0002C0 EE               [12] 1317 	mov	a,r6
+      0002C1 9A               [12] 1318 	subb	a,r2
+      0002C2 FA               [12] 1319 	mov	r2,a
+      0002C3 EF               [12] 1320 	mov	a,r7
+      0002C4 9B               [12] 1321 	subb	a,r3
+      0002C5 FB               [12] 1322 	mov	r3,a
+      0002C6 C3               [12] 1323 	clr	c
+      0002C7 E8               [12] 1324 	mov	a,r0
+      0002C8 94 D0            [12] 1325 	subb	a,#0xd0
+      0002CA E9               [12] 1326 	mov	a,r1
+      0002CB 94 07            [12] 1327 	subb	a,#0x07
+      0002CD EA               [12] 1328 	mov	a,r2
+      0002CE 94 00            [12] 1329 	subb	a,#0x00
+      0002D0 EB               [12] 1330 	mov	a,r3
+      0002D1 94 00            [12] 1331 	subb	a,#0x00
+      0002D3 50 03            [24] 1332 	jnc	00242$
+      0002D5 02r03r72         [24] 1333 	ljmp	00113$
+      0002D8                       1334 00242$:
+                                   1335 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:156: if (sysStatus.auto_mode) {
+      0002D8 90r00rA4         [24] 1336 	mov	dptr,#(_sysStatus + 0x0016)
+      0002DB E0               [24] 1337 	movx	a,@dptr
+      0002DC 60 31            [24] 1338 	jz	00110$
+                                   1339 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:158: if (!TempController_update(&tempCtrl)) {
+      0002DE 90r00r0D         [24] 1340 	mov	dptr,#_tempCtrl
+      0002E1 75 F0 00         [24] 1341 	mov	b,#0x00
+      0002E4 C0 07            [24] 1342 	push	ar7
+      0002E6 C0 06            [24] 1343 	push	ar6
+      0002E8 C0 05            [24] 1344 	push	ar5
+      0002EA C0 04            [24] 1345 	push	ar4
+      0002EC 12r00r00         [24] 1346 	lcall	_TempController_update
+      0002EF E5 82            [12] 1347 	mov	a,dpl
+      0002F1 D0 04            [24] 1348 	pop	ar4
+      0002F3 D0 05            [24] 1349 	pop	ar5
+      0002F5 D0 06            [24] 1350 	pop	ar6
+      0002F7 D0 07            [24] 1351 	pop	ar7
+      0002F9 70 0A            [24] 1352 	jnz	00107$
+                                   1353 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:159: sysStatus.error_flags |= ERROR_TEMP_SENSOR;
+      0002FB 90r00rA3         [24] 1354 	mov	dptr,#(_sysStatus + 0x0015)
+      0002FE E0               [24] 1355 	movx	a,@dptr
+      0002FF 44 01            [12] 1356 	orl	a,#0x01
+      000301 FB               [12] 1357 	mov	r3,a
+      000302 F0               [24] 1358 	movx	@dptr,a
+      000303 80 5F            [24] 1359 	sjmp	00111$
+      000305                       1360 00107$:
+                                   1361 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:161: sysStatus.error_flags &= ~ERROR_TEMP_SENSOR;
+      000305 90r00rA3         [24] 1362 	mov	dptr,#(_sysStatus + 0x0015)
+      000308 E0               [24] 1363 	movx	a,@dptr
+      000309 54 FE            [12] 1364 	anl	a,#0xfe
+      00030B FB               [12] 1365 	mov	r3,a
+      00030C F0               [24] 1366 	movx	@dptr,a
+      00030D 80 55            [24] 1367 	sjmp	00111$
+      00030F                       1368 00110$:
+                                   1369 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:165: float target_v = USBController_getTargetVoltage(&usbCtrl);
+      00030F 90r00r2B         [24] 1370 	mov	dptr,#_usbCtrl
+      000312 75 F0 00         [24] 1371 	mov	b,#0x00
+      000315 C0 07            [24] 1372 	push	ar7
+      000317 C0 06            [24] 1373 	push	ar6
+      000319 C0 05            [24] 1374 	push	ar5
+      00031B C0 04            [24] 1375 	push	ar4
+      00031D 12r00r00         [24] 1376 	lcall	_USBController_getTargetVoltage
+      000320 A8 82            [24] 1377 	mov	r0,dpl
+      000322 A9 83            [24] 1378 	mov	r1,dph
+      000324 AA F0            [24] 1379 	mov	r2,b
+      000326 FB               [12] 1380 	mov	r3,a
+                                   1381 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:166: VoltageController_setVoltage(&voltageCtrl, target_v);
+      000327 90r00r00         [24] 1382 	mov	dptr,#_VoltageController_setVoltage_PARM_2
+      00032A E8               [12] 1383 	mov	a,r0
+      00032B F0               [24] 1384 	movx	@dptr,a
+      00032C E9               [12] 1385 	mov	a,r1
+      00032D A3               [24] 1386 	inc	dptr
+      00032E F0               [24] 1387 	movx	@dptr,a
+      00032F EA               [12] 1388 	mov	a,r2
+      000330 A3               [24] 1389 	inc	dptr
+      000331 F0               [24] 1390 	movx	@dptr,a
+      000332 EB               [12] 1391 	mov	a,r3
+      000333 A3               [24] 1392 	inc	dptr
+      000334 F0               [24] 1393 	movx	@dptr,a
+      000335 90r00r01         [24] 1394 	mov	dptr,#_voltageCtrl
+      000338 75 F0 00         [24] 1395 	mov	b,#0x00
+      00033B C0 03            [24] 1396 	push	ar3
+      00033D C0 02            [24] 1397 	push	ar2
+      00033F C0 01            [24] 1398 	push	ar1
+      000341 C0 00            [24] 1399 	push	ar0
+      000343 12r00r00         [24] 1400 	lcall	_VoltageController_setVoltage
+      000346 D0 00            [24] 1401 	pop	ar0
+      000348 D0 01            [24] 1402 	pop	ar1
+      00034A D0 02            [24] 1403 	pop	ar2
+      00034C D0 03            [24] 1404 	pop	ar3
+      00034E D0 04            [24] 1405 	pop	ar4
+      000350 D0 05            [24] 1406 	pop	ar5
+      000352 D0 06            [24] 1407 	pop	ar6
+      000354 D0 07            [24] 1408 	pop	ar7
+                                   1409 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:167: sysStatus.target_voltage = target_v;
+      000356 90r00r96         [24] 1410 	mov	dptr,#(_sysStatus + 0x0008)
+      000359 E8               [12] 1411 	mov	a,r0
+      00035A F0               [24] 1412 	movx	@dptr,a
+      00035B E9               [12] 1413 	mov	a,r1
+      00035C A3               [24] 1414 	inc	dptr
+      00035D F0               [24] 1415 	movx	@dptr,a
+      00035E EA               [12] 1416 	mov	a,r2
+      00035F A3               [24] 1417 	inc	dptr
+      000360 F0               [24] 1418 	movx	@dptr,a
+      000361 EB               [12] 1419 	mov	a,r3
+      000362 A3               [24] 1420 	inc	dptr
+      000363 F0               [24] 1421 	movx	@dptr,a
+      000364                       1422 00111$:
+                                   1423 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:180: last_temp_update = now;
+      000364 90r00r00         [24] 1424 	mov	dptr,#_last_temp_update
+      000367 EC               [12] 1425 	mov	a,r4
+      000368 F0               [24] 1426 	movx	@dptr,a
+      000369 ED               [12] 1427 	mov	a,r5
+      00036A A3               [24] 1428 	inc	dptr
+      00036B F0               [24] 1429 	movx	@dptr,a
+      00036C EE               [12] 1430 	mov	a,r6
+      00036D A3               [24] 1431 	inc	dptr
+      00036E F0               [24] 1432 	movx	@dptr,a
+      00036F EF               [12] 1433 	mov	a,r7
+      000370 A3               [24] 1434 	inc	dptr
+      000371 F0               [24] 1435 	movx	@dptr,a
+      000372                       1436 00113$:
+                                   1437 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:184: if (now - last_voltage_check >= VOLTAGE_CHECK_INTERVAL) {
+      000372 90r00r08         [24] 1438 	mov	dptr,#_last_voltage_check
+      000375 E0               [24] 1439 	movx	a,@dptr
+      000376 F8               [12] 1440 	mov	r0,a
+      000377 A3               [24] 1441 	inc	dptr
+      000378 E0               [24] 1442 	movx	a,@dptr
+      000379 F9               [12] 1443 	mov	r1,a
+      00037A A3               [24] 1444 	inc	dptr
+      00037B E0               [24] 1445 	movx	a,@dptr
+      00037C FA               [12] 1446 	mov	r2,a
+      00037D A3               [24] 1447 	inc	dptr
+      00037E E0               [24] 1448 	movx	a,@dptr
+      00037F FB               [12] 1449 	mov	r3,a
+      000380 EC               [12] 1450 	mov	a,r4
+      000381 C3               [12] 1451 	clr	c
+      000382 98               [12] 1452 	subb	a,r0
+      000383 F8               [12] 1453 	mov	r0,a
+      000384 ED               [12] 1454 	mov	a,r5
+      000385 99               [12] 1455 	subb	a,r1
+      000386 F9               [12] 1456 	mov	r1,a
+      000387 EE               [12] 1457 	mov	a,r6
+      000388 9A               [12] 1458 	subb	a,r2
+      000389 FA               [12] 1459 	mov	r2,a
+      00038A EF               [12] 1460 	mov	a,r7
+      00038B 9B               [12] 1461 	subb	a,r3
+      00038C FB               [12] 1462 	mov	r3,a
+      00038D C3               [12] 1463 	clr	c
+      00038E E8               [12] 1464 	mov	a,r0
+      00038F 94 F4            [12] 1465 	subb	a,#0xf4
+      000391 E9               [12] 1466 	mov	a,r1
+      000392 94 01            [12] 1467 	subb	a,#0x01
+      000394 EA               [12] 1468 	mov	a,r2
+      000395 94 00            [12] 1469 	subb	a,#0x00
+      000397 EB               [12] 1470 	mov	a,r3
+      000398 94 00            [12] 1471 	subb	a,#0x00
+      00039A 40 70            [24] 1472 	jc	00118$
+                                   1473 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:185: VoltageController_updateVoltage(&voltageCtrl);
+      00039C 90r00r01         [24] 1474 	mov	dptr,#_voltageCtrl
+      00039F 75 F0 00         [24] 1475 	mov	b,#0x00
+      0003A2 C0 07            [24] 1476 	push	ar7
+      0003A4 C0 06            [24] 1477 	push	ar6
+      0003A6 C0 05            [24] 1478 	push	ar5
+      0003A8 C0 04            [24] 1479 	push	ar4
+      0003AA 12r00r00         [24] 1480 	lcall	_VoltageController_updateVoltage
+                                   1481 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:188: if (VoltageController_isVoltageAbnormal(&voltageCtrl)) {
+      0003AD 90r00r01         [24] 1482 	mov	dptr,#_voltageCtrl
+      0003B0 75 F0 00         [24] 1483 	mov	b,#0x00
+      0003B3 12r00r00         [24] 1484 	lcall	_VoltageController_isVoltageAbnormal
+      0003B6 E5 82            [12] 1485 	mov	a,dpl
+      0003B8 D0 04            [24] 1486 	pop	ar4
+      0003BA D0 05            [24] 1487 	pop	ar5
+      0003BC D0 06            [24] 1488 	pop	ar6
+      0003BE D0 07            [24] 1489 	pop	ar7
+      0003C0 60 34            [24] 1490 	jz	00115$
+                                   1491 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:189: sysStatus.error_flags |= ERROR_VOLTAGE_ABNORMAL;
+      0003C2 90r00rA3         [24] 1492 	mov	dptr,#(_sysStatus + 0x0015)
+      0003C5 E0               [24] 1493 	movx	a,@dptr
+      0003C6 44 08            [12] 1494 	orl	a,#0x08
+      0003C8 F0               [24] 1495 	movx	@dptr,a
+                                   1496 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:191: VoltageController_lockOutput(&voltageCtrl);
+      0003C9 90r00r01         [24] 1497 	mov	dptr,#_voltageCtrl
+      0003CC 75 F0 00         [24] 1498 	mov	b,#0x00
+      0003CF C0 07            [24] 1499 	push	ar7
+      0003D1 C0 06            [24] 1500 	push	ar6
+      0003D3 C0 05            [24] 1501 	push	ar5
+      0003D5 C0 04            [24] 1502 	push	ar4
+      0003D7 12r00r00         [24] 1503 	lcall	_VoltageController_lockOutput
+                                   1504 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:192: LOG_LINE("[ERROR] Voltage abnormal! Output locked!");
+      0003DA 90r01r5F         [24] 1505 	mov	dptr,#___str_13
+      0003DD 75 F0 80         [24] 1506 	mov	b,#0x80
+      0003E0 12r00r00         [24] 1507 	lcall	_serial_println_str
+                                   1508 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:193: LOG_LINE("[ERROR] Please power cycle or send reset command");
+      0003E3 90r01r88         [24] 1509 	mov	dptr,#___str_14
+      0003E6 75 F0 80         [24] 1510 	mov	b,#0x80
+      0003E9 12r00r00         [24] 1511 	lcall	_serial_println_str
+      0003EC D0 04            [24] 1512 	pop	ar4
+      0003EE D0 05            [24] 1513 	pop	ar5
+      0003F0 D0 06            [24] 1514 	pop	ar6
+      0003F2 D0 07            [24] 1515 	pop	ar7
+      0003F4 80 08            [24] 1516 	sjmp	00116$
+      0003F6                       1517 00115$:
+                                   1518 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:195: sysStatus.error_flags &= ~ERROR_VOLTAGE_ABNORMAL;
+      0003F6 90r00rA3         [24] 1519 	mov	dptr,#(_sysStatus + 0x0015)
+      0003F9 E0               [24] 1520 	movx	a,@dptr
+      0003FA 54 F7            [12] 1521 	anl	a,#0xf7
+      0003FC FB               [12] 1522 	mov	r3,a
+      0003FD F0               [24] 1523 	movx	@dptr,a
+      0003FE                       1524 00116$:
+                                   1525 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:198: last_voltage_check = now;
+      0003FE 90r00r08         [24] 1526 	mov	dptr,#_last_voltage_check
+      000401 EC               [12] 1527 	mov	a,r4
+      000402 F0               [24] 1528 	movx	@dptr,a
+      000403 ED               [12] 1529 	mov	a,r5
+      000404 A3               [24] 1530 	inc	dptr
+      000405 F0               [24] 1531 	movx	@dptr,a
+      000406 EE               [12] 1532 	mov	a,r6
+      000407 A3               [24] 1533 	inc	dptr
+      000408 F0               [24] 1534 	movx	@dptr,a
+      000409 EF               [12] 1535 	mov	a,r7
+      00040A A3               [24] 1536 	inc	dptr
+      00040B F0               [24] 1537 	movx	@dptr,a
+      00040C                       1538 00118$:
+                                   1539 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:202: FanMonitor_updateRPM(&fanMonitor);
+      00040C 90r00r1C         [24] 1540 	mov	dptr,#_fanMonitor
+      00040F 75 F0 00         [24] 1541 	mov	b,#0x00
+      000412 C0 07            [24] 1542 	push	ar7
+      000414 C0 06            [24] 1543 	push	ar6
+      000416 C0 05            [24] 1544 	push	ar5
+      000418 C0 04            [24] 1545 	push	ar4
+      00041A 12r00r00         [24] 1546 	lcall	_FanMonitor_updateRPM
+                                   1547 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:205: if (FanMonitor_isStalled(&fanMonitor)) {
+      00041D 90r00r1C         [24] 1548 	mov	dptr,#_fanMonitor
+      000420 75 F0 00         [24] 1549 	mov	b,#0x00
+      000423 12r00r00         [24] 1550 	lcall	_FanMonitor_isStalled
+      000426 E5 82            [12] 1551 	mov	a,dpl
+      000428 D0 04            [24] 1552 	pop	ar4
+      00042A D0 05            [24] 1553 	pop	ar5
+      00042C D0 06            [24] 1554 	pop	ar6
+      00042E D0 07            [24] 1555 	pop	ar7
+      000430 70 03            [24] 1556 	jnz	00247$
+      000432 02r05r35         [24] 1557 	ljmp	00129$
+      000435                       1558 00247$:
+                                   1559 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:206: sysStatus.error_flags |= ERROR_FAN_STALLED;
+      000435 90r00rA3         [24] 1560 	mov	dptr,#(_sysStatus + 0x0015)
+      000438 E0               [24] 1561 	movx	a,@dptr
+      000439 44 02            [12] 1562 	orl	a,#0x02
+      00043B F0               [24] 1563 	movx	@dptr,a
+                                   1564 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:209: if (stall_detect_time == 0) {
+      00043C 90r00r0C         [24] 1565 	mov	dptr,#_stall_detect_time
+      00043F E0               [24] 1566 	movx	a,@dptr
+      000440 F5 F0            [12] 1567 	mov	b,a
+      000442 A3               [24] 1568 	inc	dptr
+      000443 E0               [24] 1569 	movx	a,@dptr
+      000444 42 F0            [12] 1570 	orl	b,a
+      000446 A3               [24] 1571 	inc	dptr
+      000447 E0               [24] 1572 	movx	a,@dptr
+      000448 42 F0            [12] 1573 	orl	b,a
+      00044A A3               [24] 1574 	inc	dptr
+      00044B E0               [24] 1575 	movx	a,@dptr
+      00044C 45 F0            [12] 1576 	orl	a,b
+      00044E 70 3F            [24] 1577 	jnz	00120$
+                                   1578 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:210: stall_detect_time = now;
+      000450 90r00r0C         [24] 1579 	mov	dptr,#_stall_detect_time
+      000453 EC               [12] 1580 	mov	a,r4
+      000454 F0               [24] 1581 	movx	@dptr,a
+      000455 ED               [12] 1582 	mov	a,r5
+      000456 A3               [24] 1583 	inc	dptr
+      000457 F0               [24] 1584 	movx	@dptr,a
+      000458 EE               [12] 1585 	mov	a,r6
+      000459 A3               [24] 1586 	inc	dptr
+      00045A F0               [24] 1587 	movx	@dptr,a
+      00045B EF               [12] 1588 	mov	a,r7
+      00045C A3               [24] 1589 	inc	dptr
+      00045D F0               [24] 1590 	movx	@dptr,a
+                                   1591 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:211: LOG_LINE("[WARN] Fan stalled detected!");
+      00045E 90r01rB9         [24] 1592 	mov	dptr,#___str_15
+      000461 75 F0 80         [24] 1593 	mov	b,#0x80
+      000464 C0 07            [24] 1594 	push	ar7
+      000466 C0 06            [24] 1595 	push	ar6
+      000468 C0 05            [24] 1596 	push	ar5
+      00046A C0 04            [24] 1597 	push	ar4
+      00046C 12r00r00         [24] 1598 	lcall	_serial_println_str
+                                   1599 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:214: VoltageController_setVoltage(&voltageCtrl, VOUT_MIN);
+      00046F 90r00r00         [24] 1600 	mov	dptr,#_VoltageController_setVoltage_PARM_2
+      000472 E4               [12] 1601 	clr	a
+      000473 F0               [24] 1602 	movx	@dptr,a
+      000474 A3               [24] 1603 	inc	dptr
+      000475 F0               [24] 1604 	movx	@dptr,a
+      000476 74 A0            [12] 1605 	mov	a,#0xa0
+      000478 A3               [24] 1606 	inc	dptr
+      000479 F0               [24] 1607 	movx	@dptr,a
+      00047A 74 40            [12] 1608 	mov	a,#0x40
+      00047C A3               [24] 1609 	inc	dptr
+      00047D F0               [24] 1610 	movx	@dptr,a
+      00047E 90r00r01         [24] 1611 	mov	dptr,#_voltageCtrl
+      000481 75 F0 00         [24] 1612 	mov	b,#0x00
+      000484 12r00r00         [24] 1613 	lcall	_VoltageController_setVoltage
+      000487 D0 04            [24] 1614 	pop	ar4
+      000489 D0 05            [24] 1615 	pop	ar5
+      00048B D0 06            [24] 1616 	pop	ar6
+      00048D D0 07            [24] 1617 	pop	ar7
+      00048F                       1618 00120$:
+                                   1619 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:218: if (now - stall_detect_time >= STALL_RETRY_DELAY) {
+      00048F 90r00r0C         [24] 1620 	mov	dptr,#_stall_detect_time
+      000492 E0               [24] 1621 	movx	a,@dptr
+      000493 F8               [12] 1622 	mov	r0,a
+      000494 A3               [24] 1623 	inc	dptr
+      000495 E0               [24] 1624 	movx	a,@dptr
+      000496 F9               [12] 1625 	mov	r1,a
+      000497 A3               [24] 1626 	inc	dptr
+      000498 E0               [24] 1627 	movx	a,@dptr
+      000499 FA               [12] 1628 	mov	r2,a
+      00049A A3               [24] 1629 	inc	dptr
+      00049B E0               [24] 1630 	movx	a,@dptr
+      00049C FB               [12] 1631 	mov	r3,a
+      00049D EC               [12] 1632 	mov	a,r4
+      00049E C3               [12] 1633 	clr	c
+      00049F 98               [12] 1634 	subb	a,r0
+      0004A0 F8               [12] 1635 	mov	r0,a
+      0004A1 ED               [12] 1636 	mov	a,r5
+      0004A2 99               [12] 1637 	subb	a,r1
+      0004A3 F9               [12] 1638 	mov	r1,a
+      0004A4 EE               [12] 1639 	mov	a,r6
+      0004A5 9A               [12] 1640 	subb	a,r2
+      0004A6 FA               [12] 1641 	mov	r2,a
+      0004A7 EF               [12] 1642 	mov	a,r7
+      0004A8 9B               [12] 1643 	subb	a,r3
+      0004A9 FB               [12] 1644 	mov	r3,a
+      0004AA C3               [12] 1645 	clr	c
+      0004AB E8               [12] 1646 	mov	a,r0
+      0004AC 94 B8            [12] 1647 	subb	a,#0xb8
+      0004AE E9               [12] 1648 	mov	a,r1
+      0004AF 94 0B            [12] 1649 	subb	a,#0x0b
+      0004B1 EA               [12] 1650 	mov	a,r2
+      0004B2 94 00            [12] 1651 	subb	a,#0x00
+      0004B4 EB               [12] 1652 	mov	a,r3
+      0004B5 94 00            [12] 1653 	subb	a,#0x00
+      0004B7 50 03            [24] 1654 	jnc	00249$
+      0004B9 02r05r79         [24] 1655 	ljmp	00130$
+      0004BC                       1656 00249$:
+                                   1657 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:219: stall_retry_count++;
+      0004BC 90r00r10         [24] 1658 	mov	dptr,#_stall_retry_count
+      0004BF E0               [24] 1659 	movx	a,@dptr
+      0004C0 24 01            [12] 1660 	add	a,#0x01
+      0004C2 F0               [24] 1661 	movx	@dptr,a
+                                   1662 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:221: if (stall_retry_count >= STALL_MAX_RETRIES) {
+      0004C3 E0               [24] 1663 	movx	a,@dptr
+      0004C4 FB               [12] 1664 	mov	r3,a
+      0004C5 BB 02 00         [24] 1665 	cjne	r3,#0x02,00250$
+      0004C8                       1666 00250$:
+      0004C8 40 25            [24] 1667 	jc	00122$
+                                   1668 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:223: LOG_LINE("[ERROR] Fan stall retry limit reached! Output locked.");
+      0004CA 90r01rD6         [24] 1669 	mov	dptr,#___str_16
+      0004CD 75 F0 80         [24] 1670 	mov	b,#0x80
+      0004D0 C0 07            [24] 1671 	push	ar7
+      0004D2 C0 06            [24] 1672 	push	ar6
+      0004D4 C0 05            [24] 1673 	push	ar5
+      0004D6 C0 04            [24] 1674 	push	ar4
+      0004D8 12r00r00         [24] 1675 	lcall	_serial_println_str
+                                   1676 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:224: VoltageController_lockOutput(&voltageCtrl);
+      0004DB 90r00r01         [24] 1677 	mov	dptr,#_voltageCtrl
+      0004DE 75 F0 00         [24] 1678 	mov	b,#0x00
+      0004E1 12r00r00         [24] 1679 	lcall	_VoltageController_lockOutput
+      0004E4 D0 04            [24] 1680 	pop	ar4
+      0004E6 D0 05            [24] 1681 	pop	ar5
+      0004E8 D0 06            [24] 1682 	pop	ar6
+      0004EA D0 07            [24] 1683 	pop	ar7
+      0004EC 02r05r79         [24] 1684 	ljmp	00130$
+      0004EF                       1685 00122$:
+                                   1686 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:228: serial_print_str("[INFO] Fan stall retry ");
+      0004EF 90r02r0C         [24] 1687 	mov	dptr,#___str_17
+      0004F2 75 F0 80         [24] 1688 	mov	b,#0x80
+      0004F5 C0 07            [24] 1689 	push	ar7
+      0004F7 C0 06            [24] 1690 	push	ar6
+      0004F9 C0 05            [24] 1691 	push	ar5
+      0004FB C0 04            [24] 1692 	push	ar4
+      0004FD 12r00r00         [24] 1693 	lcall	_serial_print_str
+                                   1694 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:229: serial_print_int(stall_retry_count);
+      000500 90r00r10         [24] 1695 	mov	dptr,#_stall_retry_count
+      000503 E0               [24] 1696 	movx	a,@dptr
+      000504 FB               [12] 1697 	mov	r3,a
+      000505 7A 00            [12] 1698 	mov	r2,#0x00
+      000507 8B 82            [24] 1699 	mov	dpl,r3
+      000509 8A 83            [24] 1700 	mov	dph,r2
+      00050B 12r00r00         [24] 1701 	lcall	_serial_print_int
+                                   1702 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:230: serial_println_str("...");
+      00050E 90r02r24         [24] 1703 	mov	dptr,#___str_18
+      000511 75 F0 80         [24] 1704 	mov	b,#0x80
+      000514 12r00r00         [24] 1705 	lcall	_serial_println_str
+                                   1706 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:232: FanMonitor_resetStall(&fanMonitor);
+      000517 90r00r1C         [24] 1707 	mov	dptr,#_fanMonitor
+      00051A 75 F0 00         [24] 1708 	mov	b,#0x00
+      00051D 12r00r00         [24] 1709 	lcall	_FanMonitor_resetStall
+      000520 D0 04            [24] 1710 	pop	ar4
+      000522 D0 05            [24] 1711 	pop	ar5
+      000524 D0 06            [24] 1712 	pop	ar6
+      000526 D0 07            [24] 1713 	pop	ar7
+                                   1714 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:233: stall_detect_time = 0;
+      000528 90r00r0C         [24] 1715 	mov	dptr,#_stall_detect_time
+      00052B E4               [12] 1716 	clr	a
+      00052C F0               [24] 1717 	movx	@dptr,a
+      00052D A3               [24] 1718 	inc	dptr
+      00052E F0               [24] 1719 	movx	@dptr,a
+      00052F A3               [24] 1720 	inc	dptr
+      000530 F0               [24] 1721 	movx	@dptr,a
+      000531 A3               [24] 1722 	inc	dptr
+      000532 F0               [24] 1723 	movx	@dptr,a
+      000533 80 44            [24] 1724 	sjmp	00130$
+      000535                       1725 00129$:
+                                   1726 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:238: if (stall_detect_time != 0) {
+      000535 90r00r0C         [24] 1727 	mov	dptr,#_stall_detect_time
+      000538 E0               [24] 1728 	movx	a,@dptr
+      000539 F5 F0            [12] 1729 	mov	b,a
+      00053B A3               [24] 1730 	inc	dptr
+      00053C E0               [24] 1731 	movx	a,@dptr
+      00053D 42 F0            [12] 1732 	orl	b,a
+      00053F A3               [24] 1733 	inc	dptr
+      000540 E0               [24] 1734 	movx	a,@dptr
+      000541 42 F0            [12] 1735 	orl	b,a
+      000543 A3               [24] 1736 	inc	dptr
+      000544 E0               [24] 1737 	movx	a,@dptr
+      000545 45 F0            [12] 1738 	orl	a,b
+      000547 60 30            [24] 1739 	jz	00130$
+                                   1740 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:239: LOG_LINE("[OK] Fan recovered!");
+      000549 90r02r28         [24] 1741 	mov	dptr,#___str_19
+      00054C 75 F0 80         [24] 1742 	mov	b,#0x80
+      00054F C0 07            [24] 1743 	push	ar7
+      000551 C0 06            [24] 1744 	push	ar6
+      000553 C0 05            [24] 1745 	push	ar5
+      000555 C0 04            [24] 1746 	push	ar4
+      000557 12r00r00         [24] 1747 	lcall	_serial_println_str
+      00055A D0 04            [24] 1748 	pop	ar4
+      00055C D0 05            [24] 1749 	pop	ar5
+      00055E D0 06            [24] 1750 	pop	ar6
+      000560 D0 07            [24] 1751 	pop	ar7
+                                   1752 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:240: sysStatus.error_flags &= ~ERROR_FAN_STALLED;
+      000562 90r00rA3         [24] 1753 	mov	dptr,#(_sysStatus + 0x0015)
+      000565 E0               [24] 1754 	movx	a,@dptr
+      000566 54 FD            [12] 1755 	anl	a,#0xfd
+      000568 FB               [12] 1756 	mov	r3,a
+      000569 F0               [24] 1757 	movx	@dptr,a
+                                   1758 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:241: stall_detect_time = 0;
+      00056A 90r00r0C         [24] 1759 	mov	dptr,#_stall_detect_time
+      00056D E4               [12] 1760 	clr	a
+      00056E F0               [24] 1761 	movx	@dptr,a
+      00056F A3               [24] 1762 	inc	dptr
+      000570 F0               [24] 1763 	movx	@dptr,a
+      000571 A3               [24] 1764 	inc	dptr
+      000572 F0               [24] 1765 	movx	@dptr,a
+      000573 A3               [24] 1766 	inc	dptr
+      000574 F0               [24] 1767 	movx	@dptr,a
+                                   1768 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:242: stall_retry_count = 0;
+      000575 90r00r10         [24] 1769 	mov	dptr,#_stall_retry_count
+      000578 F0               [24] 1770 	movx	@dptr,a
+      000579                       1771 00130$:
+                                   1772 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:248: if (TempController_isOverheat(&tempCtrl)) {
+      000579 90r00r0D         [24] 1773 	mov	dptr,#_tempCtrl
+      00057C 75 F0 00         [24] 1774 	mov	b,#0x00
+      00057F C0 07            [24] 1775 	push	ar7
+      000581 C0 06            [24] 1776 	push	ar6
+      000583 C0 05            [24] 1777 	push	ar5
+      000585 C0 04            [24] 1778 	push	ar4
+      000587 12r00r00         [24] 1779 	lcall	_TempController_isOverheat
+      00058A E5 82            [12] 1780 	mov	a,dpl
+      00058C D0 04            [24] 1781 	pop	ar4
+      00058E D0 05            [24] 1782 	pop	ar5
+      000590 D0 06            [24] 1783 	pop	ar6
+      000592 D0 07            [24] 1784 	pop	ar7
+      000594 60 46            [24] 1785 	jz	00136$
+                                   1786 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:249: sysStatus.error_flags |= ERROR_OVERHEAT;
+      000596 90r00rA3         [24] 1787 	mov	dptr,#(_sysStatus + 0x0015)
+      000599 E0               [24] 1788 	movx	a,@dptr
+      00059A 44 04            [12] 1789 	orl	a,#0x04
+      00059C F0               [24] 1790 	movx	@dptr,a
+                                   1791 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:250: LOG_LINE("[WARN] Overheating detected!");
+      00059D 90r02r3C         [24] 1792 	mov	dptr,#___str_20
+      0005A0 75 F0 80         [24] 1793 	mov	b,#0x80
+      0005A3 C0 07            [24] 1794 	push	ar7
+      0005A5 C0 06            [24] 1795 	push	ar6
+      0005A7 C0 05            [24] 1796 	push	ar5
+      0005A9 C0 04            [24] 1797 	push	ar4
+      0005AB 12r00r00         [24] 1798 	lcall	_serial_println_str
+      0005AE D0 04            [24] 1799 	pop	ar4
+      0005B0 D0 05            [24] 1800 	pop	ar5
+      0005B2 D0 06            [24] 1801 	pop	ar6
+      0005B4 D0 07            [24] 1802 	pop	ar7
+                                   1803 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:255: if (usb_control_mode) {
+      0005B6 90r00rA5         [24] 1804 	mov	dptr,#_loop_usb_control_mode_65538_225
+      0005B9 E0               [24] 1805 	movx	a,@dptr
+      0005BA 60 49            [24] 1806 	jz	00137$
+                                   1807 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:256: usbCtrl.override_active = false;
+      0005BC 90r00r88         [24] 1808 	mov	dptr,#(_usbCtrl + 0x005d)
+      0005BF E4               [12] 1809 	clr	a
+      0005C0 F0               [24] 1810 	movx	@dptr,a
+                                   1811 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:257: LOG_LINE("[INFO] Overheat: forced AUTO mode");
+      0005C1 90r02r59         [24] 1812 	mov	dptr,#___str_21
+      0005C4 75 F0 80         [24] 1813 	mov	b,#0x80
+      0005C7 C0 07            [24] 1814 	push	ar7
+      0005C9 C0 06            [24] 1815 	push	ar6
+      0005CB C0 05            [24] 1816 	push	ar5
+      0005CD C0 04            [24] 1817 	push	ar4
+      0005CF 12r00r00         [24] 1818 	lcall	_serial_println_str
+      0005D2 D0 04            [24] 1819 	pop	ar4
+      0005D4 D0 05            [24] 1820 	pop	ar5
+      0005D6 D0 06            [24] 1821 	pop	ar6
+      0005D8 D0 07            [24] 1822 	pop	ar7
+      0005DA 80 29            [24] 1823 	sjmp	00137$
+      0005DC                       1824 00136$:
+                                   1825 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:262: if (sysStatus.error_flags & ERROR_OVERHEAT) {
+      0005DC 90r00rA3         [24] 1826 	mov	dptr,#(_sysStatus + 0x0015)
+      0005DF E0               [24] 1827 	movx	a,@dptr
+      0005E0 FB               [12] 1828 	mov	r3,a
+      0005E1 30 E2 21         [24] 1829 	jnb	acc.2,00137$
+                                   1830 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:263: sysStatus.error_flags &= ~ERROR_OVERHEAT;
+      0005E4 53 03 FB         [24] 1831 	anl	ar3,#0xfb
+      0005E7 90r00rA3         [24] 1832 	mov	dptr,#(_sysStatus + 0x0015)
+      0005EA EB               [12] 1833 	mov	a,r3
+      0005EB F0               [24] 1834 	movx	@dptr,a
+                                   1835 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:264: LOG_LINE("[OK] Temperature recovered, external control allowed again");
+      0005EC 90r02r7B         [24] 1836 	mov	dptr,#___str_22
+      0005EF 75 F0 80         [24] 1837 	mov	b,#0x80
+      0005F2 C0 07            [24] 1838 	push	ar7
+      0005F4 C0 06            [24] 1839 	push	ar6
+      0005F6 C0 05            [24] 1840 	push	ar5
+      0005F8 C0 04            [24] 1841 	push	ar4
+      0005FA 12r00r00         [24] 1842 	lcall	_serial_println_str
+      0005FD D0 04            [24] 1843 	pop	ar4
+      0005FF D0 05            [24] 1844 	pop	ar5
+      000601 D0 06            [24] 1845 	pop	ar6
+      000603 D0 07            [24] 1846 	pop	ar7
+      000605                       1847 00137$:
+                                   1848 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:270: sysStatus.temperature = TempController_getTemperature(&tempCtrl);
+      000605 90r00r0D         [24] 1849 	mov	dptr,#_tempCtrl
+      000608 75 F0 00         [24] 1850 	mov	b,#0x00
+      00060B C0 07            [24] 1851 	push	ar7
+      00060D C0 06            [24] 1852 	push	ar6
+      00060F C0 05            [24] 1853 	push	ar5
+      000611 C0 04            [24] 1854 	push	ar4
+      000613 12r00r00         [24] 1855 	lcall	_TempController_getTemperature
+      000616 A8 82            [24] 1856 	mov	r0,dpl
+      000618 A9 83            [24] 1857 	mov	r1,dph
+      00061A AA F0            [24] 1858 	mov	r2,b
+      00061C FB               [12] 1859 	mov	r3,a
+      00061D 90r00r8E         [24] 1860 	mov	dptr,#_sysStatus
+      000620 E8               [12] 1861 	mov	a,r0
+      000621 F0               [24] 1862 	movx	@dptr,a
+      000622 E9               [12] 1863 	mov	a,r1
+      000623 A3               [24] 1864 	inc	dptr
+      000624 F0               [24] 1865 	movx	@dptr,a
+      000625 EA               [12] 1866 	mov	a,r2
+      000626 A3               [24] 1867 	inc	dptr
+      000627 F0               [24] 1868 	movx	@dptr,a
+      000628 EB               [12] 1869 	mov	a,r3
+      000629 A3               [24] 1870 	inc	dptr
+      00062A F0               [24] 1871 	movx	@dptr,a
+                                   1872 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:271: sysStatus.voltage = VoltageController_getCurrentVoltage(&voltageCtrl);
+      00062B 90r00r01         [24] 1873 	mov	dptr,#_voltageCtrl
+      00062E 75 F0 00         [24] 1874 	mov	b,#0x00
+      000631 12r00r00         [24] 1875 	lcall	_VoltageController_getCurrentVoltage
+      000634 A8 82            [24] 1876 	mov	r0,dpl
+      000636 A9 83            [24] 1877 	mov	r1,dph
+      000638 AA F0            [24] 1878 	mov	r2,b
+      00063A FB               [12] 1879 	mov	r3,a
+      00063B 90r00r92         [24] 1880 	mov	dptr,#(_sysStatus + 0x0004)
+      00063E E8               [12] 1881 	mov	a,r0
+      00063F F0               [24] 1882 	movx	@dptr,a
+      000640 E9               [12] 1883 	mov	a,r1
+      000641 A3               [24] 1884 	inc	dptr
+      000642 F0               [24] 1885 	movx	@dptr,a
+      000643 EA               [12] 1886 	mov	a,r2
+      000644 A3               [24] 1887 	inc	dptr
+      000645 F0               [24] 1888 	movx	@dptr,a
+      000646 EB               [12] 1889 	mov	a,r3
+      000647 A3               [24] 1890 	inc	dptr
+      000648 F0               [24] 1891 	movx	@dptr,a
+                                   1892 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:272: sysStatus.target_voltage = VoltageController_getTargetVoltage(&voltageCtrl);
+      000649 90r00r01         [24] 1893 	mov	dptr,#_voltageCtrl
+      00064C 75 F0 00         [24] 1894 	mov	b,#0x00
+      00064F 12r00r00         [24] 1895 	lcall	_VoltageController_getTargetVoltage
+      000652 A8 82            [24] 1896 	mov	r0,dpl
+      000654 A9 83            [24] 1897 	mov	r1,dph
+      000656 AA F0            [24] 1898 	mov	r2,b
+      000658 FB               [12] 1899 	mov	r3,a
+      000659 90r00r96         [24] 1900 	mov	dptr,#(_sysStatus + 0x0008)
+      00065C E8               [12] 1901 	mov	a,r0
+      00065D F0               [24] 1902 	movx	@dptr,a
+      00065E E9               [12] 1903 	mov	a,r1
+      00065F A3               [24] 1904 	inc	dptr
+      000660 F0               [24] 1905 	movx	@dptr,a
+      000661 EA               [12] 1906 	mov	a,r2
+      000662 A3               [24] 1907 	inc	dptr
+      000663 F0               [24] 1908 	movx	@dptr,a
+      000664 EB               [12] 1909 	mov	a,r3
+      000665 A3               [24] 1910 	inc	dptr
+      000666 F0               [24] 1911 	movx	@dptr,a
+                                   1912 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:273: sysStatus.rpm = FanMonitor_getRPM(&fanMonitor);
+      000667 90r00r1C         [24] 1913 	mov	dptr,#_fanMonitor
+      00066A 75 F0 00         [24] 1914 	mov	b,#0x00
+      00066D 12r00r00         [24] 1915 	lcall	_FanMonitor_getRPM
+      000670 A8 82            [24] 1916 	mov	r0,dpl
+      000672 A9 83            [24] 1917 	mov	r1,dph
+      000674 AA F0            [24] 1918 	mov	r2,b
+      000676 FB               [12] 1919 	mov	r3,a
+      000677 90r00r9A         [24] 1920 	mov	dptr,#(_sysStatus + 0x000c)
+      00067A E8               [12] 1921 	mov	a,r0
+      00067B F0               [24] 1922 	movx	@dptr,a
+      00067C E9               [12] 1923 	mov	a,r1
+      00067D A3               [24] 1924 	inc	dptr
+      00067E F0               [24] 1925 	movx	@dptr,a
+      00067F EA               [12] 1926 	mov	a,r2
+      000680 A3               [24] 1927 	inc	dptr
+      000681 F0               [24] 1928 	movx	@dptr,a
+      000682 EB               [12] 1929 	mov	a,r3
+      000683 A3               [24] 1930 	inc	dptr
+      000684 F0               [24] 1931 	movx	@dptr,a
+                                   1932 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:274: sysStatus.target_rpm = TempController_getTargetRPM(&tempCtrl);
+      000685 90r00r0D         [24] 1933 	mov	dptr,#_tempCtrl
+      000688 75 F0 00         [24] 1934 	mov	b,#0x00
+      00068B 12r00r00         [24] 1935 	lcall	_TempController_getTargetRPM
+      00068E A8 82            [24] 1936 	mov	r0,dpl
+      000690 A9 83            [24] 1937 	mov	r1,dph
+      000692 AA F0            [24] 1938 	mov	r2,b
+      000694 FB               [12] 1939 	mov	r3,a
+      000695 90r00r9E         [24] 1940 	mov	dptr,#(_sysStatus + 0x0010)
+      000698 E8               [12] 1941 	mov	a,r0
+      000699 F0               [24] 1942 	movx	@dptr,a
+      00069A E9               [12] 1943 	mov	a,r1
+      00069B A3               [24] 1944 	inc	dptr
+      00069C F0               [24] 1945 	movx	@dptr,a
+      00069D EA               [12] 1946 	mov	a,r2
+      00069E A3               [24] 1947 	inc	dptr
+      00069F F0               [24] 1948 	movx	@dptr,a
+      0006A0 EB               [12] 1949 	mov	a,r3
+      0006A1 A3               [24] 1950 	inc	dptr
+      0006A2 F0               [24] 1951 	movx	@dptr,a
+                                   1952 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:275: sysStatus.pwm_duty = VoltageController_getPWMDuty(&voltageCtrl);
+      0006A3 90r00r01         [24] 1953 	mov	dptr,#_voltageCtrl
+      0006A6 75 F0 00         [24] 1954 	mov	b,#0x00
+      0006A9 12r00r00         [24] 1955 	lcall	_VoltageController_getPWMDuty
+      0006AC AB 82            [24] 1956 	mov	r3,dpl
+      0006AE D0 04            [24] 1957 	pop	ar4
+      0006B0 D0 05            [24] 1958 	pop	ar5
+      0006B2 D0 06            [24] 1959 	pop	ar6
+      0006B4 D0 07            [24] 1960 	pop	ar7
+      0006B6 90r00rA2         [24] 1961 	mov	dptr,#(_sysStatus + 0x0014)
+      0006B9 EB               [12] 1962 	mov	a,r3
+      0006BA F0               [24] 1963 	movx	@dptr,a
+                                   1964 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:280: if (usbCtrl.status_requested) {
+      0006BB 90r00r8D         [24] 1965 	mov	dptr,#(_usbCtrl + 0x0062)
+      0006BE E0               [24] 1966 	movx	a,@dptr
+      0006BF 60 2B            [24] 1967 	jz	00139$
+                                   1968 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:281: USBController_sendStatus(&usbCtrl, &sysStatus);
+      0006C1 90r00r00         [24] 1969 	mov	dptr,#_USBController_sendStatus_PARM_2
+      0006C4 74r8E            [12] 1970 	mov	a,#_sysStatus
+      0006C6 F0               [24] 1971 	movx	@dptr,a
+      0006C7 74s00            [12] 1972 	mov	a,#(_sysStatus >> 8)
+      0006C9 A3               [24] 1973 	inc	dptr
+      0006CA F0               [24] 1974 	movx	@dptr,a
+      0006CB E4               [12] 1975 	clr	a
+      0006CC A3               [24] 1976 	inc	dptr
+      0006CD F0               [24] 1977 	movx	@dptr,a
+      0006CE 90r00r2B         [24] 1978 	mov	dptr,#_usbCtrl
+      0006D1 75 F0 00         [24] 1979 	mov	b,#0x00
+      0006D4 C0 07            [24] 1980 	push	ar7
+      0006D6 C0 06            [24] 1981 	push	ar6
+      0006D8 C0 05            [24] 1982 	push	ar5
+      0006DA C0 04            [24] 1983 	push	ar4
+      0006DC 12r00r00         [24] 1984 	lcall	_USBController_sendStatus
+      0006DF D0 04            [24] 1985 	pop	ar4
+      0006E1 D0 05            [24] 1986 	pop	ar5
+      0006E3 D0 06            [24] 1987 	pop	ar6
+      0006E5 D0 07            [24] 1988 	pop	ar7
+                                   1989 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:282: usbCtrl.status_requested = false;
+      0006E7 90r00r8D         [24] 1990 	mov	dptr,#(_usbCtrl + 0x0062)
+      0006EA E4               [12] 1991 	clr	a
+      0006EB F0               [24] 1992 	movx	@dptr,a
+      0006EC                       1993 00139$:
+                                   1994 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:285: if (now - last_status_send >= STATUS_SEND_INTERVAL) {
+      0006EC 90r00r04         [24] 1995 	mov	dptr,#_last_status_send
+      0006EF E0               [24] 1996 	movx	a,@dptr
+      0006F0 F8               [12] 1997 	mov	r0,a
+      0006F1 A3               [24] 1998 	inc	dptr
+      0006F2 E0               [24] 1999 	movx	a,@dptr
+      0006F3 F9               [12] 2000 	mov	r1,a
+      0006F4 A3               [24] 2001 	inc	dptr
+      0006F5 E0               [24] 2002 	movx	a,@dptr
+      0006F6 FA               [12] 2003 	mov	r2,a
+      0006F7 A3               [24] 2004 	inc	dptr
+      0006F8 E0               [24] 2005 	movx	a,@dptr
+      0006F9 FB               [12] 2006 	mov	r3,a
+      0006FA EC               [12] 2007 	mov	a,r4
+      0006FB C3               [12] 2008 	clr	c
+      0006FC 98               [12] 2009 	subb	a,r0
+      0006FD F8               [12] 2010 	mov	r0,a
+      0006FE ED               [12] 2011 	mov	a,r5
+      0006FF 99               [12] 2012 	subb	a,r1
+      000700 F9               [12] 2013 	mov	r1,a
+      000701 EE               [12] 2014 	mov	a,r6
+      000702 9A               [12] 2015 	subb	a,r2
+      000703 FA               [12] 2016 	mov	r2,a
+      000704 EF               [12] 2017 	mov	a,r7
+      000705 9B               [12] 2018 	subb	a,r3
+      000706 FB               [12] 2019 	mov	r3,a
+      000707 C3               [12] 2020 	clr	c
+      000708 E8               [12] 2021 	mov	a,r0
+      000709 94 E8            [12] 2022 	subb	a,#0xe8
+      00070B E9               [12] 2023 	mov	a,r1
+      00070C 94 03            [12] 2024 	subb	a,#0x03
+      00070E EA               [12] 2025 	mov	a,r2
+      00070F 94 00            [12] 2026 	subb	a,#0x00
+      000711 EB               [12] 2027 	mov	a,r3
+      000712 94 00            [12] 2028 	subb	a,#0x00
+      000714 50 03            [24] 2029 	jnc	00257$
+      000716 02r08r26         [24] 2030 	ljmp	00144$
+      000719                       2031 00257$:
+                                   2032 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:286: if (USBController_isConnected(&usbCtrl)) {
+      000719 90r00r2B         [24] 2033 	mov	dptr,#_usbCtrl
+      00071C 75 F0 00         [24] 2034 	mov	b,#0x00
+      00071F C0 07            [24] 2035 	push	ar7
+      000721 C0 06            [24] 2036 	push	ar6
+      000723 C0 05            [24] 2037 	push	ar5
+      000725 C0 04            [24] 2038 	push	ar4
+      000727 12r00r00         [24] 2039 	lcall	_USBController_isConnected
+      00072A E5 82            [12] 2040 	mov	a,dpl
+      00072C D0 04            [24] 2041 	pop	ar4
+      00072E D0 05            [24] 2042 	pop	ar5
+      000730 D0 06            [24] 2043 	pop	ar6
+      000732 D0 07            [24] 2044 	pop	ar7
+      000734 60 29            [24] 2045 	jz	00141$
+                                   2046 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:287: USBController_sendStatus(&usbCtrl, &sysStatus);
+      000736 90r00r00         [24] 2047 	mov	dptr,#_USBController_sendStatus_PARM_2
+      000739 74r8E            [12] 2048 	mov	a,#_sysStatus
+      00073B F0               [24] 2049 	movx	@dptr,a
+      00073C 74s00            [12] 2050 	mov	a,#(_sysStatus >> 8)
+      00073E A3               [24] 2051 	inc	dptr
+      00073F F0               [24] 2052 	movx	@dptr,a
+      000740 E4               [12] 2053 	clr	a
+      000741 A3               [24] 2054 	inc	dptr
+      000742 F0               [24] 2055 	movx	@dptr,a
+      000743 90r00r2B         [24] 2056 	mov	dptr,#_usbCtrl
+      000746 75 F0 00         [24] 2057 	mov	b,#0x00
+      000749 C0 07            [24] 2058 	push	ar7
+      00074B C0 06            [24] 2059 	push	ar6
+      00074D C0 05            [24] 2060 	push	ar5
+      00074F C0 04            [24] 2061 	push	ar4
+      000751 12r00r00         [24] 2062 	lcall	_USBController_sendStatus
+      000754 D0 04            [24] 2063 	pop	ar4
+      000756 D0 05            [24] 2064 	pop	ar5
+      000758 D0 06            [24] 2065 	pop	ar6
+      00075A D0 07            [24] 2066 	pop	ar7
+      00075C 02r08r18         [24] 2067 	ljmp	00142$
+      00075F                       2068 00141$:
+                                   2069 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:291: serial_print_str("Temp:");
+      00075F 90r02rB6         [24] 2070 	mov	dptr,#___str_23
+      000762 75 F0 80         [24] 2071 	mov	b,#0x80
+      000765 C0 07            [24] 2072 	push	ar7
+      000767 C0 06            [24] 2073 	push	ar6
+      000769 C0 05            [24] 2074 	push	ar5
+      00076B C0 04            [24] 2075 	push	ar4
+      00076D 12r00r00         [24] 2076 	lcall	_serial_print_str
+                                   2077 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:292: serial_print_float(sysStatus.temperature, 2);
+      000770 90r00r8E         [24] 2078 	mov	dptr,#_sysStatus
+      000773 E0               [24] 2079 	movx	a,@dptr
+      000774 F8               [12] 2080 	mov	r0,a
+      000775 A3               [24] 2081 	inc	dptr
+      000776 E0               [24] 2082 	movx	a,@dptr
+      000777 F9               [12] 2083 	mov	r1,a
+      000778 A3               [24] 2084 	inc	dptr
+      000779 E0               [24] 2085 	movx	a,@dptr
+      00077A FA               [12] 2086 	mov	r2,a
+      00077B A3               [24] 2087 	inc	dptr
+      00077C E0               [24] 2088 	movx	a,@dptr
+      00077D FB               [12] 2089 	mov	r3,a
+      00077E 90r00r00         [24] 2090 	mov	dptr,#_serial_print_float_PARM_2
+      000781 74 02            [12] 2091 	mov	a,#0x02
+      000783 F0               [24] 2092 	movx	@dptr,a
+      000784 E4               [12] 2093 	clr	a
+      000785 A3               [24] 2094 	inc	dptr
+      000786 F0               [24] 2095 	movx	@dptr,a
+      000787 88 82            [24] 2096 	mov	dpl,r0
+      000789 89 83            [24] 2097 	mov	dph,r1
+      00078B 8A F0            [24] 2098 	mov	b,r2
+      00078D EB               [12] 2099 	mov	a,r3
+      00078E 12r00r00         [24] 2100 	lcall	_serial_print_float
+                                   2101 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:293: serial_print_str("C | Volt:");
+      000791 90r02rBC         [24] 2102 	mov	dptr,#___str_24
+      000794 75 F0 80         [24] 2103 	mov	b,#0x80
+      000797 12r00r00         [24] 2104 	lcall	_serial_print_str
+                                   2105 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:294: serial_print_float(sysStatus.voltage, 2);
+      00079A 90r00r92         [24] 2106 	mov	dptr,#(_sysStatus + 0x0004)
+      00079D E0               [24] 2107 	movx	a,@dptr
+      00079E F8               [12] 2108 	mov	r0,a
+      00079F A3               [24] 2109 	inc	dptr
+      0007A0 E0               [24] 2110 	movx	a,@dptr
+      0007A1 F9               [12] 2111 	mov	r1,a
+      0007A2 A3               [24] 2112 	inc	dptr
+      0007A3 E0               [24] 2113 	movx	a,@dptr
+      0007A4 FA               [12] 2114 	mov	r2,a
+      0007A5 A3               [24] 2115 	inc	dptr
+      0007A6 E0               [24] 2116 	movx	a,@dptr
+      0007A7 FB               [12] 2117 	mov	r3,a
+      0007A8 90r00r00         [24] 2118 	mov	dptr,#_serial_print_float_PARM_2
+      0007AB 74 02            [12] 2119 	mov	a,#0x02
+      0007AD F0               [24] 2120 	movx	@dptr,a
+      0007AE E4               [12] 2121 	clr	a
+      0007AF A3               [24] 2122 	inc	dptr
+      0007B0 F0               [24] 2123 	movx	@dptr,a
+      0007B1 88 82            [24] 2124 	mov	dpl,r0
+      0007B3 89 83            [24] 2125 	mov	dph,r1
+      0007B5 8A F0            [24] 2126 	mov	b,r2
+      0007B7 EB               [12] 2127 	mov	a,r3
+      0007B8 12r00r00         [24] 2128 	lcall	_serial_print_float
+                                   2129 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:295: serial_print_str("V | RPM:");
+      0007BB 90r02rC6         [24] 2130 	mov	dptr,#___str_25
+      0007BE 75 F0 80         [24] 2131 	mov	b,#0x80
+      0007C1 12r00r00         [24] 2132 	lcall	_serial_print_str
+                                   2133 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:296: serial_print_uint(sysStatus.rpm);
+      0007C4 90r00r9A         [24] 2134 	mov	dptr,#(_sysStatus + 0x000c)
+      0007C7 E0               [24] 2135 	movx	a,@dptr
+      0007C8 F8               [12] 2136 	mov	r0,a
+      0007C9 A3               [24] 2137 	inc	dptr
+      0007CA E0               [24] 2138 	movx	a,@dptr
+      0007CB F9               [12] 2139 	mov	r1,a
+      0007CC A3               [24] 2140 	inc	dptr
+      0007CD E0               [24] 2141 	movx	a,@dptr
+      0007CE FA               [12] 2142 	mov	r2,a
+      0007CF A3               [24] 2143 	inc	dptr
+      0007D0 E0               [24] 2144 	movx	a,@dptr
+      0007D1 88 82            [24] 2145 	mov	dpl,r0
+      0007D3 89 83            [24] 2146 	mov	dph,r1
+      0007D5 8A F0            [24] 2147 	mov	b,r2
+      0007D7 12r00r00         [24] 2148 	lcall	_serial_print_uint
+                                   2149 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:297: serial_print_str(" | Mode:");
+      0007DA 90r02rCF         [24] 2150 	mov	dptr,#___str_26
+      0007DD 75 F0 80         [24] 2151 	mov	b,#0x80
+      0007E0 12r00r00         [24] 2152 	lcall	_serial_print_str
+      0007E3 D0 04            [24] 2153 	pop	ar4
+      0007E5 D0 05            [24] 2154 	pop	ar5
+      0007E7 D0 06            [24] 2155 	pop	ar6
+      0007E9 D0 07            [24] 2156 	pop	ar7
+                                   2157 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:298: serial_println_str(sysStatus.auto_mode ? "AUTO" : "USB");
+      0007EB 90r00rA4         [24] 2158 	mov	dptr,#(_sysStatus + 0x0016)
+      0007EE E0               [24] 2159 	movx	a,@dptr
+      0007EF 60 06            [24] 2160 	jz	00150$
+      0007F1 7ArD8            [12] 2161 	mov	r2,#___str_27
+      0007F3 7Bs02            [12] 2162 	mov	r3,#(___str_27 >> 8)
+      0007F5 80 04            [24] 2163 	sjmp	00151$
+      0007F7                       2164 00150$:
+      0007F7 7ArDD            [12] 2165 	mov	r2,#___str_28
+      0007F9 7Bs02            [12] 2166 	mov	r3,#(___str_28 >> 8)
+      0007FB                       2167 00151$:
+      0007FB 8B 01            [24] 2168 	mov	ar1,r3
+      0007FD 7B 80            [12] 2169 	mov	r3,#0x80
+      0007FF 8A 82            [24] 2170 	mov	dpl,r2
+      000801 89 83            [24] 2171 	mov	dph,r1
+      000803 8B F0            [24] 2172 	mov	b,r3
+      000805 C0 07            [24] 2173 	push	ar7
+      000807 C0 06            [24] 2174 	push	ar6
+      000809 C0 05            [24] 2175 	push	ar5
+      00080B C0 04            [24] 2176 	push	ar4
+      00080D 12r00r00         [24] 2177 	lcall	_serial_println_str
+      000810 D0 04            [24] 2178 	pop	ar4
+      000812 D0 05            [24] 2179 	pop	ar5
+      000814 D0 06            [24] 2180 	pop	ar6
+      000816 D0 07            [24] 2181 	pop	ar7
+      000818                       2182 00142$:
+                                   2183 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:302: last_status_send = now;
+      000818 90r00r04         [24] 2184 	mov	dptr,#_last_status_send
+      00081B EC               [12] 2185 	mov	a,r4
+      00081C F0               [24] 2186 	movx	@dptr,a
+      00081D ED               [12] 2187 	mov	a,r5
+      00081E A3               [24] 2188 	inc	dptr
+      00081F F0               [24] 2189 	movx	@dptr,a
+      000820 EE               [12] 2190 	mov	a,r6
+      000821 A3               [24] 2191 	inc	dptr
+      000822 F0               [24] 2192 	movx	@dptr,a
+      000823 EF               [12] 2193 	mov	a,r7
+      000824 A3               [24] 2194 	inc	dptr
+      000825 F0               [24] 2195 	movx	@dptr,a
+      000826                       2196 00144$:
+                                   2197 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:307: delay(50);
+      000826 90 00 32         [24] 2198 	mov	dptr,#(0x32&0x00ff)
+      000829 E4               [12] 2199 	clr	a
+      00082A F5 F0            [12] 2200 	mov	b,a
+                                   2201 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\main.c:308: }
+      00082C 02r00r00         [24] 2202 	ljmp	_delay
+                                   2203 	.area CSEG    (CODE)
+                                   2204 	.area CONST   (CODE)
+                                   2205 	.area CONST   (CODE)
+      000000                       2206 ___str_0:
+      000000 3D 3D 3D 3D 3D 3D 3D  2207 	.ascii "================================="
+             3D 3D 3D 3D 3D 3D 3D
+             3D 3D 3D 3D 3D 3D 3D
+             3D 3D 3D 3D 3D 3D 3D
+             3D 3D 3D 3D 3D
+      000021 00                    2208 	.db 0x00
+                                   2209 	.area CSEG    (CODE)
+                                   2210 	.area CONST   (CODE)
+      000022                       2211 ___str_1:
+      000022 43 48 35 35 32 47 20  2212 	.ascii "CH552G Fan Control System v1.0"
+             46 61 6E 20 43 6F 6E
+             74 72 6F 6C 20 53 79
+             73 74 65 6D 20 76 31
+             2E 30
+      000040 00                    2213 	.db 0x00
+                                   2214 	.area CSEG    (CODE)
+                                   2215 	.area CONST   (CODE)
+      000041                       2216 ___str_2:
+      000041 5B 49 4E 49 54 5D 20  2217 	.ascii "[INIT] Voltage controller..."
+             56 6F 6C 74 61 67 65
+             20 63 6F 6E 74 72 6F
+             6C 6C 65 72 2E 2E 2E
+      00005D 00                    2218 	.db 0x00
+                                   2219 	.area CSEG    (CODE)
+                                   2220 	.area CONST   (CODE)
+      00005E                       2221 ___str_3:
+      00005E 5B 49 4E 49 54 5D 20  2222 	.ascii "[INIT] Temperature sensor..."
+             54 65 6D 70 65 72 61
+             74 75 72 65 20 73 65
+             6E 73 6F 72 2E 2E 2E
+      00007A 00                    2223 	.db 0x00
+                                   2224 	.area CSEG    (CODE)
+                                   2225 	.area CONST   (CODE)
+      00007B                       2226 ___str_4:
+      00007B 5B 4F 4B 5D 20 54 65  2227 	.ascii "[OK] Temp sensor ready: "
+             6D 70 20 73 65 6E 73
+             6F 72 20 72 65 61 64
+             79 3A 20
+      000093 00                    2228 	.db 0x00
+                                   2229 	.area CSEG    (CODE)
+                                   2230 	.area CONST   (CODE)
+      000094                       2231 ___str_5:
+      000094 20 43                 2232 	.ascii " C"
+      000096 00                    2233 	.db 0x00
+                                   2234 	.area CSEG    (CODE)
+                                   2235 	.area CONST   (CODE)
+      000097                       2236 ___str_6:
+      000097 5B 57 41 52 4E 5D 20  2237 	.ascii "[WARN] Temp sensor not ready!"
+             54 65 6D 70 20 73 65
+             6E 73 6F 72 20 6E 6F
+             74 20 72 65 61 64 79
+             21
+      0000B4 00                    2238 	.db 0x00
+                                   2239 	.area CSEG    (CODE)
+                                   2240 	.area CONST   (CODE)
+      0000B5                       2241 ___str_7:
+      0000B5 5B 49 4E 49 54 5D 20  2242 	.ascii "[INIT] Fan monitor..."
+             46 61 6E 20 6D 6F 6E
+             69 74 6F 72 2E 2E 2E
+      0000CA 00                    2243 	.db 0x00
+                                   2244 	.area CSEG    (CODE)
+                                   2245 	.area CONST   (CODE)
+      0000CB                       2246 ___str_8:
+      0000CB 5B 49 4E 46 4F 5D 20  2247 	.ascii "[INFO] Initial voltage: "
+             49 6E 69 74 69 61 6C
+             20 76 6F 6C 74 61 67
+             65 3A 20
+      0000E3 00                    2248 	.db 0x00
+                                   2249 	.area CSEG    (CODE)
+                                   2250 	.area CONST   (CODE)
+      0000E4                       2251 ___str_9:
+      0000E4 20 56                 2252 	.ascii " V"
+      0000E6 00                    2253 	.db 0x00
+                                   2254 	.area CSEG    (CODE)
+                                   2255 	.area CONST   (CODE)
+      0000E7                       2256 ___str_10:
+      0000E7 5B 52 45 41 44 59 5D  2257 	.ascii "[READY] System started!"
+             20 53 79 73 74 65 6D
+             20 73 74 61 72 74 65
+             64 21
+      0000FE 00                    2258 	.db 0x00
+                                   2259 	.area CSEG    (CODE)
+                                   2260 	.area CONST   (CODE)
+      0000FF                       2261 ___str_11:
+      0000FF 5B 57 41 52 4E 5D 20  2262 	.ascii "[WARN] USB disconnected! Switching to AUTO mode"
+             55 53 42 20 64 69 73
+             63 6F 6E 6E 65 63 74
+             65 64 21 20 53 77 69
+             74 63 68 69 6E 67 20
+             74 6F 20 41 55 54 4F
+             20 6D 6F 64 65
+      00012E 00                    2263 	.db 0x00
+                                   2264 	.area CSEG    (CODE)
+                                   2265 	.area CONST   (CODE)
+      00012F                       2266 ___str_12:
+      00012F 5B 49 4E 46 4F 5D 20  2267 	.ascii "[INFO] Reset command received, unlocking output"
+             52 65 73 65 74 20 63
+             6F 6D 6D 61 6E 64 20
+             72 65 63 65 69 76 65
+             64 2C 20 75 6E 6C 6F
+             63 6B 69 6E 67 20 6F
+             75 74 70 75 74
+      00015E 00                    2268 	.db 0x00
+                                   2269 	.area CSEG    (CODE)
+                                   2270 	.area CONST   (CODE)
+      00015F                       2271 ___str_13:
+      00015F 5B 45 52 52 4F 52 5D  2272 	.ascii "[ERROR] Voltage abnormal! Output locked!"
+             20 56 6F 6C 74 61 67
+             65 20 61 62 6E 6F 72
+             6D 61 6C 21 20 4F 75
+             74 70 75 74 20 6C 6F
+             63 6B 65 64 21
+      000187 00                    2273 	.db 0x00
+                                   2274 	.area CSEG    (CODE)
+                                   2275 	.area CONST   (CODE)
+      000188                       2276 ___str_14:
+      000188 5B 45 52 52 4F 52 5D  2277 	.ascii "[ERROR] Please power cycle or send reset command"
+             20 50 6C 65 61 73 65
+             20 70 6F 77 65 72 20
+             63 79 63 6C 65 20 6F
+             72 20 73 65 6E 64 20
+             72 65 73 65 74 20 63
+             6F 6D 6D 61 6E 64
+      0001B8 00                    2278 	.db 0x00
+                                   2279 	.area CSEG    (CODE)
+                                   2280 	.area CONST   (CODE)
+      0001B9                       2281 ___str_15:
+      0001B9 5B 57 41 52 4E 5D 20  2282 	.ascii "[WARN] Fan stalled detected!"
+             46 61 6E 20 73 74 61
+             6C 6C 65 64 20 64 65
+             74 65 63 74 65 64 21
+      0001D5 00                    2283 	.db 0x00
+                                   2284 	.area CSEG    (CODE)
+                                   2285 	.area CONST   (CODE)
+      0001D6                       2286 ___str_16:
+      0001D6 5B 45 52 52 4F 52 5D  2287 	.ascii "[ERROR] Fan stall retry limit reached! Output locked."
+             20 46 61 6E 20 73 74
+             61 6C 6C 20 72 65 74
+             72 79 20 6C 69 6D 69
+             74 20 72 65 61 63 68
+             65 64 21 20 4F 75 74
+             70 75 74 20 6C 6F 63
+             6B 65 64 2E
+      00020B 00                    2288 	.db 0x00
+                                   2289 	.area CSEG    (CODE)
+                                   2290 	.area CONST   (CODE)
+      00020C                       2291 ___str_17:
+      00020C 5B 49 4E 46 4F 5D 20  2292 	.ascii "[INFO] Fan stall retry "
+             46 61 6E 20 73 74 61
+             6C 6C 20 72 65 74 72
+             79 20
+      000223 00                    2293 	.db 0x00
+                                   2294 	.area CSEG    (CODE)
+                                   2295 	.area CONST   (CODE)
+      000224                       2296 ___str_18:
+      000224 2E 2E 2E              2297 	.ascii "..."
+      000227 00                    2298 	.db 0x00
+                                   2299 	.area CSEG    (CODE)
+                                   2300 	.area CONST   (CODE)
+      000228                       2301 ___str_19:
+      000228 5B 4F 4B 5D 20 46 61  2302 	.ascii "[OK] Fan recovered!"
+             6E 20 72 65 63 6F 76
+             65 72 65 64 21
+      00023B 00                    2303 	.db 0x00
+                                   2304 	.area CSEG    (CODE)
+                                   2305 	.area CONST   (CODE)
+      00023C                       2306 ___str_20:
+      00023C 5B 57 41 52 4E 5D 20  2307 	.ascii "[WARN] Overheating detected!"
+             4F 76 65 72 68 65 61
+             74 69 6E 67 20 64 65
+             74 65 63 74 65 64 21
+      000258 00                    2308 	.db 0x00
+                                   2309 	.area CSEG    (CODE)
+                                   2310 	.area CONST   (CODE)
+      000259                       2311 ___str_21:
+      000259 5B 49 4E 46 4F 5D 20  2312 	.ascii "[INFO] Overheat: forced AUTO mode"
+             4F 76 65 72 68 65 61
+             74 3A 20 66 6F 72 63
+             65 64 20 41 55 54 4F
+             20 6D 6F 64 65
+      00027A 00                    2313 	.db 0x00
+                                   2314 	.area CSEG    (CODE)
+                                   2315 	.area CONST   (CODE)
+      00027B                       2316 ___str_22:
+      00027B 5B 4F 4B 5D 20 54 65  2317 	.ascii "[OK] Temperature recovered, external control allowed again"
+             6D 70 65 72 61 74 75
+             72 65 20 72 65 63 6F
+             76 65 72 65 64 2C 20
+             65 78 74 65 72 6E 61
+             6C 20 63 6F 6E 74 72
+             6F 6C 20 61 6C 6C 6F
+             77 65 64 20 61 67 61
+             69 6E
+      0002B5 00                    2318 	.db 0x00
+                                   2319 	.area CSEG    (CODE)
+                                   2320 	.area CONST   (CODE)
+      0002B6                       2321 ___str_23:
+      0002B6 54 65 6D 70 3A        2322 	.ascii "Temp:"
+      0002BB 00                    2323 	.db 0x00
+                                   2324 	.area CSEG    (CODE)
+                                   2325 	.area CONST   (CODE)
+      0002BC                       2326 ___str_24:
+      0002BC 43 20 7C 20 56 6F 6C  2327 	.ascii "C | Volt:"
+             74 3A
+      0002C5 00                    2328 	.db 0x00
+                                   2329 	.area CSEG    (CODE)
+                                   2330 	.area CONST   (CODE)
+      0002C6                       2331 ___str_25:
+      0002C6 56 20 7C 20 52 50 4D  2332 	.ascii "V | RPM:"
+             3A
+      0002CE 00                    2333 	.db 0x00
+                                   2334 	.area CSEG    (CODE)
+                                   2335 	.area CONST   (CODE)
+      0002CF                       2336 ___str_26:
+      0002CF 20 7C 20 4D 6F 64 65  2337 	.ascii " | Mode:"
+             3A
+      0002D7 00                    2338 	.db 0x00
+                                   2339 	.area CSEG    (CODE)
+                                   2340 	.area CONST   (CODE)
+      0002D8                       2341 ___str_27:
+      0002D8 41 55 54 4F           2342 	.ascii "AUTO"
+      0002DC 00                    2343 	.db 0x00
+                                   2344 	.area CSEG    (CODE)
+                                   2345 	.area CONST   (CODE)
+      0002DD                       2346 ___str_28:
+      0002DD 55 53 42              2347 	.ascii "USB"
+      0002E0 00                    2348 	.db 0x00
+                                   2349 	.area CSEG    (CODE)
+                                   2350 	.area XINIT   (CODE)
+      000000                       2351 __xinit__last_temp_update:
+      000000 00 00 00 00           2352 	.byte #0x00, #0x00, #0x00, #0x00	; 0
+      000004                       2353 __xinit__last_status_send:
+      000004 00 00 00 00           2354 	.byte #0x00, #0x00, #0x00, #0x00	; 0
+      000008                       2355 __xinit__last_voltage_check:
+      000008 00 00 00 00           2356 	.byte #0x00, #0x00, #0x00, #0x00	; 0
+      00000C                       2357 __xinit__stall_detect_time:
+      00000C 00 00 00 00           2358 	.byte #0x00, #0x00, #0x00, #0x00	; 0
+      000010                       2359 __xinit__stall_retry_count:
+      000010 00                    2360 	.db #0x00	; 0
+      000011                       2361 __xinit__usb_was_connected:
+      000011 00                    2362 	.db #0x00	;  0
+                                   2363 	.area CABS    (ABS,CODE)

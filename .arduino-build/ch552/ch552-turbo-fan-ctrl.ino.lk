@@ -1,0 +1,29 @@
+-muwx
+-i C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552/ch552-turbo-fan-ctrl.ino.elf
+-M
+-X 0x036c
+-C 0x3800
+-b HOME = 0x0000
+-b XSEG = 0x0094
+-b PSEG = 0x0094
+-b ISEG = 0x0000
+-b BSEG = 0x0000
+-k C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552
+-k C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\tools\sdcc\build.13407_4/lib/large_int_calc_stack_auto
+-l C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552/core\core.lib
+-l mcs51
+-l libsdcc
+-l liblong
+-l liblonglong
+-l libint
+-l libfloat
+C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552\sketch\ch552-turbo-fan-ctrl.ino.cpp.rel
+C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552\sketch\src\ds18b20_port.c.rel
+C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552\sketch\src\fan_monitor.c.rel
+C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552\sketch\src\main.c.rel
+C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552\sketch\src\serial_compat.c.rel
+C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552\sketch\src\temp_sensor.c.rel
+C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552\sketch\src\usb_protocol.c.rel
+C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\.arduino-build\ch552\sketch\src\voltage_control.c.rel
+
+-e

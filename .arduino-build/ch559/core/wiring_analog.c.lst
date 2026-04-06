@@ -1,0 +1,1073 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.2 #13407 (MINGW32)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module wiring_analog
+                                      6 	.optsdcc -mmcs51 --model-large
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _delayMicroseconds
+                                     12 	.globl _digitalWrite
+                                     13 	.globl _pinMode
+                                     14 	.globl _UIF_BUS_RST
+                                     15 	.globl _UIF_DETECT
+                                     16 	.globl _UIF_TRANSFER
+                                     17 	.globl _UIF_SUSPEND
+                                     18 	.globl _UIF_HST_SOF
+                                     19 	.globl _UIF_FIFO_OV
+                                     20 	.globl _U_SIE_FREE
+                                     21 	.globl _U_TOG_OK
+                                     22 	.globl _U_IS_NAK
+                                     23 	.globl _S0_R_FIFO0
+                                     24 	.globl _S0_R_FIFO1
+                                     25 	.globl _S0_T_FIFO
+                                     26 	.globl _S0_FREE
+                                     27 	.globl _S0_IF_BYTE
+                                     28 	.globl _S0_IF_FIRST
+                                     29 	.globl _S0_IF_OV
+                                     30 	.globl _S0_FST_ACT
+                                     31 	.globl _CP_RL2
+                                     32 	.globl _C_T2
+                                     33 	.globl _TR2
+                                     34 	.globl _EXEN2
+                                     35 	.globl _TCLK
+                                     36 	.globl _RCLK
+                                     37 	.globl _EXF2
+                                     38 	.globl _CAP1F
+                                     39 	.globl _TF2
+                                     40 	.globl _RI
+                                     41 	.globl _TI
+                                     42 	.globl _RB8
+                                     43 	.globl _TB8
+                                     44 	.globl _REN
+                                     45 	.globl _SM2
+                                     46 	.globl _SM1
+                                     47 	.globl _SM0
+                                     48 	.globl _IT0
+                                     49 	.globl _IE0
+                                     50 	.globl _IT1
+                                     51 	.globl _IE1
+                                     52 	.globl _TR0
+                                     53 	.globl _TF0
+                                     54 	.globl _TR1
+                                     55 	.globl _TF1
+                                     56 	.globl _P4_OUT_0
+                                     57 	.globl _P4_OUT_1
+                                     58 	.globl _P4_OUT_2
+                                     59 	.globl _P4_OUT_3
+                                     60 	.globl _P4_OUT_4
+                                     61 	.globl _P4_OUT_5
+                                     62 	.globl _P4_OUT_6
+                                     63 	.globl _P4_OUT_7
+                                     64 	.globl _RXD1_
+                                     65 	.globl _LED2
+                                     66 	.globl _CAP3_
+                                     67 	.globl _PWM3_
+                                     68 	.globl _PWM1_
+                                     69 	.globl _TXD1_
+                                     70 	.globl _TNOW_
+                                     71 	.globl _LED3
+                                     72 	.globl _PWM2_
+                                     73 	.globl _SCS_
+                                     74 	.globl _SCK_
+                                     75 	.globl _P3_0
+                                     76 	.globl _P3_1
+                                     77 	.globl _P3_2
+                                     78 	.globl _P3_3
+                                     79 	.globl _P3_4
+                                     80 	.globl _P3_5
+                                     81 	.globl _P3_6
+                                     82 	.globl _P3_7
+                                     83 	.globl _RXD
+                                     84 	.globl _TXD
+                                     85 	.globl _INT0
+                                     86 	.globl _LED0
+                                     87 	.globl _INT1
+                                     88 	.globl _LED1
+                                     89 	.globl _T0
+                                     90 	.globl _XCS0
+                                     91 	.globl _LEDC
+                                     92 	.globl _T1
+                                     93 	.globl _DA6
+                                     94 	.globl _WR
+                                     95 	.globl _RD
+                                     96 	.globl _P2_0
+                                     97 	.globl _P2_1
+                                     98 	.globl _P2_2
+                                     99 	.globl _P2_3
+                                    100 	.globl _P2_4
+                                    101 	.globl _P2_5
+                                    102 	.globl _P2_6
+                                    103 	.globl _P2_7
+                                    104 	.globl _MOSI1
+                                    105 	.globl _MISO1
+                                    106 	.globl _SCK1
+                                    107 	.globl _PWM1
+                                    108 	.globl _CAP2_
+                                    109 	.globl _T2EX_
+                                    110 	.globl _PWM2
+                                    111 	.globl _TNOW
+                                    112 	.globl _RXD1
+                                    113 	.globl _DA7
+                                    114 	.globl _TXD1
+                                    115 	.globl _P1_0
+                                    116 	.globl _P1_1
+                                    117 	.globl _P1_2
+                                    118 	.globl _P1_3
+                                    119 	.globl _P1_4
+                                    120 	.globl _P1_5
+                                    121 	.globl _P1_6
+                                    122 	.globl _P1_7
+                                    123 	.globl _CAP1
+                                    124 	.globl _T2
+                                    125 	.globl _CAP2
+                                    126 	.globl _T2EX
+                                    127 	.globl _CAP3
+                                    128 	.globl _PWM3
+                                    129 	.globl _SCS
+                                    130 	.globl _MOSI
+                                    131 	.globl _MISO
+                                    132 	.globl _SCK
+                                    133 	.globl _AIN0
+                                    134 	.globl _AIN1
+                                    135 	.globl _AIN2
+                                    136 	.globl _AIN3
+                                    137 	.globl _AIN4
+                                    138 	.globl _AIN5
+                                    139 	.globl _AIN6
+                                    140 	.globl _AIN7
+                                    141 	.globl _P0_0
+                                    142 	.globl _P0_1
+                                    143 	.globl _P0_2
+                                    144 	.globl _P0_3
+                                    145 	.globl _P0_4
+                                    146 	.globl _P0_5
+                                    147 	.globl _P0_6
+                                    148 	.globl _P0_7
+                                    149 	.globl _UDTR
+                                    150 	.globl _URTS
+                                    151 	.globl _RXD_
+                                    152 	.globl _TXD_
+                                    153 	.globl _UCTS
+                                    154 	.globl _UDSR
+                                    155 	.globl _URI
+                                    156 	.globl _UDCD
+                                    157 	.globl _IE_SPI0
+                                    158 	.globl _IE_TMR3
+                                    159 	.globl _IE_USB
+                                    160 	.globl _IE_ADC
+                                    161 	.globl _IE_UART1
+                                    162 	.globl _IE_PWM1
+                                    163 	.globl _IE_GPIO
+                                    164 	.globl _IE_WDOG
+                                    165 	.globl _PX0
+                                    166 	.globl _PT0
+                                    167 	.globl _PX1
+                                    168 	.globl _PT1
+                                    169 	.globl _PS
+                                    170 	.globl _PT2
+                                    171 	.globl _PL_FLAG
+                                    172 	.globl _PH_FLAG
+                                    173 	.globl _EX0
+                                    174 	.globl _ET0
+                                    175 	.globl _EX1
+                                    176 	.globl _ET1
+                                    177 	.globl _ES
+                                    178 	.globl _ET2
+                                    179 	.globl _E_DIS
+                                    180 	.globl _EA
+                                    181 	.globl _P
+                                    182 	.globl _F1
+                                    183 	.globl _OV
+                                    184 	.globl _RS0
+                                    185 	.globl _RS1
+                                    186 	.globl _F0
+                                    187 	.globl _AC
+                                    188 	.globl _CY
+                                    189 	.globl _USB_DMA_AH
+                                    190 	.globl _USB_DMA_AL
+                                    191 	.globl _USB_DMA
+                                    192 	.globl _UHUB1_CTRL
+                                    193 	.globl _UDEV_CTRL
+                                    194 	.globl _USB_DEV_AD
+                                    195 	.globl _USB_CTRL
+                                    196 	.globl _USB_INT_EN
+                                    197 	.globl _UEP4_T_LEN
+                                    198 	.globl _UEP4_CTRL
+                                    199 	.globl _UEP0_T_LEN
+                                    200 	.globl _UEP0_CTRL
+                                    201 	.globl _USB_HUB_ST
+                                    202 	.globl _USB_MIS_ST
+                                    203 	.globl _USB_INT_ST
+                                    204 	.globl _USB_INT_FG
+                                    205 	.globl _UEP3_T_LEN
+                                    206 	.globl _UEP3_CTRL
+                                    207 	.globl _UEP2_T_LEN
+                                    208 	.globl _UEP2_CTRL
+                                    209 	.globl _UEP1_T_LEN
+                                    210 	.globl _UEP1_CTRL
+                                    211 	.globl _USB_RX_LEN
+                                    212 	.globl _ADC_EX_SW
+                                    213 	.globl _ADC_SETUP
+                                    214 	.globl _ADC_FIFO_H
+                                    215 	.globl _ADC_FIFO_L
+                                    216 	.globl _ADC_FIFO
+                                    217 	.globl _ADC_CHANN
+                                    218 	.globl _ADC_CTRL
+                                    219 	.globl _ADC_STAT
+                                    220 	.globl _ADC_CK_SE
+                                    221 	.globl _ADC_DMA_CN
+                                    222 	.globl _ADC_DMA_AH
+                                    223 	.globl _ADC_DMA_AL
+                                    224 	.globl _ADC_DMA
+                                    225 	.globl _SER1_ADDR
+                                    226 	.globl _SER1_MSR
+                                    227 	.globl _SER1_LSR
+                                    228 	.globl _SER1_MCR
+                                    229 	.globl _SER1_LCR
+                                    230 	.globl _SER1_IIR
+                                    231 	.globl _SER1_IER
+                                    232 	.globl _SER1_FIFO
+                                    233 	.globl _SPI1_CK_SE
+                                    234 	.globl _SPI1_CTRL
+                                    235 	.globl _SPI1_DATA
+                                    236 	.globl _SPI1_STAT
+                                    237 	.globl _SPI0_SETUP
+                                    238 	.globl _SPI0_CK_SE
+                                    239 	.globl _SPI0_CTRL
+                                    240 	.globl _SPI0_DATA
+                                    241 	.globl _SPI0_STAT
+                                    242 	.globl _PWM_CYCLE
+                                    243 	.globl _PWM_CK_SE
+                                    244 	.globl _PWM_CTRL
+                                    245 	.globl _PWM_DATA
+                                    246 	.globl _PWM_DATA2
+                                    247 	.globl _T3_FIFO_H
+                                    248 	.globl _T3_FIFO_L
+                                    249 	.globl _T3_FIFO
+                                    250 	.globl _T3_DMA_AH
+                                    251 	.globl _T3_DMA_AL
+                                    252 	.globl _T3_DMA
+                                    253 	.globl _T3_DMA_CN
+                                    254 	.globl _T3_CTRL
+                                    255 	.globl _T3_STAT
+                                    256 	.globl _T3_END_H
+                                    257 	.globl _T3_END_L
+                                    258 	.globl _T3_END
+                                    259 	.globl _T3_COUNT_H
+                                    260 	.globl _T3_COUNT_L
+                                    261 	.globl _T3_COUNT
+                                    262 	.globl _T3_SETUP
+                                    263 	.globl _TH2
+                                    264 	.globl _TL2
+                                    265 	.globl _T2COUNT
+                                    266 	.globl _RCAP2H
+                                    267 	.globl _RCAP2L
+                                    268 	.globl _RCAP2
+                                    269 	.globl _T2MOD
+                                    270 	.globl _T2CON
+                                    271 	.globl _SBUF
+                                    272 	.globl _SCON
+                                    273 	.globl _TH1
+                                    274 	.globl _TH0
+                                    275 	.globl _TL1
+                                    276 	.globl _TL0
+                                    277 	.globl _TMOD
+                                    278 	.globl _TCON
+                                    279 	.globl _XBUS_SPEED
+                                    280 	.globl _XBUS_AUX
+                                    281 	.globl _PIN_FUNC
+                                    282 	.globl _PORT_CFG
+                                    283 	.globl _P5_IN
+                                    284 	.globl _P4_PU
+                                    285 	.globl _P4_DIR
+                                    286 	.globl _P4_IN
+                                    287 	.globl _P4_OUT
+                                    288 	.globl _P3_PU
+                                    289 	.globl _P3_DIR
+                                    290 	.globl _P3
+                                    291 	.globl _P2_PU
+                                    292 	.globl _P2_DIR
+                                    293 	.globl _P2
+                                    294 	.globl _P1_PU
+                                    295 	.globl _P1_DIR
+                                    296 	.globl _P1_IE
+                                    297 	.globl _P1
+                                    298 	.globl _P0_PU
+                                    299 	.globl _P0_DIR
+                                    300 	.globl _P0
+                                    301 	.globl _ROM_CTRL
+                                    302 	.globl _ROM_DATA_H
+                                    303 	.globl _ROM_DATA_L
+                                    304 	.globl _ROM_DATA
+                                    305 	.globl _ROM_ADDR_H
+                                    306 	.globl _ROM_ADDR_L
+                                    307 	.globl _ROM_ADDR
+                                    308 	.globl _GPIO_IE
+                                    309 	.globl _IP_EX
+                                    310 	.globl _IE_EX
+                                    311 	.globl _IP
+                                    312 	.globl _IE
+                                    313 	.globl _WDOG_COUNT
+                                    314 	.globl _RESET_KEEP
+                                    315 	.globl _WAKE_CTRL
+                                    316 	.globl _SLEEP_CTRL
+                                    317 	.globl _CLOCK_CFG
+                                    318 	.globl _PLL_CFG
+                                    319 	.globl _PCON
+                                    320 	.globl _GLOBAL_CFG
+                                    321 	.globl _SAFE_MOD
+                                    322 	.globl _DPH
+                                    323 	.globl _DPL
+                                    324 	.globl _SP
+                                    325 	.globl _B
+                                    326 	.globl _ACC
+                                    327 	.globl _PSW
+                                    328 	.globl _analogWrite_PARM_2
+                                    329 	.globl _LED_DMA_XL
+                                    330 	.globl _LED_DMA_XH
+                                    331 	.globl _LED_DMA_CN
+                                    332 	.globl _LED_DMA_AL
+                                    333 	.globl _LED_DMA_AH
+                                    334 	.globl _LED_CK_SE
+                                    335 	.globl _LED_DATA
+                                    336 	.globl _LED_CTRL
+                                    337 	.globl _LED_STAT
+                                    338 	.globl _UEP3_DMA_L
+                                    339 	.globl _UEP3_DMA_H
+                                    340 	.globl _UEP2_DMA_L
+                                    341 	.globl _UEP2_DMA_H
+                                    342 	.globl _UEP1_DMA_L
+                                    343 	.globl _UEP1_DMA_H
+                                    344 	.globl _UEP0_DMA_L
+                                    345 	.globl _UEP0_DMA_H
+                                    346 	.globl _UEP2_3_MOD
+                                    347 	.globl _UEP4_1_MOD
+                                    348 	.globl _pLED_DMA_XL
+                                    349 	.globl _pLED_DMA_XH
+                                    350 	.globl _pLED_DMA_CN
+                                    351 	.globl _pLED_DMA_AL
+                                    352 	.globl _pLED_DMA_AH
+                                    353 	.globl _pLED_CK_SE
+                                    354 	.globl _pLED_DATA
+                                    355 	.globl _pLED_CTRL
+                                    356 	.globl _pLED_STAT
+                                    357 	.globl _pUEP3_DMA_L
+                                    358 	.globl _pUEP3_DMA_H
+                                    359 	.globl _pUEP2_DMA_L
+                                    360 	.globl _pUEP2_DMA_H
+                                    361 	.globl _pUEP1_DMA_L
+                                    362 	.globl _pUEP1_DMA_H
+                                    363 	.globl _pUEP0_DMA_L
+                                    364 	.globl _pUEP0_DMA_H
+                                    365 	.globl _pUEP2_3_MOD
+                                    366 	.globl _pUEP4_1_MOD
+                                    367 	.globl _analogRead
+                                    368 	.globl _analogWrite
+                                    369 ;--------------------------------------------------------
+                                    370 ; special function registers
+                                    371 ;--------------------------------------------------------
+                                    372 	.area RSEG    (ABS,DATA)
+      000000                        373 	.org 0x0000
+                           0000D0   374 _PSW	=	0x00d0
+                           0000E0   375 _ACC	=	0x00e0
+                           0000F0   376 _B	=	0x00f0
+                           000081   377 _SP	=	0x0081
+                           000082   378 _DPL	=	0x0082
+                           000083   379 _DPH	=	0x0083
+                           0000A1   380 _SAFE_MOD	=	0x00a1
+                           0000B1   381 _GLOBAL_CFG	=	0x00b1
+                           000087   382 _PCON	=	0x0087
+                           0000B2   383 _PLL_CFG	=	0x00b2
+                           0000B3   384 _CLOCK_CFG	=	0x00b3
+                           0000EA   385 _SLEEP_CTRL	=	0x00ea
+                           0000EB   386 _WAKE_CTRL	=	0x00eb
+                           0000FE   387 _RESET_KEEP	=	0x00fe
+                           0000FF   388 _WDOG_COUNT	=	0x00ff
+                           0000A8   389 _IE	=	0x00a8
+                           0000B8   390 _IP	=	0x00b8
+                           0000E8   391 _IE_EX	=	0x00e8
+                           0000E9   392 _IP_EX	=	0x00e9
+                           0000CF   393 _GPIO_IE	=	0x00cf
+                           008584   394 _ROM_ADDR	=	0x8584
+                           000084   395 _ROM_ADDR_L	=	0x0084
+                           000085   396 _ROM_ADDR_H	=	0x0085
+                           008F8E   397 _ROM_DATA	=	0x8f8e
+                           00008E   398 _ROM_DATA_L	=	0x008e
+                           00008F   399 _ROM_DATA_H	=	0x008f
+                           000086   400 _ROM_CTRL	=	0x0086
+                           000080   401 _P0	=	0x0080
+                           0000C4   402 _P0_DIR	=	0x00c4
+                           0000C5   403 _P0_PU	=	0x00c5
+                           000090   404 _P1	=	0x0090
+                           0000B9   405 _P1_IE	=	0x00b9
+                           0000BA   406 _P1_DIR	=	0x00ba
+                           0000BB   407 _P1_PU	=	0x00bb
+                           0000A0   408 _P2	=	0x00a0
+                           0000BC   409 _P2_DIR	=	0x00bc
+                           0000BD   410 _P2_PU	=	0x00bd
+                           0000B0   411 _P3	=	0x00b0
+                           0000BE   412 _P3_DIR	=	0x00be
+                           0000BF   413 _P3_PU	=	0x00bf
+                           0000C0   414 _P4_OUT	=	0x00c0
+                           0000C1   415 _P4_IN	=	0x00c1
+                           0000C2   416 _P4_DIR	=	0x00c2
+                           0000C3   417 _P4_PU	=	0x00c3
+                           0000C7   418 _P5_IN	=	0x00c7
+                           0000C6   419 _PORT_CFG	=	0x00c6
+                           0000CE   420 _PIN_FUNC	=	0x00ce
+                           0000A2   421 _XBUS_AUX	=	0x00a2
+                           0000FD   422 _XBUS_SPEED	=	0x00fd
+                           000088   423 _TCON	=	0x0088
+                           000089   424 _TMOD	=	0x0089
+                           00008A   425 _TL0	=	0x008a
+                           00008B   426 _TL1	=	0x008b
+                           00008C   427 _TH0	=	0x008c
+                           00008D   428 _TH1	=	0x008d
+                           000098   429 _SCON	=	0x0098
+                           000099   430 _SBUF	=	0x0099
+                           0000C8   431 _T2CON	=	0x00c8
+                           0000C9   432 _T2MOD	=	0x00c9
+                           00CBCA   433 _RCAP2	=	0xcbca
+                           0000CA   434 _RCAP2L	=	0x00ca
+                           0000CB   435 _RCAP2H	=	0x00cb
+                           00CDCC   436 _T2COUNT	=	0xcdcc
+                           0000CC   437 _TL2	=	0x00cc
+                           0000CD   438 _TH2	=	0x00cd
+                           0000A3   439 _T3_SETUP	=	0x00a3
+                           00A5A4   440 _T3_COUNT	=	0xa5a4
+                           0000A4   441 _T3_COUNT_L	=	0x00a4
+                           0000A5   442 _T3_COUNT_H	=	0x00a5
+                           00A7A6   443 _T3_END	=	0xa7a6
+                           0000A6   444 _T3_END_L	=	0x00a6
+                           0000A7   445 _T3_END_H	=	0x00a7
+                           0000A9   446 _T3_STAT	=	0x00a9
+                           0000AA   447 _T3_CTRL	=	0x00aa
+                           0000AB   448 _T3_DMA_CN	=	0x00ab
+                           00ADAC   449 _T3_DMA	=	0xadac
+                           0000AC   450 _T3_DMA_AL	=	0x00ac
+                           0000AD   451 _T3_DMA_AH	=	0x00ad
+                           00AFAE   452 _T3_FIFO	=	0xafae
+                           0000AE   453 _T3_FIFO_L	=	0x00ae
+                           0000AF   454 _T3_FIFO_H	=	0x00af
+                           00009B   455 _PWM_DATA2	=	0x009b
+                           00009C   456 _PWM_DATA	=	0x009c
+                           00009D   457 _PWM_CTRL	=	0x009d
+                           00009E   458 _PWM_CK_SE	=	0x009e
+                           00009F   459 _PWM_CYCLE	=	0x009f
+                           0000F8   460 _SPI0_STAT	=	0x00f8
+                           0000F9   461 _SPI0_DATA	=	0x00f9
+                           0000FA   462 _SPI0_CTRL	=	0x00fa
+                           0000FB   463 _SPI0_CK_SE	=	0x00fb
+                           0000FC   464 _SPI0_SETUP	=	0x00fc
+                           0000B4   465 _SPI1_STAT	=	0x00b4
+                           0000B5   466 _SPI1_DATA	=	0x00b5
+                           0000B6   467 _SPI1_CTRL	=	0x00b6
+                           0000B7   468 _SPI1_CK_SE	=	0x00b7
+                           00009A   469 _SER1_FIFO	=	0x009a
+                           000091   470 _SER1_IER	=	0x0091
+                           000092   471 _SER1_IIR	=	0x0092
+                           000093   472 _SER1_LCR	=	0x0093
+                           000094   473 _SER1_MCR	=	0x0094
+                           000095   474 _SER1_LSR	=	0x0095
+                           000096   475 _SER1_MSR	=	0x0096
+                           000097   476 _SER1_ADDR	=	0x0097
+                           00EDEC   477 _ADC_DMA	=	0xedec
+                           0000EC   478 _ADC_DMA_AL	=	0x00ec
+                           0000ED   479 _ADC_DMA_AH	=	0x00ed
+                           0000EE   480 _ADC_DMA_CN	=	0x00ee
+                           0000EF   481 _ADC_CK_SE	=	0x00ef
+                           0000F1   482 _ADC_STAT	=	0x00f1
+                           0000F2   483 _ADC_CTRL	=	0x00f2
+                           0000F3   484 _ADC_CHANN	=	0x00f3
+                           00F5F4   485 _ADC_FIFO	=	0xf5f4
+                           0000F4   486 _ADC_FIFO_L	=	0x00f4
+                           0000F5   487 _ADC_FIFO_H	=	0x00f5
+                           0000F6   488 _ADC_SETUP	=	0x00f6
+                           0000F7   489 _ADC_EX_SW	=	0x00f7
+                           0000D1   490 _USB_RX_LEN	=	0x00d1
+                           0000D2   491 _UEP1_CTRL	=	0x00d2
+                           0000D3   492 _UEP1_T_LEN	=	0x00d3
+                           0000D4   493 _UEP2_CTRL	=	0x00d4
+                           0000D5   494 _UEP2_T_LEN	=	0x00d5
+                           0000D6   495 _UEP3_CTRL	=	0x00d6
+                           0000D7   496 _UEP3_T_LEN	=	0x00d7
+                           0000D8   497 _USB_INT_FG	=	0x00d8
+                           0000D9   498 _USB_INT_ST	=	0x00d9
+                           0000DA   499 _USB_MIS_ST	=	0x00da
+                           0000DB   500 _USB_HUB_ST	=	0x00db
+                           0000DC   501 _UEP0_CTRL	=	0x00dc
+                           0000DD   502 _UEP0_T_LEN	=	0x00dd
+                           0000DE   503 _UEP4_CTRL	=	0x00de
+                           0000DF   504 _UEP4_T_LEN	=	0x00df
+                           0000E1   505 _USB_INT_EN	=	0x00e1
+                           0000E2   506 _USB_CTRL	=	0x00e2
+                           0000E3   507 _USB_DEV_AD	=	0x00e3
+                           0000E4   508 _UDEV_CTRL	=	0x00e4
+                           0000E5   509 _UHUB1_CTRL	=	0x00e5
+                           00E7E6   510 _USB_DMA	=	0xe7e6
+                           0000E6   511 _USB_DMA_AL	=	0x00e6
+                           0000E7   512 _USB_DMA_AH	=	0x00e7
+                                    513 ;--------------------------------------------------------
+                                    514 ; special function bits
+                                    515 ;--------------------------------------------------------
+                                    516 	.area RSEG    (ABS,DATA)
+      000000                        517 	.org 0x0000
+                           0000D7   518 _CY	=	0x00d7
+                           0000D6   519 _AC	=	0x00d6
+                           0000D5   520 _F0	=	0x00d5
+                           0000D4   521 _RS1	=	0x00d4
+                           0000D3   522 _RS0	=	0x00d3
+                           0000D2   523 _OV	=	0x00d2
+                           0000D1   524 _F1	=	0x00d1
+                           0000D0   525 _P	=	0x00d0
+                           0000AF   526 _EA	=	0x00af
+                           0000AE   527 _E_DIS	=	0x00ae
+                           0000AD   528 _ET2	=	0x00ad
+                           0000AC   529 _ES	=	0x00ac
+                           0000AB   530 _ET1	=	0x00ab
+                           0000AA   531 _EX1	=	0x00aa
+                           0000A9   532 _ET0	=	0x00a9
+                           0000A8   533 _EX0	=	0x00a8
+                           0000BF   534 _PH_FLAG	=	0x00bf
+                           0000BE   535 _PL_FLAG	=	0x00be
+                           0000BD   536 _PT2	=	0x00bd
+                           0000BC   537 _PS	=	0x00bc
+                           0000BB   538 _PT1	=	0x00bb
+                           0000BA   539 _PX1	=	0x00ba
+                           0000B9   540 _PT0	=	0x00b9
+                           0000B8   541 _PX0	=	0x00b8
+                           0000EF   542 _IE_WDOG	=	0x00ef
+                           0000EE   543 _IE_GPIO	=	0x00ee
+                           0000ED   544 _IE_PWM1	=	0x00ed
+                           0000EC   545 _IE_UART1	=	0x00ec
+                           0000EB   546 _IE_ADC	=	0x00eb
+                           0000EA   547 _IE_USB	=	0x00ea
+                           0000E9   548 _IE_TMR3	=	0x00e9
+                           0000E8   549 _IE_SPI0	=	0x00e8
+                           000087   550 _UDCD	=	0x0087
+                           000086   551 _URI	=	0x0086
+                           000085   552 _UDSR	=	0x0085
+                           000084   553 _UCTS	=	0x0084
+                           000083   554 _TXD_	=	0x0083
+                           000082   555 _RXD_	=	0x0082
+                           000081   556 _URTS	=	0x0081
+                           000080   557 _UDTR	=	0x0080
+                           000087   558 _P0_7	=	0x0087
+                           000086   559 _P0_6	=	0x0086
+                           000085   560 _P0_5	=	0x0085
+                           000084   561 _P0_4	=	0x0084
+                           000083   562 _P0_3	=	0x0083
+                           000082   563 _P0_2	=	0x0082
+                           000081   564 _P0_1	=	0x0081
+                           000080   565 _P0_0	=	0x0080
+                           000097   566 _AIN7	=	0x0097
+                           000096   567 _AIN6	=	0x0096
+                           000095   568 _AIN5	=	0x0095
+                           000094   569 _AIN4	=	0x0094
+                           000093   570 _AIN3	=	0x0093
+                           000092   571 _AIN2	=	0x0092
+                           000091   572 _AIN1	=	0x0091
+                           000090   573 _AIN0	=	0x0090
+                           000097   574 _SCK	=	0x0097
+                           000096   575 _MISO	=	0x0096
+                           000095   576 _MOSI	=	0x0095
+                           000094   577 _SCS	=	0x0094
+                           000092   578 _PWM3	=	0x0092
+                           000092   579 _CAP3	=	0x0092
+                           000091   580 _T2EX	=	0x0091
+                           000091   581 _CAP2	=	0x0091
+                           000090   582 _T2	=	0x0090
+                           000090   583 _CAP1	=	0x0090
+                           000097   584 _P1_7	=	0x0097
+                           000096   585 _P1_6	=	0x0096
+                           000095   586 _P1_5	=	0x0095
+                           000094   587 _P1_4	=	0x0094
+                           000093   588 _P1_3	=	0x0093
+                           000092   589 _P1_2	=	0x0092
+                           000091   590 _P1_1	=	0x0091
+                           000090   591 _P1_0	=	0x0090
+                           0000A7   592 _TXD1	=	0x00a7
+                           0000A7   593 _DA7	=	0x00a7
+                           0000A6   594 _RXD1	=	0x00a6
+                           0000A5   595 _TNOW	=	0x00a5
+                           0000A5   596 _PWM2	=	0x00a5
+                           0000A5   597 _T2EX_	=	0x00a5
+                           0000A5   598 _CAP2_	=	0x00a5
+                           0000A4   599 _PWM1	=	0x00a4
+                           0000A3   600 _SCK1	=	0x00a3
+                           0000A2   601 _MISO1	=	0x00a2
+                           0000A1   602 _MOSI1	=	0x00a1
+                           0000A7   603 _P2_7	=	0x00a7
+                           0000A6   604 _P2_6	=	0x00a6
+                           0000A5   605 _P2_5	=	0x00a5
+                           0000A4   606 _P2_4	=	0x00a4
+                           0000A3   607 _P2_3	=	0x00a3
+                           0000A2   608 _P2_2	=	0x00a2
+                           0000A1   609 _P2_1	=	0x00a1
+                           0000A0   610 _P2_0	=	0x00a0
+                           0000B7   611 _RD	=	0x00b7
+                           0000B6   612 _WR	=	0x00b6
+                           0000B5   613 _DA6	=	0x00b5
+                           0000B5   614 _T1	=	0x00b5
+                           0000B4   615 _LEDC	=	0x00b4
+                           0000B4   616 _XCS0	=	0x00b4
+                           0000B4   617 _T0	=	0x00b4
+                           0000B3   618 _LED1	=	0x00b3
+                           0000B3   619 _INT1	=	0x00b3
+                           0000B2   620 _LED0	=	0x00b2
+                           0000B2   621 _INT0	=	0x00b2
+                           0000B1   622 _TXD	=	0x00b1
+                           0000B0   623 _RXD	=	0x00b0
+                           0000B7   624 _P3_7	=	0x00b7
+                           0000B6   625 _P3_6	=	0x00b6
+                           0000B5   626 _P3_5	=	0x00b5
+                           0000B4   627 _P3_4	=	0x00b4
+                           0000B3   628 _P3_3	=	0x00b3
+                           0000B2   629 _P3_2	=	0x00b2
+                           0000B1   630 _P3_1	=	0x00b1
+                           0000B0   631 _P3_0	=	0x00b0
+                           0000C7   632 _SCK_	=	0x00c7
+                           0000C6   633 _SCS_	=	0x00c6
+                           0000C5   634 _PWM2_	=	0x00c5
+                           0000C4   635 _LED3	=	0x00c4
+                           0000C4   636 _TNOW_	=	0x00c4
+                           0000C4   637 _TXD1_	=	0x00c4
+                           0000C3   638 _PWM1_	=	0x00c3
+                           0000C2   639 _PWM3_	=	0x00c2
+                           0000C2   640 _CAP3_	=	0x00c2
+                           0000C0   641 _LED2	=	0x00c0
+                           0000C0   642 _RXD1_	=	0x00c0
+                           0000C7   643 _P4_OUT_7	=	0x00c7
+                           0000C6   644 _P4_OUT_6	=	0x00c6
+                           0000C5   645 _P4_OUT_5	=	0x00c5
+                           0000C4   646 _P4_OUT_4	=	0x00c4
+                           0000C3   647 _P4_OUT_3	=	0x00c3
+                           0000C2   648 _P4_OUT_2	=	0x00c2
+                           0000C1   649 _P4_OUT_1	=	0x00c1
+                           0000C0   650 _P4_OUT_0	=	0x00c0
+                           00008F   651 _TF1	=	0x008f
+                           00008E   652 _TR1	=	0x008e
+                           00008D   653 _TF0	=	0x008d
+                           00008C   654 _TR0	=	0x008c
+                           00008B   655 _IE1	=	0x008b
+                           00008A   656 _IT1	=	0x008a
+                           000089   657 _IE0	=	0x0089
+                           000088   658 _IT0	=	0x0088
+                           00009F   659 _SM0	=	0x009f
+                           00009E   660 _SM1	=	0x009e
+                           00009D   661 _SM2	=	0x009d
+                           00009C   662 _REN	=	0x009c
+                           00009B   663 _TB8	=	0x009b
+                           00009A   664 _RB8	=	0x009a
+                           000099   665 _TI	=	0x0099
+                           000098   666 _RI	=	0x0098
+                           0000CF   667 _TF2	=	0x00cf
+                           0000CF   668 _CAP1F	=	0x00cf
+                           0000CE   669 _EXF2	=	0x00ce
+                           0000CD   670 _RCLK	=	0x00cd
+                           0000CC   671 _TCLK	=	0x00cc
+                           0000CB   672 _EXEN2	=	0x00cb
+                           0000CA   673 _TR2	=	0x00ca
+                           0000C9   674 _C_T2	=	0x00c9
+                           0000C8   675 _CP_RL2	=	0x00c8
+                           0000FF   676 _S0_FST_ACT	=	0x00ff
+                           0000FE   677 _S0_IF_OV	=	0x00fe
+                           0000FD   678 _S0_IF_FIRST	=	0x00fd
+                           0000FC   679 _S0_IF_BYTE	=	0x00fc
+                           0000FB   680 _S0_FREE	=	0x00fb
+                           0000FA   681 _S0_T_FIFO	=	0x00fa
+                           0000F9   682 _S0_R_FIFO1	=	0x00f9
+                           0000F8   683 _S0_R_FIFO0	=	0x00f8
+                           0000DF   684 _U_IS_NAK	=	0x00df
+                           0000DE   685 _U_TOG_OK	=	0x00de
+                           0000DD   686 _U_SIE_FREE	=	0x00dd
+                           0000DC   687 _UIF_FIFO_OV	=	0x00dc
+                           0000DB   688 _UIF_HST_SOF	=	0x00db
+                           0000DA   689 _UIF_SUSPEND	=	0x00da
+                           0000D9   690 _UIF_TRANSFER	=	0x00d9
+                           0000D8   691 _UIF_DETECT	=	0x00d8
+                           0000D8   692 _UIF_BUS_RST	=	0x00d8
+                                    693 ;--------------------------------------------------------
+                                    694 ; overlayable register banks
+                                    695 ;--------------------------------------------------------
+                                    696 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        697 	.ds 8
+                                    698 ;--------------------------------------------------------
+                                    699 ; internal ram data
+                                    700 ;--------------------------------------------------------
+                                    701 	.area DSEG    (DATA)
+                                    702 ;--------------------------------------------------------
+                                    703 ; overlayable items in internal ram
+                                    704 ;--------------------------------------------------------
+                                    705 ;--------------------------------------------------------
+                                    706 ; indirectly addressable internal ram data
+                                    707 ;--------------------------------------------------------
+                                    708 	.area ISEG    (DATA)
+                                    709 ;--------------------------------------------------------
+                                    710 ; absolute internal ram data
+                                    711 ;--------------------------------------------------------
+                                    712 	.area IABS    (ABS,DATA)
+                                    713 	.area IABS    (ABS,DATA)
+                                    714 ;--------------------------------------------------------
+                                    715 ; bit data
+                                    716 ;--------------------------------------------------------
+                                    717 	.area BSEG    (BIT)
+                                    718 ;--------------------------------------------------------
+                                    719 ; paged external ram data
+                                    720 ;--------------------------------------------------------
+                                    721 	.area PSEG    (PAG,XDATA)
+                           002546   722 _pUEP4_1_MOD	=	0x2546
+                           002547   723 _pUEP2_3_MOD	=	0x2547
+                           002548   724 _pUEP0_DMA_H	=	0x2548
+                           002549   725 _pUEP0_DMA_L	=	0x2549
+                           00254A   726 _pUEP1_DMA_H	=	0x254a
+                           00254B   727 _pUEP1_DMA_L	=	0x254b
+                           00254C   728 _pUEP2_DMA_H	=	0x254c
+                           00254D   729 _pUEP2_DMA_L	=	0x254d
+                           00254E   730 _pUEP3_DMA_H	=	0x254e
+                           00254F   731 _pUEP3_DMA_L	=	0x254f
+                           002980   732 _pLED_STAT	=	0x2980
+                           002981   733 _pLED_CTRL	=	0x2981
+                           002982   734 _pLED_DATA	=	0x2982
+                           002983   735 _pLED_CK_SE	=	0x2983
+                           002984   736 _pLED_DMA_AH	=	0x2984
+                           002985   737 _pLED_DMA_AL	=	0x2985
+                           002986   738 _pLED_DMA_CN	=	0x2986
+                           002988   739 _pLED_DMA_XH	=	0x2988
+                           002989   740 _pLED_DMA_XL	=	0x2989
+                                    741 ;--------------------------------------------------------
+                                    742 ; uninitialized external ram data
+                                    743 ;--------------------------------------------------------
+                                    744 	.area XSEG    (XDATA)
+                           002446   745 _UEP4_1_MOD	=	0x2446
+                           002447   746 _UEP2_3_MOD	=	0x2447
+                           002448   747 _UEP0_DMA_H	=	0x2448
+                           002449   748 _UEP0_DMA_L	=	0x2449
+                           00244A   749 _UEP1_DMA_H	=	0x244a
+                           00244B   750 _UEP1_DMA_L	=	0x244b
+                           00244C   751 _UEP2_DMA_H	=	0x244c
+                           00244D   752 _UEP2_DMA_L	=	0x244d
+                           00244E   753 _UEP3_DMA_H	=	0x244e
+                           00244F   754 _UEP3_DMA_L	=	0x244f
+                           002880   755 _LED_STAT	=	0x2880
+                           002881   756 _LED_CTRL	=	0x2881
+                           002882   757 _LED_DATA	=	0x2882
+                           002883   758 _LED_CK_SE	=	0x2883
+                           002884   759 _LED_DMA_AH	=	0x2884
+                           002885   760 _LED_DMA_AL	=	0x2885
+                           002886   761 _LED_DMA_CN	=	0x2886
+                           002888   762 _LED_DMA_XH	=	0x2888
+                           002889   763 _LED_DMA_XL	=	0x2889
+      000000                        764 _analogWrite_PARM_2:
+      000000                        765 	.ds 2
+                                    766 ;--------------------------------------------------------
+                                    767 ; absolute external ram data
+                                    768 ;--------------------------------------------------------
+                                    769 	.area XABS    (ABS,XDATA)
+                                    770 ;--------------------------------------------------------
+                                    771 ; initialized external ram data
+                                    772 ;--------------------------------------------------------
+                                    773 	.area XISEG   (XDATA)
+                                    774 	.area HOME    (CODE)
+                                    775 	.area GSINIT0 (CODE)
+                                    776 	.area GSINIT1 (CODE)
+                                    777 	.area GSINIT2 (CODE)
+                                    778 	.area GSINIT3 (CODE)
+                                    779 	.area GSINIT4 (CODE)
+                                    780 	.area GSINIT5 (CODE)
+                                    781 	.area GSINIT  (CODE)
+                                    782 	.area GSFINAL (CODE)
+                                    783 	.area CSEG    (CODE)
+                                    784 ;--------------------------------------------------------
+                                    785 ; global & static initialisations
+                                    786 ;--------------------------------------------------------
+                                    787 	.area HOME    (CODE)
+                                    788 	.area GSINIT  (CODE)
+                                    789 	.area GSFINAL (CODE)
+                                    790 	.area GSINIT  (CODE)
+                                    791 ;--------------------------------------------------------
+                                    792 ; Home
+                                    793 ;--------------------------------------------------------
+                                    794 	.area HOME    (CODE)
+                                    795 	.area HOME    (CODE)
+                                    796 ;--------------------------------------------------------
+                                    797 ; code
+                                    798 ;--------------------------------------------------------
+                                    799 	.area CSEG    (CODE)
+                                    800 ;------------------------------------------------------------
+                                    801 ;Allocation info for local variables in function 'analogRead'
+                                    802 ;------------------------------------------------------------
+                                    803 ;pin                       Allocated to registers r7 
+                                    804 ;pinMask                   Allocated to registers r7 
+                                    805 ;ADCValue                  Allocated to registers r6 r7 
+                                    806 ;------------------------------------------------------------
+                                    807 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:12: uint16_t analogRead(__data uint8_t pin)
+                                    808 ;	-----------------------------------------
+                                    809 ;	 function analogRead
+                                    810 ;	-----------------------------------------
+      000000                        811 _analogRead:
+                           000007   812 	ar7 = 0x07
+                           000006   813 	ar6 = 0x06
+                           000005   814 	ar5 = 0x05
+                           000004   815 	ar4 = 0x04
+                           000003   816 	ar3 = 0x03
+                           000002   817 	ar2 = 0x02
+                           000001   818 	ar1 = 0x01
+                           000000   819 	ar0 = 0x00
+                                    820 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:17: pin = analogPinToChannel(pin);
+      000000 E5 82            [12]  821 	mov	a,dpl
+      000002 90r00r00         [24]  822 	mov	dptr,#_digital_pin_to_channel_PGM
+      000005 93               [24]  823 	movc	a,@a+dptr
+      000006 FF               [12]  824 	mov	r7,a
+                                    825 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:19: if (pin == NOT_ANALOG)
+      000007 BF FF 04         [24]  826 	cjne	r7,#0xff,00102$
+                                    827 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:20: return 0;
+      00000A 90 00 00         [24]  828 	mov	dptr,#0x0000
+      00000D 22               [24]  829 	ret
+      00000E                        830 00102$:
+                                    831 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:35: __data uint8_t pinMask = 1 << pin;
+      00000E 8F F0            [24]  832 	mov	b,r7
+      000010 05 F0            [12]  833 	inc	b
+      000012 74 01            [12]  834 	mov	a,#0x01
+      000014 80 02            [24]  835 	sjmp	00127$
+      000016                        836 00125$:
+      000016 25 E0            [12]  837 	add	a,acc
+      000018                        838 00127$:
+      000018 D5 F0 FB         [24]  839 	djnz	b,00125$
+                                    840 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:36: P1_IE &= ~(pinMask); // Close other data functions of P1 port, if only part of
+      00001B FF               [12]  841 	mov	r7,a
+      00001C F4               [12]  842 	cpl	a
+      00001D 52 B9            [12]  843 	anl	_P1_IE,a
+                                    844 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:39: ADC_SETUP |= bADC_POWER_EN; // ADC power enable
+      00001F 43 F6 04         [24]  845 	orl	_ADC_SETUP,#0x04
+                                    846 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:41: (F_CPU / 6000000L);      // Set frequency division, make it similar to 6M
+      000022 75 EF 04         [24]  847 	mov	_ADC_CK_SE,#0x04
+                                    848 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:42: ADC_CTRL &= ~MASK_ADC_CYCLE; // Select manual sampling
+      000025 53 F2 F0         [24]  849 	anl	_ADC_CTRL,#0xf0
+                                    850 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:43: ADC_CTRL &= ~(bADC_CHANN_MOD1 | bADC_CHANN_MOD0); // Manually select channel
+      000028 53 F2 CF         [24]  851 	anl	_ADC_CTRL,#0xcf
+                                    852 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:44: ADC_CHANN = pinMask;                              // Gate channel 1
+      00002B 8F F3            [24]  853 	mov	_ADC_CHANN,r7
+                                    854 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:45: ADC_EX_SW |= bADC_RESOLUTION;                     // Sampling bits 11bit
+      00002D 43 F7 04         [24]  855 	orl	_ADC_EX_SW,#0x04
+                                    856 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:47: delayMicroseconds(10);   // Optional, wait for the channel to switch
+      000030 90 00 0A         [24]  857 	mov	dptr,#0x000a
+      000033 12r00r00         [24]  858 	lcall	_delayMicroseconds
+                                    859 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:49: ADC_CTRL |= bADC_SAMPLE; // Manually generate sampling pulse
+      000036 43 F2 80         [24]  860 	orl	_ADC_CTRL,#0x80
+                                    861 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:50: delayMicroseconds(5);
+      000039 90 00 05         [24]  862 	mov	dptr,#0x0005
+      00003C 12r00r00         [24]  863 	lcall	_delayMicroseconds
+                                    864 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:51: ADC_CTRL &= ~bADC_SAMPLE;
+      00003F 53 F2 7F         [24]  865 	anl	_ADC_CTRL,#0x7f
+                                    866 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:52: while ((ADC_STAT & bADC_IF_ACT) == 0)
+      000042                        867 00103$:
+      000042 E5 F1            [12]  868 	mov	a,_ADC_STAT
+      000044 30 E4 FB         [24]  869 	jnb	acc.4,00103$
+                                    870 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:54: ADC_STAT |= bADC_IF_ACT;
+      000047 43 F1 10         [24]  871 	orl	_ADC_STAT,#0x10
+                                    872 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:55: __data uint16_t ADCValue = ADC_FIFO;
+      00004A AE F4            [24]  873 	mov	r6,((_ADC_FIFO >> 0) & 0xFF)
+      00004C AF F5            [24]  874 	mov	r7,((_ADC_FIFO >> 8) & 0xFF)
+                                    875 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:56: return ADCValue; // Return sample value
+      00004E 8E 82            [24]  876 	mov	dpl,r6
+      000050 8F 83            [24]  877 	mov	dph,r7
+                                    878 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:61: }
+      000052 22               [24]  879 	ret
+                                    880 ;------------------------------------------------------------
+                                    881 ;Allocation info for local variables in function 'analogWrite'
+                                    882 ;------------------------------------------------------------
+                                    883 ;pin                       Allocated to registers r7 
+                                    884 ;val                       Allocated with name '_analogWrite_PARM_2'
+                                    885 ;pwmPin                    Allocated with name '_analogWrite_pwmPin_131072_179'
+                                    886 ;------------------------------------------------------------
+                                    887 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:67: void analogWrite(__data uint8_t pin, __xdata uint16_t val) {
+                                    888 ;	-----------------------------------------
+                                    889 ;	 function analogWrite
+                                    890 ;	-----------------------------------------
+      000053                        891 _analogWrite:
+      000053 AF 82            [24]  892 	mov	r7,dpl
+                                    893 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:123: pinMode(pin, OUTPUT);
+      000055 90r00r00         [24]  894 	mov	dptr,#_pinMode_PARM_2
+      000058 74 01            [12]  895 	mov	a,#0x01
+      00005A F0               [24]  896 	movx	@dptr,a
+      00005B 8F 82            [24]  897 	mov	dpl,r7
+      00005D C0 07            [24]  898 	push	ar7
+      00005F 12r00r00         [24]  899 	lcall	_pinMode
+      000062 D0 07            [24]  900 	pop	ar7
+                                    901 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:124: if (val == 0) {
+      000064 90r00r00         [24]  902 	mov	dptr,#_analogWrite_PARM_2
+      000067 E0               [24]  903 	movx	a,@dptr
+      000068 FD               [12]  904 	mov	r5,a
+      000069 A3               [24]  905 	inc	dptr
+      00006A E0               [24]  906 	movx	a,@dptr
+      00006B FE               [12]  907 	mov	r6,a
+      00006C 4D               [12]  908 	orl	a,r5
+      00006D 70 0A            [24]  909 	jnz	00122$
+                                    910 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:125: digitalWrite(pin, LOW);
+      00006F 90r00r00         [24]  911 	mov	dptr,#_digitalWrite_PARM_2
+      000072 E4               [12]  912 	clr	a
+      000073 F0               [24]  913 	movx	@dptr,a
+      000074 8F 82            [24]  914 	mov	dpl,r7
+      000076 02r00r00         [24]  915 	ljmp	_digitalWrite
+      000079                        916 00122$:
+                                    917 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:126: } else if (val >= 256) {
+      000079 8D 03            [24]  918 	mov	ar3,r5
+      00007B 8E 04            [24]  919 	mov	ar4,r6
+      00007D 74 FF            [12]  920 	mov	a,#0x100 - 0x01
+      00007F 2C               [12]  921 	add	a,r4
+      000080 50 0B            [24]  922 	jnc	00119$
+                                    923 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:127: digitalWrite(pin, HIGH);
+      000082 90r00r00         [24]  924 	mov	dptr,#_digitalWrite_PARM_2
+      000085 74 01            [12]  925 	mov	a,#0x01
+      000087 F0               [24]  926 	movx	@dptr,a
+      000088 8F 82            [24]  927 	mov	dpl,r7
+      00008A 02r00r00         [24]  928 	ljmp	_digitalWrite
+      00008D                        929 00119$:
+                                    930 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:129: uint8_t pwmPin = digitalPinToPWM(pin);
+      00008D EF               [12]  931 	mov	a,r7
+      00008E 90r00r00         [24]  932 	mov	dptr,#_digital_pin_to_pwm_PGM
+      000091 93               [24]  933 	movc	a,@a+dptr
+                                    934 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:130: if (pwmPin != NOT_ON_PWM) {
+      000092 FA               [12]  935 	mov	r2,a
+      000093 60 06            [24]  936 	jz	00102$
+                                    937 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:134: PWM_CK_SE = (F_CPU / (1000L * 255));
+      000095 75 9E 5E         [24]  938 	mov	_PWM_CK_SE,#0x5e
+                                    939 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:136: PWM_CYCLE = 255;
+      000098 75 9F FF         [24]  940 	mov	_PWM_CYCLE,#0xff
+      00009B                        941 00102$:
+                                    942 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:138: switch (pwmPin) {
+      00009B EA               [12]  943 	mov	a,r2
+      00009C F9               [12]  944 	mov	r1,a
+      00009D 24 F9            [12]  945 	add	a,#0xff - 0x06
+      00009F 50 03            [24]  946 	jnc	00153$
+      0000A1 02r01r17         [24]  947 	ljmp	00113$
+      0000A4                        948 00153$:
+      0000A4 E9               [12]  949 	mov	a,r1
+      0000A5 29               [12]  950 	add	a,r1
+                                    951 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:139: case PIN_PWM1:
+      0000A6 90r00rAA         [24]  952 	mov	dptr,#00154$
+      0000A9 73               [24]  953 	jmp	@a+dptr
+      0000AA                        954 00154$:
+      0000AA 80 6B            [24]  955 	sjmp	00113$
+      0000AC 80 0A            [24]  956 	sjmp	00103$
+      0000AE 80 11            [24]  957 	sjmp	00104$
+      0000B0 80 18            [24]  958 	sjmp	00106$
+      0000B2 80 51            [24]  959 	sjmp	00110$
+      0000B4 80 58            [24]  960 	sjmp	00111$
+      0000B6 80 12            [24]  961 	sjmp	00106$
+      0000B8                        962 00103$:
+                                    963 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:140: PIN_FUNC &= ~(bPWM1_PIN_X); // CH559 only has 1 bit for 2 PWMs
+      0000B8 53 CE 7F         [24]  964 	anl	_PIN_FUNC,#0x7f
+                                    965 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:141: PWM_CTRL |= bPWM_OUT_EN;
+      0000BB 43 9D 08         [24]  966 	orl	_PWM_CTRL,#0x08
+                                    967 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:142: PWM_DATA = val;
+      0000BE 8D 9C            [24]  968 	mov	_PWM_DATA,r5
+                                    969 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:143: break;
+      0000C0 22               [24]  970 	ret
+                                    971 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:144: case PIN_PWM2:
+      0000C1                        972 00104$:
+                                    973 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:145: PIN_FUNC &= ~(bPWM1_PIN_X);
+      0000C1 53 CE 7F         [24]  974 	anl	_PIN_FUNC,#0x7f
+                                    975 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:146: PWM_CTRL |= bPWM2_OUT_EN;
+      0000C4 43 9D 04         [24]  976 	orl	_PWM_CTRL,#0x04
+                                    977 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:147: PWM_DATA2 = val;
+      0000C7 8D 9B            [24]  978 	mov	_PWM_DATA2,r5
+                                    979 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:148: break;
+                                    980 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:150: case PIN_PWM3_:
+      0000C9 22               [24]  981 	ret
+      0000CA                        982 00106$:
+                                    983 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:151: if (pwmPin == PIN_PWM3) {
+      0000CA BA 03 0B         [24]  984 	cjne	r2,#0x03,00108$
+                                    985 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:152: P1_DIR |= bPWM3; // push pull
+      0000CD 43 BA 04         [24]  986 	orl	_P1_DIR,#0x04
+                                    987 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:153: P1_PU |= bPWM3;
+      0000D0 43 BB 04         [24]  988 	orl	_P1_PU,#0x04
+                                    989 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:154: PIN_FUNC &= ~bTMR3_PIN_X;
+      0000D3 53 CE BF         [24]  990 	anl	_PIN_FUNC,#0xbf
+      0000D6 80 09            [24]  991 	sjmp	00109$
+      0000D8                        992 00108$:
+                                    993 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:156: P4_DIR |= bPWM3_; // push pull
+      0000D8 43 C2 04         [24]  994 	orl	_P4_DIR,#0x04
+                                    995 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:157: P4_PU |= bPWM3_;
+      0000DB 43 C3 04         [24]  996 	orl	_P4_PU,#0x04
+                                    997 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:158: PIN_FUNC |= bTMR3_PIN_X;
+      0000DE 43 CE 40         [24]  998 	orl	_PIN_FUNC,#0x40
+      0000E1                        999 00109$:
+                                   1000 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:160: T3_CTRL |= bT3_CLR_ALL;
+      0000E1 43 AA 02         [24] 1001 	orl	_T3_CTRL,#0x02
+                                   1002 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:161: T3_CTRL &= ~bT3_CLR_ALL;
+      0000E4 53 AA FD         [24] 1003 	anl	_T3_CTRL,#0xfd
+                                   1004 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:162: T3_SETUP |= bT3_EN_CK_SE;
+      0000E7 43 A3 01         [24] 1005 	orl	_T3_SETUP,#0x01
+                                   1006 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:163: T3_CK_SE_L = (F_CPU / (1000L * 255)) & 0xFF;
+      0000EA 75 A4 5E         [24] 1007 	mov	_T3_COUNT_L,#0x5e
+                                   1008 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:164: T3_CK_SE_H = ((F_CPU / (1000L * 255)) >> 8) & 0xFF;
+      0000ED 75 A5 00         [24] 1009 	mov	_T3_COUNT_H,#0x00
+                                   1010 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:165: T3_SETUP &= ~bT3_EN_CK_SE;
+      0000F0 53 A3 FE         [24] 1011 	anl	_T3_SETUP,#0xfe
+                                   1012 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:166: T3_CTRL |= bT3_OUT_EN;
+      0000F3 43 AA 08         [24] 1013 	orl	_T3_CTRL,#0x08
+                                   1014 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:167: T3_END_L = 0xff;
+      0000F6 75 A6 FF         [24] 1015 	mov	_T3_END_L,#0xff
+                                   1016 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:168: T3_END_H = 0;
+      0000F9 75 A7 00         [24] 1017 	mov	_T3_END_H,#0x00
+                                   1018 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:169: T3_FIFO_L = val;
+      0000FC 8D AE            [24] 1019 	mov	_T3_FIFO_L,r5
+                                   1020 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:170: T3_FIFO_H = 0;
+      0000FE 75 AF 00         [24] 1021 	mov	_T3_FIFO_H,#0x00
+                                   1022 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:171: T3_CTRL |= bT3_CNT_EN;
+      000101 43 AA 04         [24] 1023 	orl	_T3_CTRL,#0x04
+                                   1024 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:172: break;
+                                   1025 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:173: case PIN_PWM1_:
+      000104 22               [24] 1026 	ret
+      000105                       1027 00110$:
+                                   1028 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:174: PIN_FUNC |= (bPWM1_PIN_X);
+      000105 43 CE 80         [24] 1029 	orl	_PIN_FUNC,#0x80
+                                   1030 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:175: PWM_CTRL |= bPWM_OUT_EN;
+      000108 43 9D 08         [24] 1031 	orl	_PWM_CTRL,#0x08
+                                   1032 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:176: PWM_DATA = val;
+      00010B 8D 9C            [24] 1033 	mov	_PWM_DATA,r5
+                                   1034 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:177: break;
+                                   1035 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:178: case PIN_PWM2_:
+      00010D 22               [24] 1036 	ret
+      00010E                       1037 00111$:
+                                   1038 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:179: PIN_FUNC |= (bPWM1_PIN_X);
+      00010E 43 CE 80         [24] 1039 	orl	_PIN_FUNC,#0x80
+                                   1040 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:180: PWM_CTRL |= bPWM2_OUT_EN;
+      000111 43 9D 04         [24] 1041 	orl	_PWM_CTRL,#0x04
+                                   1042 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:181: PWM_DATA2 = val;
+      000114 8D 9B            [24] 1043 	mov	_PWM_DATA2,r5
+                                   1044 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:182: break;
+                                   1045 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:184: default:
+      000116 22               [24] 1046 	ret
+      000117                       1047 00113$:
+                                   1048 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:185: if (val < 128) {
+      000117 C3               [12] 1049 	clr	c
+      000118 EB               [12] 1050 	mov	a,r3
+      000119 94 80            [12] 1051 	subb	a,#0x80
+      00011B EC               [12] 1052 	mov	a,r4
+      00011C 94 00            [12] 1053 	subb	a,#0x00
+      00011E 50 0A            [24] 1054 	jnc	00115$
+                                   1055 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:186: digitalWrite(pin, LOW);
+      000120 90r00r00         [24] 1056 	mov	dptr,#_digitalWrite_PARM_2
+      000123 E4               [12] 1057 	clr	a
+      000124 F0               [24] 1058 	movx	@dptr,a
+      000125 8F 82            [24] 1059 	mov	dpl,r7
+      000127 02r00r00         [24] 1060 	ljmp	_digitalWrite
+      00012A                       1061 00115$:
+                                   1062 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:188: digitalWrite(pin, HIGH);
+      00012A 90r00r00         [24] 1063 	mov	dptr,#_digitalWrite_PARM_2
+      00012D 74 01            [12] 1064 	mov	a,#0x01
+      00012F F0               [24] 1065 	movx	@dptr,a
+      000130 8F 82            [24] 1066 	mov	dpl,r7
+                                   1067 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:190: }
+                                   1068 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\wiring_analog.c:197: }
+      000132 02r00r00         [24] 1069 	ljmp	_digitalWrite
+                                   1070 	.area CSEG    (CODE)
+                                   1071 	.area CONST   (CODE)
+                                   1072 	.area XINIT   (CODE)
+                                   1073 	.area CABS    (ABS,CODE)

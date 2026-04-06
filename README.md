@@ -66,6 +66,21 @@ Vout ──[10kΩ]──┬── P1.1 (ADC)
 
 ## 快速开始
 
+### 编译方式说明（CH552 推荐）
+
+当前项目建议使用 arduino-cli 进行编译，而不是 PlatformIO。
+
+原因：
+- 本项目的 CH55xduino 来源不是 PlatformIO 可直接识别的平台包（缺少 platform.json 平台清单）。
+- 继续走 pio 会出现 MissingPackageManifestError。
+
+使用方式：
+1. 在项目根目录运行 PowerShell 脚本 [tools/build-arduino-cli.ps1](tools/build-arduino-cli.ps1)
+2. 编译产物会输出到 [.arduino-build/ch552](.arduino-build/ch552)
+
+说明：
+- [.pio/build/project.checksum](.pio/build/project.checksum) 是 PlatformIO 自动生成的缓存校验文件，不是项目配置文件，可忽略。
+
 ### 环境要求
 
 - **PlatformIO IDE** (推荐) 或 Arduino IDE

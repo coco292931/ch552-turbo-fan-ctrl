@@ -1,0 +1,45 @@
+#line 1 "C:\\Users\\tonyp\\Downloads\\ch552-turbo-fan-ctrl\\.vscode\\c_cpp_properties.json"
+{
+    "enableConfigurationSquiggles": false,
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/lib/**",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "ARDUINO=10812",
+                "ARDUINO_ARCH_MCS51",
+                "F_CPU=24000000L",
+                "CLOCK_FREQ=24000000L",
+                "USB_VID=0x1A86",
+                "USB_PID=0x5537"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/lib/**",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "ARDUINO=10812",
+                "ARDUINO_ARCH_MCS51",
+                "F_CPU=24000000L",
+                "CLOCK_FREQ=24000000L",
+                "USB_VID=0x1A86",
+                "USB_PID=0x5537"
+            ],
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

@@ -1,0 +1,2248 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.2 #13407 (MINGW32)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module temp_sensor
+                                      6 	.optsdcc -mmcs51 --model-large
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _DS18B20_setAlarmTemperature
+                                     12 	.globl _DS18B20_setResolution
+                                     13 	.globl _DS18B20_readTemperatureFast
+                                     14 	.globl _DS18B20_begin
+                                     15 	.globl _VoltageController_setVoltage
+                                     16 	.globl _delay
+                                     17 	.globl _UIF_BUS_RST
+                                     18 	.globl _UIF_DETECT
+                                     19 	.globl _UIF_TRANSFER
+                                     20 	.globl _UIF_SUSPEND
+                                     21 	.globl _UIF_HST_SOF
+                                     22 	.globl _UIF_FIFO_OV
+                                     23 	.globl _U_SIE_FREE
+                                     24 	.globl _U_TOG_OK
+                                     25 	.globl _U_IS_NAK
+                                     26 	.globl _S0_R_FIFO0
+                                     27 	.globl _S0_R_FIFO1
+                                     28 	.globl _S0_T_FIFO
+                                     29 	.globl _S0_FREE
+                                     30 	.globl _S0_IF_BYTE
+                                     31 	.globl _S0_IF_FIRST
+                                     32 	.globl _S0_IF_OV
+                                     33 	.globl _S0_FST_ACT
+                                     34 	.globl _CP_RL2
+                                     35 	.globl _C_T2
+                                     36 	.globl _TR2
+                                     37 	.globl _EXEN2
+                                     38 	.globl _TCLK
+                                     39 	.globl _RCLK
+                                     40 	.globl _EXF2
+                                     41 	.globl _CAP1F
+                                     42 	.globl _TF2
+                                     43 	.globl _RI
+                                     44 	.globl _TI
+                                     45 	.globl _RB8
+                                     46 	.globl _TB8
+                                     47 	.globl _REN
+                                     48 	.globl _SM2
+                                     49 	.globl _SM1
+                                     50 	.globl _SM0
+                                     51 	.globl _IT0
+                                     52 	.globl _IE0
+                                     53 	.globl _IT1
+                                     54 	.globl _IE1
+                                     55 	.globl _TR0
+                                     56 	.globl _TF0
+                                     57 	.globl _TR1
+                                     58 	.globl _TF1
+                                     59 	.globl _P4_OUT_0
+                                     60 	.globl _P4_OUT_1
+                                     61 	.globl _P4_OUT_2
+                                     62 	.globl _P4_OUT_3
+                                     63 	.globl _P4_OUT_4
+                                     64 	.globl _P4_OUT_5
+                                     65 	.globl _P4_OUT_6
+                                     66 	.globl _P4_OUT_7
+                                     67 	.globl _RXD1_
+                                     68 	.globl _LED2
+                                     69 	.globl _CAP3_
+                                     70 	.globl _PWM3_
+                                     71 	.globl _PWM1_
+                                     72 	.globl _TXD1_
+                                     73 	.globl _TNOW_
+                                     74 	.globl _LED3
+                                     75 	.globl _PWM2_
+                                     76 	.globl _SCS_
+                                     77 	.globl _SCK_
+                                     78 	.globl _P3_0
+                                     79 	.globl _P3_1
+                                     80 	.globl _P3_2
+                                     81 	.globl _P3_3
+                                     82 	.globl _P3_4
+                                     83 	.globl _P3_5
+                                     84 	.globl _P3_6
+                                     85 	.globl _P3_7
+                                     86 	.globl _RXD
+                                     87 	.globl _TXD
+                                     88 	.globl _INT0
+                                     89 	.globl _LED0
+                                     90 	.globl _INT1
+                                     91 	.globl _LED1
+                                     92 	.globl _T0
+                                     93 	.globl _XCS0
+                                     94 	.globl _LEDC
+                                     95 	.globl _T1
+                                     96 	.globl _DA6
+                                     97 	.globl _WR
+                                     98 	.globl _RD
+                                     99 	.globl _P2_0
+                                    100 	.globl _P2_1
+                                    101 	.globl _P2_2
+                                    102 	.globl _P2_3
+                                    103 	.globl _P2_4
+                                    104 	.globl _P2_5
+                                    105 	.globl _P2_6
+                                    106 	.globl _P2_7
+                                    107 	.globl _MOSI1
+                                    108 	.globl _MISO1
+                                    109 	.globl _SCK1
+                                    110 	.globl _PWM1
+                                    111 	.globl _CAP2_
+                                    112 	.globl _T2EX_
+                                    113 	.globl _PWM2
+                                    114 	.globl _TNOW
+                                    115 	.globl _RXD1
+                                    116 	.globl _DA7
+                                    117 	.globl _TXD1
+                                    118 	.globl _P1_0
+                                    119 	.globl _P1_1
+                                    120 	.globl _P1_2
+                                    121 	.globl _P1_3
+                                    122 	.globl _P1_4
+                                    123 	.globl _P1_5
+                                    124 	.globl _P1_6
+                                    125 	.globl _P1_7
+                                    126 	.globl _CAP1
+                                    127 	.globl _T2
+                                    128 	.globl _CAP2
+                                    129 	.globl _T2EX
+                                    130 	.globl _CAP3
+                                    131 	.globl _PWM3
+                                    132 	.globl _SCS
+                                    133 	.globl _MOSI
+                                    134 	.globl _MISO
+                                    135 	.globl _SCK
+                                    136 	.globl _AIN0
+                                    137 	.globl _AIN1
+                                    138 	.globl _AIN2
+                                    139 	.globl _AIN3
+                                    140 	.globl _AIN4
+                                    141 	.globl _AIN5
+                                    142 	.globl _AIN6
+                                    143 	.globl _AIN7
+                                    144 	.globl _P0_0
+                                    145 	.globl _P0_1
+                                    146 	.globl _P0_2
+                                    147 	.globl _P0_3
+                                    148 	.globl _P0_4
+                                    149 	.globl _P0_5
+                                    150 	.globl _P0_6
+                                    151 	.globl _P0_7
+                                    152 	.globl _UDTR
+                                    153 	.globl _URTS
+                                    154 	.globl _RXD_
+                                    155 	.globl _TXD_
+                                    156 	.globl _UCTS
+                                    157 	.globl _UDSR
+                                    158 	.globl _URI
+                                    159 	.globl _UDCD
+                                    160 	.globl _IE_SPI0
+                                    161 	.globl _IE_TMR3
+                                    162 	.globl _IE_USB
+                                    163 	.globl _IE_ADC
+                                    164 	.globl _IE_UART1
+                                    165 	.globl _IE_PWM1
+                                    166 	.globl _IE_GPIO
+                                    167 	.globl _IE_WDOG
+                                    168 	.globl _PX0
+                                    169 	.globl _PT0
+                                    170 	.globl _PX1
+                                    171 	.globl _PT1
+                                    172 	.globl _PS
+                                    173 	.globl _PT2
+                                    174 	.globl _PL_FLAG
+                                    175 	.globl _PH_FLAG
+                                    176 	.globl _EX0
+                                    177 	.globl _ET0
+                                    178 	.globl _EX1
+                                    179 	.globl _ET1
+                                    180 	.globl _ES
+                                    181 	.globl _ET2
+                                    182 	.globl _E_DIS
+                                    183 	.globl _EA
+                                    184 	.globl _P
+                                    185 	.globl _F1
+                                    186 	.globl _OV
+                                    187 	.globl _RS0
+                                    188 	.globl _RS1
+                                    189 	.globl _F0
+                                    190 	.globl _AC
+                                    191 	.globl _CY
+                                    192 	.globl _USB_DMA_AH
+                                    193 	.globl _USB_DMA_AL
+                                    194 	.globl _USB_DMA
+                                    195 	.globl _UHUB1_CTRL
+                                    196 	.globl _UDEV_CTRL
+                                    197 	.globl _USB_DEV_AD
+                                    198 	.globl _USB_CTRL
+                                    199 	.globl _USB_INT_EN
+                                    200 	.globl _UEP4_T_LEN
+                                    201 	.globl _UEP4_CTRL
+                                    202 	.globl _UEP0_T_LEN
+                                    203 	.globl _UEP0_CTRL
+                                    204 	.globl _USB_HUB_ST
+                                    205 	.globl _USB_MIS_ST
+                                    206 	.globl _USB_INT_ST
+                                    207 	.globl _USB_INT_FG
+                                    208 	.globl _UEP3_T_LEN
+                                    209 	.globl _UEP3_CTRL
+                                    210 	.globl _UEP2_T_LEN
+                                    211 	.globl _UEP2_CTRL
+                                    212 	.globl _UEP1_T_LEN
+                                    213 	.globl _UEP1_CTRL
+                                    214 	.globl _USB_RX_LEN
+                                    215 	.globl _ADC_EX_SW
+                                    216 	.globl _ADC_SETUP
+                                    217 	.globl _ADC_FIFO_H
+                                    218 	.globl _ADC_FIFO_L
+                                    219 	.globl _ADC_FIFO
+                                    220 	.globl _ADC_CHANN
+                                    221 	.globl _ADC_CTRL
+                                    222 	.globl _ADC_STAT
+                                    223 	.globl _ADC_CK_SE
+                                    224 	.globl _ADC_DMA_CN
+                                    225 	.globl _ADC_DMA_AH
+                                    226 	.globl _ADC_DMA_AL
+                                    227 	.globl _ADC_DMA
+                                    228 	.globl _SER1_ADDR
+                                    229 	.globl _SER1_MSR
+                                    230 	.globl _SER1_LSR
+                                    231 	.globl _SER1_MCR
+                                    232 	.globl _SER1_LCR
+                                    233 	.globl _SER1_IIR
+                                    234 	.globl _SER1_IER
+                                    235 	.globl _SER1_FIFO
+                                    236 	.globl _SPI1_CK_SE
+                                    237 	.globl _SPI1_CTRL
+                                    238 	.globl _SPI1_DATA
+                                    239 	.globl _SPI1_STAT
+                                    240 	.globl _SPI0_SETUP
+                                    241 	.globl _SPI0_CK_SE
+                                    242 	.globl _SPI0_CTRL
+                                    243 	.globl _SPI0_DATA
+                                    244 	.globl _SPI0_STAT
+                                    245 	.globl _PWM_CYCLE
+                                    246 	.globl _PWM_CK_SE
+                                    247 	.globl _PWM_CTRL
+                                    248 	.globl _PWM_DATA
+                                    249 	.globl _PWM_DATA2
+                                    250 	.globl _T3_FIFO_H
+                                    251 	.globl _T3_FIFO_L
+                                    252 	.globl _T3_FIFO
+                                    253 	.globl _T3_DMA_AH
+                                    254 	.globl _T3_DMA_AL
+                                    255 	.globl _T3_DMA
+                                    256 	.globl _T3_DMA_CN
+                                    257 	.globl _T3_CTRL
+                                    258 	.globl _T3_STAT
+                                    259 	.globl _T3_END_H
+                                    260 	.globl _T3_END_L
+                                    261 	.globl _T3_END
+                                    262 	.globl _T3_COUNT_H
+                                    263 	.globl _T3_COUNT_L
+                                    264 	.globl _T3_COUNT
+                                    265 	.globl _T3_SETUP
+                                    266 	.globl _TH2
+                                    267 	.globl _TL2
+                                    268 	.globl _T2COUNT
+                                    269 	.globl _RCAP2H
+                                    270 	.globl _RCAP2L
+                                    271 	.globl _RCAP2
+                                    272 	.globl _T2MOD
+                                    273 	.globl _T2CON
+                                    274 	.globl _SBUF
+                                    275 	.globl _SCON
+                                    276 	.globl _TH1
+                                    277 	.globl _TH0
+                                    278 	.globl _TL1
+                                    279 	.globl _TL0
+                                    280 	.globl _TMOD
+                                    281 	.globl _TCON
+                                    282 	.globl _XBUS_SPEED
+                                    283 	.globl _XBUS_AUX
+                                    284 	.globl _PIN_FUNC
+                                    285 	.globl _PORT_CFG
+                                    286 	.globl _P5_IN
+                                    287 	.globl _P4_PU
+                                    288 	.globl _P4_DIR
+                                    289 	.globl _P4_IN
+                                    290 	.globl _P4_OUT
+                                    291 	.globl _P3_PU
+                                    292 	.globl _P3_DIR
+                                    293 	.globl _P3
+                                    294 	.globl _P2_PU
+                                    295 	.globl _P2_DIR
+                                    296 	.globl _P2
+                                    297 	.globl _P1_PU
+                                    298 	.globl _P1_DIR
+                                    299 	.globl _P1_IE
+                                    300 	.globl _P1
+                                    301 	.globl _P0_PU
+                                    302 	.globl _P0_DIR
+                                    303 	.globl _P0
+                                    304 	.globl _ROM_CTRL
+                                    305 	.globl _ROM_DATA_H
+                                    306 	.globl _ROM_DATA_L
+                                    307 	.globl _ROM_DATA
+                                    308 	.globl _ROM_ADDR_H
+                                    309 	.globl _ROM_ADDR_L
+                                    310 	.globl _ROM_ADDR
+                                    311 	.globl _GPIO_IE
+                                    312 	.globl _IP_EX
+                                    313 	.globl _IE_EX
+                                    314 	.globl _IP
+                                    315 	.globl _IE
+                                    316 	.globl _WDOG_COUNT
+                                    317 	.globl _RESET_KEEP
+                                    318 	.globl _WAKE_CTRL
+                                    319 	.globl _SLEEP_CTRL
+                                    320 	.globl _CLOCK_CFG
+                                    321 	.globl _PLL_CFG
+                                    322 	.globl _PCON
+                                    323 	.globl _GLOBAL_CFG
+                                    324 	.globl _SAFE_MOD
+                                    325 	.globl _DPH
+                                    326 	.globl _DPL
+                                    327 	.globl _SP
+                                    328 	.globl _B
+                                    329 	.globl _ACC
+                                    330 	.globl _PSW
+                                    331 	.globl _TempController_begin_PARM_3
+                                    332 	.globl _TempController_begin_PARM_2
+                                    333 	.globl _LED_DMA_XL
+                                    334 	.globl _LED_DMA_XH
+                                    335 	.globl _LED_DMA_CN
+                                    336 	.globl _LED_DMA_AL
+                                    337 	.globl _LED_DMA_AH
+                                    338 	.globl _LED_CK_SE
+                                    339 	.globl _LED_DATA
+                                    340 	.globl _LED_CTRL
+                                    341 	.globl _LED_STAT
+                                    342 	.globl _UEP3_DMA_L
+                                    343 	.globl _UEP3_DMA_H
+                                    344 	.globl _UEP2_DMA_L
+                                    345 	.globl _UEP2_DMA_H
+                                    346 	.globl _UEP1_DMA_L
+                                    347 	.globl _UEP1_DMA_H
+                                    348 	.globl _UEP0_DMA_L
+                                    349 	.globl _UEP0_DMA_H
+                                    350 	.globl _UEP2_3_MOD
+                                    351 	.globl _UEP4_1_MOD
+                                    352 	.globl _pLED_DMA_XL
+                                    353 	.globl _pLED_DMA_XH
+                                    354 	.globl _pLED_DMA_CN
+                                    355 	.globl _pLED_DMA_AL
+                                    356 	.globl _pLED_DMA_AH
+                                    357 	.globl _pLED_CK_SE
+                                    358 	.globl _pLED_DATA
+                                    359 	.globl _pLED_CTRL
+                                    360 	.globl _pLED_STAT
+                                    361 	.globl _pUEP3_DMA_L
+                                    362 	.globl _pUEP3_DMA_H
+                                    363 	.globl _pUEP2_DMA_L
+                                    364 	.globl _pUEP2_DMA_H
+                                    365 	.globl _pUEP1_DMA_L
+                                    366 	.globl _pUEP1_DMA_H
+                                    367 	.globl _pUEP0_DMA_L
+                                    368 	.globl _pUEP0_DMA_H
+                                    369 	.globl _pUEP2_3_MOD
+                                    370 	.globl _pUEP4_1_MOD
+                                    371 	.globl _TempController_begin
+                                    372 	.globl _TempController_update
+                                    373 	.globl _TempController_isOverheat
+                                    374 	.globl _TempController_getTemperature
+                                    375 	.globl _TempController_getTargetRPM
+                                    376 	.globl _TempController_isReady
+                                    377 ;--------------------------------------------------------
+                                    378 ; special function registers
+                                    379 ;--------------------------------------------------------
+                                    380 	.area RSEG    (ABS,DATA)
+      000000                        381 	.org 0x0000
+                           0000D0   382 _PSW	=	0x00d0
+                           0000E0   383 _ACC	=	0x00e0
+                           0000F0   384 _B	=	0x00f0
+                           000081   385 _SP	=	0x0081
+                           000082   386 _DPL	=	0x0082
+                           000083   387 _DPH	=	0x0083
+                           0000A1   388 _SAFE_MOD	=	0x00a1
+                           0000B1   389 _GLOBAL_CFG	=	0x00b1
+                           000087   390 _PCON	=	0x0087
+                           0000B2   391 _PLL_CFG	=	0x00b2
+                           0000B3   392 _CLOCK_CFG	=	0x00b3
+                           0000EA   393 _SLEEP_CTRL	=	0x00ea
+                           0000EB   394 _WAKE_CTRL	=	0x00eb
+                           0000FE   395 _RESET_KEEP	=	0x00fe
+                           0000FF   396 _WDOG_COUNT	=	0x00ff
+                           0000A8   397 _IE	=	0x00a8
+                           0000B8   398 _IP	=	0x00b8
+                           0000E8   399 _IE_EX	=	0x00e8
+                           0000E9   400 _IP_EX	=	0x00e9
+                           0000CF   401 _GPIO_IE	=	0x00cf
+                           008584   402 _ROM_ADDR	=	0x8584
+                           000084   403 _ROM_ADDR_L	=	0x0084
+                           000085   404 _ROM_ADDR_H	=	0x0085
+                           008F8E   405 _ROM_DATA	=	0x8f8e
+                           00008E   406 _ROM_DATA_L	=	0x008e
+                           00008F   407 _ROM_DATA_H	=	0x008f
+                           000086   408 _ROM_CTRL	=	0x0086
+                           000080   409 _P0	=	0x0080
+                           0000C4   410 _P0_DIR	=	0x00c4
+                           0000C5   411 _P0_PU	=	0x00c5
+                           000090   412 _P1	=	0x0090
+                           0000B9   413 _P1_IE	=	0x00b9
+                           0000BA   414 _P1_DIR	=	0x00ba
+                           0000BB   415 _P1_PU	=	0x00bb
+                           0000A0   416 _P2	=	0x00a0
+                           0000BC   417 _P2_DIR	=	0x00bc
+                           0000BD   418 _P2_PU	=	0x00bd
+                           0000B0   419 _P3	=	0x00b0
+                           0000BE   420 _P3_DIR	=	0x00be
+                           0000BF   421 _P3_PU	=	0x00bf
+                           0000C0   422 _P4_OUT	=	0x00c0
+                           0000C1   423 _P4_IN	=	0x00c1
+                           0000C2   424 _P4_DIR	=	0x00c2
+                           0000C3   425 _P4_PU	=	0x00c3
+                           0000C7   426 _P5_IN	=	0x00c7
+                           0000C6   427 _PORT_CFG	=	0x00c6
+                           0000CE   428 _PIN_FUNC	=	0x00ce
+                           0000A2   429 _XBUS_AUX	=	0x00a2
+                           0000FD   430 _XBUS_SPEED	=	0x00fd
+                           000088   431 _TCON	=	0x0088
+                           000089   432 _TMOD	=	0x0089
+                           00008A   433 _TL0	=	0x008a
+                           00008B   434 _TL1	=	0x008b
+                           00008C   435 _TH0	=	0x008c
+                           00008D   436 _TH1	=	0x008d
+                           000098   437 _SCON	=	0x0098
+                           000099   438 _SBUF	=	0x0099
+                           0000C8   439 _T2CON	=	0x00c8
+                           0000C9   440 _T2MOD	=	0x00c9
+                           00CBCA   441 _RCAP2	=	0xcbca
+                           0000CA   442 _RCAP2L	=	0x00ca
+                           0000CB   443 _RCAP2H	=	0x00cb
+                           00CDCC   444 _T2COUNT	=	0xcdcc
+                           0000CC   445 _TL2	=	0x00cc
+                           0000CD   446 _TH2	=	0x00cd
+                           0000A3   447 _T3_SETUP	=	0x00a3
+                           00A5A4   448 _T3_COUNT	=	0xa5a4
+                           0000A4   449 _T3_COUNT_L	=	0x00a4
+                           0000A5   450 _T3_COUNT_H	=	0x00a5
+                           00A7A6   451 _T3_END	=	0xa7a6
+                           0000A6   452 _T3_END_L	=	0x00a6
+                           0000A7   453 _T3_END_H	=	0x00a7
+                           0000A9   454 _T3_STAT	=	0x00a9
+                           0000AA   455 _T3_CTRL	=	0x00aa
+                           0000AB   456 _T3_DMA_CN	=	0x00ab
+                           00ADAC   457 _T3_DMA	=	0xadac
+                           0000AC   458 _T3_DMA_AL	=	0x00ac
+                           0000AD   459 _T3_DMA_AH	=	0x00ad
+                           00AFAE   460 _T3_FIFO	=	0xafae
+                           0000AE   461 _T3_FIFO_L	=	0x00ae
+                           0000AF   462 _T3_FIFO_H	=	0x00af
+                           00009B   463 _PWM_DATA2	=	0x009b
+                           00009C   464 _PWM_DATA	=	0x009c
+                           00009D   465 _PWM_CTRL	=	0x009d
+                           00009E   466 _PWM_CK_SE	=	0x009e
+                           00009F   467 _PWM_CYCLE	=	0x009f
+                           0000F8   468 _SPI0_STAT	=	0x00f8
+                           0000F9   469 _SPI0_DATA	=	0x00f9
+                           0000FA   470 _SPI0_CTRL	=	0x00fa
+                           0000FB   471 _SPI0_CK_SE	=	0x00fb
+                           0000FC   472 _SPI0_SETUP	=	0x00fc
+                           0000B4   473 _SPI1_STAT	=	0x00b4
+                           0000B5   474 _SPI1_DATA	=	0x00b5
+                           0000B6   475 _SPI1_CTRL	=	0x00b6
+                           0000B7   476 _SPI1_CK_SE	=	0x00b7
+                           00009A   477 _SER1_FIFO	=	0x009a
+                           000091   478 _SER1_IER	=	0x0091
+                           000092   479 _SER1_IIR	=	0x0092
+                           000093   480 _SER1_LCR	=	0x0093
+                           000094   481 _SER1_MCR	=	0x0094
+                           000095   482 _SER1_LSR	=	0x0095
+                           000096   483 _SER1_MSR	=	0x0096
+                           000097   484 _SER1_ADDR	=	0x0097
+                           00EDEC   485 _ADC_DMA	=	0xedec
+                           0000EC   486 _ADC_DMA_AL	=	0x00ec
+                           0000ED   487 _ADC_DMA_AH	=	0x00ed
+                           0000EE   488 _ADC_DMA_CN	=	0x00ee
+                           0000EF   489 _ADC_CK_SE	=	0x00ef
+                           0000F1   490 _ADC_STAT	=	0x00f1
+                           0000F2   491 _ADC_CTRL	=	0x00f2
+                           0000F3   492 _ADC_CHANN	=	0x00f3
+                           00F5F4   493 _ADC_FIFO	=	0xf5f4
+                           0000F4   494 _ADC_FIFO_L	=	0x00f4
+                           0000F5   495 _ADC_FIFO_H	=	0x00f5
+                           0000F6   496 _ADC_SETUP	=	0x00f6
+                           0000F7   497 _ADC_EX_SW	=	0x00f7
+                           0000D1   498 _USB_RX_LEN	=	0x00d1
+                           0000D2   499 _UEP1_CTRL	=	0x00d2
+                           0000D3   500 _UEP1_T_LEN	=	0x00d3
+                           0000D4   501 _UEP2_CTRL	=	0x00d4
+                           0000D5   502 _UEP2_T_LEN	=	0x00d5
+                           0000D6   503 _UEP3_CTRL	=	0x00d6
+                           0000D7   504 _UEP3_T_LEN	=	0x00d7
+                           0000D8   505 _USB_INT_FG	=	0x00d8
+                           0000D9   506 _USB_INT_ST	=	0x00d9
+                           0000DA   507 _USB_MIS_ST	=	0x00da
+                           0000DB   508 _USB_HUB_ST	=	0x00db
+                           0000DC   509 _UEP0_CTRL	=	0x00dc
+                           0000DD   510 _UEP0_T_LEN	=	0x00dd
+                           0000DE   511 _UEP4_CTRL	=	0x00de
+                           0000DF   512 _UEP4_T_LEN	=	0x00df
+                           0000E1   513 _USB_INT_EN	=	0x00e1
+                           0000E2   514 _USB_CTRL	=	0x00e2
+                           0000E3   515 _USB_DEV_AD	=	0x00e3
+                           0000E4   516 _UDEV_CTRL	=	0x00e4
+                           0000E5   517 _UHUB1_CTRL	=	0x00e5
+                           00E7E6   518 _USB_DMA	=	0xe7e6
+                           0000E6   519 _USB_DMA_AL	=	0x00e6
+                           0000E7   520 _USB_DMA_AH	=	0x00e7
+                                    521 ;--------------------------------------------------------
+                                    522 ; special function bits
+                                    523 ;--------------------------------------------------------
+                                    524 	.area RSEG    (ABS,DATA)
+      000000                        525 	.org 0x0000
+                           0000D7   526 _CY	=	0x00d7
+                           0000D6   527 _AC	=	0x00d6
+                           0000D5   528 _F0	=	0x00d5
+                           0000D4   529 _RS1	=	0x00d4
+                           0000D3   530 _RS0	=	0x00d3
+                           0000D2   531 _OV	=	0x00d2
+                           0000D1   532 _F1	=	0x00d1
+                           0000D0   533 _P	=	0x00d0
+                           0000AF   534 _EA	=	0x00af
+                           0000AE   535 _E_DIS	=	0x00ae
+                           0000AD   536 _ET2	=	0x00ad
+                           0000AC   537 _ES	=	0x00ac
+                           0000AB   538 _ET1	=	0x00ab
+                           0000AA   539 _EX1	=	0x00aa
+                           0000A9   540 _ET0	=	0x00a9
+                           0000A8   541 _EX0	=	0x00a8
+                           0000BF   542 _PH_FLAG	=	0x00bf
+                           0000BE   543 _PL_FLAG	=	0x00be
+                           0000BD   544 _PT2	=	0x00bd
+                           0000BC   545 _PS	=	0x00bc
+                           0000BB   546 _PT1	=	0x00bb
+                           0000BA   547 _PX1	=	0x00ba
+                           0000B9   548 _PT0	=	0x00b9
+                           0000B8   549 _PX0	=	0x00b8
+                           0000EF   550 _IE_WDOG	=	0x00ef
+                           0000EE   551 _IE_GPIO	=	0x00ee
+                           0000ED   552 _IE_PWM1	=	0x00ed
+                           0000EC   553 _IE_UART1	=	0x00ec
+                           0000EB   554 _IE_ADC	=	0x00eb
+                           0000EA   555 _IE_USB	=	0x00ea
+                           0000E9   556 _IE_TMR3	=	0x00e9
+                           0000E8   557 _IE_SPI0	=	0x00e8
+                           000087   558 _UDCD	=	0x0087
+                           000086   559 _URI	=	0x0086
+                           000085   560 _UDSR	=	0x0085
+                           000084   561 _UCTS	=	0x0084
+                           000083   562 _TXD_	=	0x0083
+                           000082   563 _RXD_	=	0x0082
+                           000081   564 _URTS	=	0x0081
+                           000080   565 _UDTR	=	0x0080
+                           000087   566 _P0_7	=	0x0087
+                           000086   567 _P0_6	=	0x0086
+                           000085   568 _P0_5	=	0x0085
+                           000084   569 _P0_4	=	0x0084
+                           000083   570 _P0_3	=	0x0083
+                           000082   571 _P0_2	=	0x0082
+                           000081   572 _P0_1	=	0x0081
+                           000080   573 _P0_0	=	0x0080
+                           000097   574 _AIN7	=	0x0097
+                           000096   575 _AIN6	=	0x0096
+                           000095   576 _AIN5	=	0x0095
+                           000094   577 _AIN4	=	0x0094
+                           000093   578 _AIN3	=	0x0093
+                           000092   579 _AIN2	=	0x0092
+                           000091   580 _AIN1	=	0x0091
+                           000090   581 _AIN0	=	0x0090
+                           000097   582 _SCK	=	0x0097
+                           000096   583 _MISO	=	0x0096
+                           000095   584 _MOSI	=	0x0095
+                           000094   585 _SCS	=	0x0094
+                           000092   586 _PWM3	=	0x0092
+                           000092   587 _CAP3	=	0x0092
+                           000091   588 _T2EX	=	0x0091
+                           000091   589 _CAP2	=	0x0091
+                           000090   590 _T2	=	0x0090
+                           000090   591 _CAP1	=	0x0090
+                           000097   592 _P1_7	=	0x0097
+                           000096   593 _P1_6	=	0x0096
+                           000095   594 _P1_5	=	0x0095
+                           000094   595 _P1_4	=	0x0094
+                           000093   596 _P1_3	=	0x0093
+                           000092   597 _P1_2	=	0x0092
+                           000091   598 _P1_1	=	0x0091
+                           000090   599 _P1_0	=	0x0090
+                           0000A7   600 _TXD1	=	0x00a7
+                           0000A7   601 _DA7	=	0x00a7
+                           0000A6   602 _RXD1	=	0x00a6
+                           0000A5   603 _TNOW	=	0x00a5
+                           0000A5   604 _PWM2	=	0x00a5
+                           0000A5   605 _T2EX_	=	0x00a5
+                           0000A5   606 _CAP2_	=	0x00a5
+                           0000A4   607 _PWM1	=	0x00a4
+                           0000A3   608 _SCK1	=	0x00a3
+                           0000A2   609 _MISO1	=	0x00a2
+                           0000A1   610 _MOSI1	=	0x00a1
+                           0000A7   611 _P2_7	=	0x00a7
+                           0000A6   612 _P2_6	=	0x00a6
+                           0000A5   613 _P2_5	=	0x00a5
+                           0000A4   614 _P2_4	=	0x00a4
+                           0000A3   615 _P2_3	=	0x00a3
+                           0000A2   616 _P2_2	=	0x00a2
+                           0000A1   617 _P2_1	=	0x00a1
+                           0000A0   618 _P2_0	=	0x00a0
+                           0000B7   619 _RD	=	0x00b7
+                           0000B6   620 _WR	=	0x00b6
+                           0000B5   621 _DA6	=	0x00b5
+                           0000B5   622 _T1	=	0x00b5
+                           0000B4   623 _LEDC	=	0x00b4
+                           0000B4   624 _XCS0	=	0x00b4
+                           0000B4   625 _T0	=	0x00b4
+                           0000B3   626 _LED1	=	0x00b3
+                           0000B3   627 _INT1	=	0x00b3
+                           0000B2   628 _LED0	=	0x00b2
+                           0000B2   629 _INT0	=	0x00b2
+                           0000B1   630 _TXD	=	0x00b1
+                           0000B0   631 _RXD	=	0x00b0
+                           0000B7   632 _P3_7	=	0x00b7
+                           0000B6   633 _P3_6	=	0x00b6
+                           0000B5   634 _P3_5	=	0x00b5
+                           0000B4   635 _P3_4	=	0x00b4
+                           0000B3   636 _P3_3	=	0x00b3
+                           0000B2   637 _P3_2	=	0x00b2
+                           0000B1   638 _P3_1	=	0x00b1
+                           0000B0   639 _P3_0	=	0x00b0
+                           0000C7   640 _SCK_	=	0x00c7
+                           0000C6   641 _SCS_	=	0x00c6
+                           0000C5   642 _PWM2_	=	0x00c5
+                           0000C4   643 _LED3	=	0x00c4
+                           0000C4   644 _TNOW_	=	0x00c4
+                           0000C4   645 _TXD1_	=	0x00c4
+                           0000C3   646 _PWM1_	=	0x00c3
+                           0000C2   647 _PWM3_	=	0x00c2
+                           0000C2   648 _CAP3_	=	0x00c2
+                           0000C0   649 _LED2	=	0x00c0
+                           0000C0   650 _RXD1_	=	0x00c0
+                           0000C7   651 _P4_OUT_7	=	0x00c7
+                           0000C6   652 _P4_OUT_6	=	0x00c6
+                           0000C5   653 _P4_OUT_5	=	0x00c5
+                           0000C4   654 _P4_OUT_4	=	0x00c4
+                           0000C3   655 _P4_OUT_3	=	0x00c3
+                           0000C2   656 _P4_OUT_2	=	0x00c2
+                           0000C1   657 _P4_OUT_1	=	0x00c1
+                           0000C0   658 _P4_OUT_0	=	0x00c0
+                           00008F   659 _TF1	=	0x008f
+                           00008E   660 _TR1	=	0x008e
+                           00008D   661 _TF0	=	0x008d
+                           00008C   662 _TR0	=	0x008c
+                           00008B   663 _IE1	=	0x008b
+                           00008A   664 _IT1	=	0x008a
+                           000089   665 _IE0	=	0x0089
+                           000088   666 _IT0	=	0x0088
+                           00009F   667 _SM0	=	0x009f
+                           00009E   668 _SM1	=	0x009e
+                           00009D   669 _SM2	=	0x009d
+                           00009C   670 _REN	=	0x009c
+                           00009B   671 _TB8	=	0x009b
+                           00009A   672 _RB8	=	0x009a
+                           000099   673 _TI	=	0x0099
+                           000098   674 _RI	=	0x0098
+                           0000CF   675 _TF2	=	0x00cf
+                           0000CF   676 _CAP1F	=	0x00cf
+                           0000CE   677 _EXF2	=	0x00ce
+                           0000CD   678 _RCLK	=	0x00cd
+                           0000CC   679 _TCLK	=	0x00cc
+                           0000CB   680 _EXEN2	=	0x00cb
+                           0000CA   681 _TR2	=	0x00ca
+                           0000C9   682 _C_T2	=	0x00c9
+                           0000C8   683 _CP_RL2	=	0x00c8
+                           0000FF   684 _S0_FST_ACT	=	0x00ff
+                           0000FE   685 _S0_IF_OV	=	0x00fe
+                           0000FD   686 _S0_IF_FIRST	=	0x00fd
+                           0000FC   687 _S0_IF_BYTE	=	0x00fc
+                           0000FB   688 _S0_FREE	=	0x00fb
+                           0000FA   689 _S0_T_FIFO	=	0x00fa
+                           0000F9   690 _S0_R_FIFO1	=	0x00f9
+                           0000F8   691 _S0_R_FIFO0	=	0x00f8
+                           0000DF   692 _U_IS_NAK	=	0x00df
+                           0000DE   693 _U_TOG_OK	=	0x00de
+                           0000DD   694 _U_SIE_FREE	=	0x00dd
+                           0000DC   695 _UIF_FIFO_OV	=	0x00dc
+                           0000DB   696 _UIF_HST_SOF	=	0x00db
+                           0000DA   697 _UIF_SUSPEND	=	0x00da
+                           0000D9   698 _UIF_TRANSFER	=	0x00d9
+                           0000D8   699 _UIF_DETECT	=	0x00d8
+                           0000D8   700 _UIF_BUS_RST	=	0x00d8
+                                    701 ;--------------------------------------------------------
+                                    702 ; overlayable register banks
+                                    703 ;--------------------------------------------------------
+                                    704 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        705 	.ds 8
+                                    706 ;--------------------------------------------------------
+                                    707 ; internal ram data
+                                    708 ;--------------------------------------------------------
+                                    709 	.area DSEG    (DATA)
+      000000                        710 _TempController_mapTempToRPM_sloc0_1_0:
+      000000                        711 	.ds 4
+      000004                        712 _TempController_begin_sloc0_1_0:
+      000004                        713 	.ds 3
+      000007                        714 _TempController_begin_sloc1_1_0:
+      000007                        715 	.ds 3
+      00000A                        716 _TempController_begin_sloc2_1_0:
+      00000A                        717 	.ds 3
+      00000D                        718 _TempController_update_sloc0_1_0:
+      00000D                        719 	.ds 4
+      000011                        720 _TempController_update_sloc1_1_0:
+      000011                        721 	.ds 4
+                                    722 ;--------------------------------------------------------
+                                    723 ; overlayable items in internal ram
+                                    724 ;--------------------------------------------------------
+                                    725 ;--------------------------------------------------------
+                                    726 ; indirectly addressable internal ram data
+                                    727 ;--------------------------------------------------------
+                                    728 	.area ISEG    (DATA)
+                                    729 ;--------------------------------------------------------
+                                    730 ; absolute internal ram data
+                                    731 ;--------------------------------------------------------
+                                    732 	.area IABS    (ABS,DATA)
+                                    733 	.area IABS    (ABS,DATA)
+                                    734 ;--------------------------------------------------------
+                                    735 ; bit data
+                                    736 ;--------------------------------------------------------
+                                    737 	.area BSEG    (BIT)
+      000000                        738 _TempController_begin_sloc3_1_0:
+      000000                        739 	.ds 1
+      000001                        740 _TempController_isOverheat_sloc0_1_0:
+      000001                        741 	.ds 1
+                                    742 ;--------------------------------------------------------
+                                    743 ; paged external ram data
+                                    744 ;--------------------------------------------------------
+                                    745 	.area PSEG    (PAG,XDATA)
+                           002546   746 _pUEP4_1_MOD	=	0x2546
+                           002547   747 _pUEP2_3_MOD	=	0x2547
+                           002548   748 _pUEP0_DMA_H	=	0x2548
+                           002549   749 _pUEP0_DMA_L	=	0x2549
+                           00254A   750 _pUEP1_DMA_H	=	0x254a
+                           00254B   751 _pUEP1_DMA_L	=	0x254b
+                           00254C   752 _pUEP2_DMA_H	=	0x254c
+                           00254D   753 _pUEP2_DMA_L	=	0x254d
+                           00254E   754 _pUEP3_DMA_H	=	0x254e
+                           00254F   755 _pUEP3_DMA_L	=	0x254f
+                           002980   756 _pLED_STAT	=	0x2980
+                           002981   757 _pLED_CTRL	=	0x2981
+                           002982   758 _pLED_DATA	=	0x2982
+                           002983   759 _pLED_CK_SE	=	0x2983
+                           002984   760 _pLED_DMA_AH	=	0x2984
+                           002985   761 _pLED_DMA_AL	=	0x2985
+                           002986   762 _pLED_DMA_CN	=	0x2986
+                           002988   763 _pLED_DMA_XH	=	0x2988
+                           002989   764 _pLED_DMA_XL	=	0x2989
+                                    765 ;--------------------------------------------------------
+                                    766 ; uninitialized external ram data
+                                    767 ;--------------------------------------------------------
+                                    768 	.area XSEG    (XDATA)
+                           002446   769 _UEP4_1_MOD	=	0x2446
+                           002447   770 _UEP2_3_MOD	=	0x2447
+                           002448   771 _UEP0_DMA_H	=	0x2448
+                           002449   772 _UEP0_DMA_L	=	0x2449
+                           00244A   773 _UEP1_DMA_H	=	0x244a
+                           00244B   774 _UEP1_DMA_L	=	0x244b
+                           00244C   775 _UEP2_DMA_H	=	0x244c
+                           00244D   776 _UEP2_DMA_L	=	0x244d
+                           00244E   777 _UEP3_DMA_H	=	0x244e
+                           00244F   778 _UEP3_DMA_L	=	0x244f
+                           002880   779 _LED_STAT	=	0x2880
+                           002881   780 _LED_CTRL	=	0x2881
+                           002882   781 _LED_DATA	=	0x2882
+                           002883   782 _LED_CK_SE	=	0x2883
+                           002884   783 _LED_DMA_AH	=	0x2884
+                           002885   784 _LED_DMA_AL	=	0x2885
+                           002886   785 _LED_DMA_CN	=	0x2886
+                           002888   786 _LED_DMA_XH	=	0x2888
+                           002889   787 _LED_DMA_XL	=	0x2889
+      000000                        788 _TempController_mapTempToVoltageLinear_temp_65536_192:
+      000000                        789 	.ds 4
+      000004                        790 _TempController_mapTempToVoltageLinear_voltage_65536_193:
+      000004                        791 	.ds 4
+      000008                        792 _TempController_mapTempToVoltageQuadratic_temp_65536_194:
+      000008                        793 	.ds 4
+      00000C                        794 _TempController_mapTempToVoltageQuadratic_norm_temp_65536_195:
+      00000C                        795 	.ds 4
+      000010                        796 _TempController_mapTempToVoltageQuadratic_voltage_65536_195:
+      000010                        797 	.ds 4
+      000014                        798 _TempController_mapTempToRPM_temp_65536_196:
+      000014                        799 	.ds 4
+      000018                        800 _TempController_begin_PARM_2:
+      000018                        801 	.ds 3
+      00001B                        802 _TempController_begin_PARM_3:
+      00001B                        803 	.ds 3
+      00001E                        804 _TempController_begin_tc_65536_198:
+      00001E                        805 	.ds 3
+      000021                        806 _TempController_update_tc_65536_202:
+      000021                        807 	.ds 3
+      000024                        808 _TempController_isOverheat_tc_65536_208:
+      000024                        809 	.ds 3
+      000027                        810 _TempController_getTemperature_tc_65536_210:
+      000027                        811 	.ds 3
+      00002A                        812 _TempController_getTargetRPM_tc_65536_212:
+      00002A                        813 	.ds 3
+      00002D                        814 _TempController_isReady_tc_65536_214:
+      00002D                        815 	.ds 3
+                                    816 ;--------------------------------------------------------
+                                    817 ; absolute external ram data
+                                    818 ;--------------------------------------------------------
+                                    819 	.area XABS    (ABS,XDATA)
+                                    820 ;--------------------------------------------------------
+                                    821 ; initialized external ram data
+                                    822 ;--------------------------------------------------------
+                                    823 	.area XISEG   (XDATA)
+                                    824 	.area HOME    (CODE)
+                                    825 	.area GSINIT0 (CODE)
+                                    826 	.area GSINIT1 (CODE)
+                                    827 	.area GSINIT2 (CODE)
+                                    828 	.area GSINIT3 (CODE)
+                                    829 	.area GSINIT4 (CODE)
+                                    830 	.area GSINIT5 (CODE)
+                                    831 	.area GSINIT  (CODE)
+                                    832 	.area GSFINAL (CODE)
+                                    833 	.area CSEG    (CODE)
+                                    834 ;--------------------------------------------------------
+                                    835 ; global & static initialisations
+                                    836 ;--------------------------------------------------------
+                                    837 	.area HOME    (CODE)
+                                    838 	.area GSINIT  (CODE)
+                                    839 	.area GSFINAL (CODE)
+                                    840 	.area GSINIT  (CODE)
+                                    841 ;--------------------------------------------------------
+                                    842 ; Home
+                                    843 ;--------------------------------------------------------
+                                    844 	.area HOME    (CODE)
+                                    845 	.area HOME    (CODE)
+                                    846 ;--------------------------------------------------------
+                                    847 ; code
+                                    848 ;--------------------------------------------------------
+                                    849 	.area CSEG    (CODE)
+                                    850 ;------------------------------------------------------------
+                                    851 ;Allocation info for local variables in function 'TempController_mapTempToVoltageLinear'
+                                    852 ;------------------------------------------------------------
+                                    853 ;temp                      Allocated with name '_TempController_mapTempToVoltageLinear_temp_65536_192'
+                                    854 ;voltage                   Allocated with name '_TempController_mapTempToVoltageLinear_voltage_65536_193'
+                                    855 ;------------------------------------------------------------
+                                    856 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:10: static float TempController_mapTempToVoltageLinear(float temp) {
+                                    857 ;	-----------------------------------------
+                                    858 ;	 function TempController_mapTempToVoltageLinear
+                                    859 ;	-----------------------------------------
+      000000                        860 _TempController_mapTempToVoltageLinear:
+                           000007   861 	ar7 = 0x07
+                           000006   862 	ar6 = 0x06
+                           000005   863 	ar5 = 0x05
+                           000004   864 	ar4 = 0x04
+                           000003   865 	ar3 = 0x03
+                           000002   866 	ar2 = 0x02
+                           000001   867 	ar1 = 0x01
+                           000000   868 	ar0 = 0x00
+      000000 AF 82            [24]  869 	mov	r7,dpl
+      000002 AE 83            [24]  870 	mov	r6,dph
+      000004 AD F0            [24]  871 	mov	r5,b
+      000006 FC               [12]  872 	mov	r4,a
+      000007 90r00r00         [24]  873 	mov	dptr,#_TempController_mapTempToVoltageLinear_temp_65536_192
+      00000A EF               [12]  874 	mov	a,r7
+      00000B F0               [24]  875 	movx	@dptr,a
+      00000C EE               [12]  876 	mov	a,r6
+      00000D A3               [24]  877 	inc	dptr
+      00000E F0               [24]  878 	movx	@dptr,a
+      00000F ED               [12]  879 	mov	a,r5
+      000010 A3               [24]  880 	inc	dptr
+      000011 F0               [24]  881 	movx	@dptr,a
+      000012 EC               [12]  882 	mov	a,r4
+      000013 A3               [24]  883 	inc	dptr
+      000014 F0               [24]  884 	movx	@dptr,a
+                                    885 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:11: float voltage = TEMP_VOLTAGE_K * temp + TEMP_VOLTAGE_B;
+      000015 90r00r00         [24]  886 	mov	dptr,#_TempController_mapTempToVoltageLinear_temp_65536_192
+      000018 E0               [24]  887 	movx	a,@dptr
+      000019 C0 E0            [24]  888 	push	acc
+      00001B A3               [24]  889 	inc	dptr
+      00001C E0               [24]  890 	movx	a,@dptr
+      00001D C0 E0            [24]  891 	push	acc
+      00001F A3               [24]  892 	inc	dptr
+      000020 E0               [24]  893 	movx	a,@dptr
+      000021 C0 E0            [24]  894 	push	acc
+      000023 A3               [24]  895 	inc	dptr
+      000024 E0               [24]  896 	movx	a,@dptr
+      000025 C0 E0            [24]  897 	push	acc
+      000027 90 00 00         [24]  898 	mov	dptr,#(0x00&0x00ff)
+      00002A E4               [12]  899 	clr	a
+      00002B F5 F0            [12]  900 	mov	b,a
+      00002D 74 3F            [12]  901 	mov	a,#0x3f
+      00002F 12r00r00         [24]  902 	lcall	___fsmul
+      000032 AC 82            [24]  903 	mov	r4,dpl
+      000034 AD 83            [24]  904 	mov	r5,dph
+      000036 AE F0            [24]  905 	mov	r6,b
+      000038 FF               [12]  906 	mov	r7,a
+      000039 E5 81            [12]  907 	mov	a,sp
+      00003B 24 FC            [12]  908 	add	a,#0xfc
+      00003D F5 81            [12]  909 	mov	sp,a
+      00003F E4               [12]  910 	clr	a
+      000040 C0 E0            [24]  911 	push	acc
+      000042 C0 E0            [24]  912 	push	acc
+      000044 74 20            [12]  913 	mov	a,#0x20
+      000046 C0 E0            [24]  914 	push	acc
+      000048 74 41            [12]  915 	mov	a,#0x41
+      00004A C0 E0            [24]  916 	push	acc
+      00004C 8C 82            [24]  917 	mov	dpl,r4
+      00004E 8D 83            [24]  918 	mov	dph,r5
+      000050 8E F0            [24]  919 	mov	b,r6
+      000052 EF               [12]  920 	mov	a,r7
+      000053 12r00r00         [24]  921 	lcall	___fsadd
+      000056 AC 82            [24]  922 	mov	r4,dpl
+      000058 AD 83            [24]  923 	mov	r5,dph
+      00005A AE F0            [24]  924 	mov	r6,b
+      00005C FF               [12]  925 	mov	r7,a
+      00005D E5 81            [12]  926 	mov	a,sp
+      00005F 24 FC            [12]  927 	add	a,#0xfc
+      000061 F5 81            [12]  928 	mov	sp,a
+      000063 90r00r04         [24]  929 	mov	dptr,#_TempController_mapTempToVoltageLinear_voltage_65536_193
+      000066 EC               [12]  930 	mov	a,r4
+      000067 F0               [24]  931 	movx	@dptr,a
+      000068 ED               [12]  932 	mov	a,r5
+      000069 A3               [24]  933 	inc	dptr
+      00006A F0               [24]  934 	movx	@dptr,a
+      00006B EE               [12]  935 	mov	a,r6
+      00006C A3               [24]  936 	inc	dptr
+      00006D F0               [24]  937 	movx	@dptr,a
+      00006E EF               [12]  938 	mov	a,r7
+      00006F A3               [24]  939 	inc	dptr
+      000070 F0               [24]  940 	movx	@dptr,a
+                                    941 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:12: if (voltage < VOUT_MIN) voltage = VOUT_MIN;
+      000071 E4               [12]  942 	clr	a
+      000072 C0 E0            [24]  943 	push	acc
+      000074 C0 E0            [24]  944 	push	acc
+      000076 74 A0            [12]  945 	mov	a,#0xa0
+      000078 C0 E0            [24]  946 	push	acc
+      00007A 74 40            [12]  947 	mov	a,#0x40
+      00007C C0 E0            [24]  948 	push	acc
+      00007E 8C 82            [24]  949 	mov	dpl,r4
+      000080 8D 83            [24]  950 	mov	dph,r5
+      000082 8E F0            [24]  951 	mov	b,r6
+      000084 EF               [12]  952 	mov	a,r7
+      000085 12r00r00         [24]  953 	lcall	___fslt
+      000088 AF 82            [24]  954 	mov	r7,dpl
+      00008A E5 81            [12]  955 	mov	a,sp
+      00008C 24 FC            [12]  956 	add	a,#0xfc
+      00008E F5 81            [12]  957 	mov	sp,a
+      000090 EF               [12]  958 	mov	a,r7
+      000091 60 0F            [24]  959 	jz	00102$
+      000093 90r00r04         [24]  960 	mov	dptr,#_TempController_mapTempToVoltageLinear_voltage_65536_193
+      000096 E4               [12]  961 	clr	a
+      000097 F0               [24]  962 	movx	@dptr,a
+      000098 A3               [24]  963 	inc	dptr
+      000099 F0               [24]  964 	movx	@dptr,a
+      00009A 74 A0            [12]  965 	mov	a,#0xa0
+      00009C A3               [24]  966 	inc	dptr
+      00009D F0               [24]  967 	movx	@dptr,a
+      00009E 74 40            [12]  968 	mov	a,#0x40
+      0000A0 A3               [24]  969 	inc	dptr
+      0000A1 F0               [24]  970 	movx	@dptr,a
+      0000A2                        971 00102$:
+                                    972 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:13: if (voltage > VOUT_MAX) voltage = VOUT_MAX;
+      0000A2 90r00r04         [24]  973 	mov	dptr,#_TempController_mapTempToVoltageLinear_voltage_65536_193
+      0000A5 E0               [24]  974 	movx	a,@dptr
+      0000A6 C0 E0            [24]  975 	push	acc
+      0000A8 A3               [24]  976 	inc	dptr
+      0000A9 E0               [24]  977 	movx	a,@dptr
+      0000AA C0 E0            [24]  978 	push	acc
+      0000AC A3               [24]  979 	inc	dptr
+      0000AD E0               [24]  980 	movx	a,@dptr
+      0000AE C0 E0            [24]  981 	push	acc
+      0000B0 A3               [24]  982 	inc	dptr
+      0000B1 E0               [24]  983 	movx	a,@dptr
+      0000B2 C0 E0            [24]  984 	push	acc
+      0000B4 90 00 00         [24]  985 	mov	dptr,#0x0000
+      0000B7 75 F0 40         [24]  986 	mov	b,#0x40
+      0000BA 74 41            [12]  987 	mov	a,#0x41
+      0000BC 12r00r00         [24]  988 	lcall	___fslt
+      0000BF AF 82            [24]  989 	mov	r7,dpl
+      0000C1 E5 81            [12]  990 	mov	a,sp
+      0000C3 24 FC            [12]  991 	add	a,#0xfc
+      0000C5 F5 81            [12]  992 	mov	sp,a
+      0000C7 EF               [12]  993 	mov	a,r7
+      0000C8 60 0E            [24]  994 	jz	00104$
+      0000CA 90r00r04         [24]  995 	mov	dptr,#_TempController_mapTempToVoltageLinear_voltage_65536_193
+      0000CD E4               [12]  996 	clr	a
+      0000CE F0               [24]  997 	movx	@dptr,a
+      0000CF A3               [24]  998 	inc	dptr
+      0000D0 F0               [24]  999 	movx	@dptr,a
+      0000D1 74 40            [12] 1000 	mov	a,#0x40
+      0000D3 A3               [24] 1001 	inc	dptr
+      0000D4 F0               [24] 1002 	movx	@dptr,a
+      0000D5 04               [12] 1003 	inc	a
+      0000D6 A3               [24] 1004 	inc	dptr
+      0000D7 F0               [24] 1005 	movx	@dptr,a
+      0000D8                       1006 00104$:
+                                   1007 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:14: return voltage;
+      0000D8 90r00r04         [24] 1008 	mov	dptr,#_TempController_mapTempToVoltageLinear_voltage_65536_193
+      0000DB E0               [24] 1009 	movx	a,@dptr
+      0000DC FC               [12] 1010 	mov	r4,a
+      0000DD A3               [24] 1011 	inc	dptr
+      0000DE E0               [24] 1012 	movx	a,@dptr
+      0000DF FD               [12] 1013 	mov	r5,a
+      0000E0 A3               [24] 1014 	inc	dptr
+      0000E1 E0               [24] 1015 	movx	a,@dptr
+      0000E2 FE               [12] 1016 	mov	r6,a
+      0000E3 A3               [24] 1017 	inc	dptr
+      0000E4 E0               [24] 1018 	movx	a,@dptr
+      0000E5 8C 82            [24] 1019 	mov	dpl,r4
+      0000E7 8D 83            [24] 1020 	mov	dph,r5
+      0000E9 8E F0            [24] 1021 	mov	b,r6
+                                   1022 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:15: }
+      0000EB 22               [24] 1023 	ret
+                                   1024 ;------------------------------------------------------------
+                                   1025 ;Allocation info for local variables in function 'TempController_mapTempToVoltageQuadratic'
+                                   1026 ;------------------------------------------------------------
+                                   1027 ;temp                      Allocated with name '_TempController_mapTempToVoltageQuadratic_temp_65536_194'
+                                   1028 ;norm_temp                 Allocated with name '_TempController_mapTempToVoltageQuadratic_norm_temp_65536_195'
+                                   1029 ;voltage                   Allocated with name '_TempController_mapTempToVoltageQuadratic_voltage_65536_195'
+                                   1030 ;------------------------------------------------------------
+                                   1031 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:17: static float TempController_mapTempToVoltageQuadratic(float temp) {
+                                   1032 ;	-----------------------------------------
+                                   1033 ;	 function TempController_mapTempToVoltageQuadratic
+                                   1034 ;	-----------------------------------------
+      0000EC                       1035 _TempController_mapTempToVoltageQuadratic:
+      0000EC AF 82            [24] 1036 	mov	r7,dpl
+      0000EE AE 83            [24] 1037 	mov	r6,dph
+      0000F0 AD F0            [24] 1038 	mov	r5,b
+      0000F2 FC               [12] 1039 	mov	r4,a
+      0000F3 90r00r08         [24] 1040 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_temp_65536_194
+      0000F6 EF               [12] 1041 	mov	a,r7
+      0000F7 F0               [24] 1042 	movx	@dptr,a
+      0000F8 EE               [12] 1043 	mov	a,r6
+      0000F9 A3               [24] 1044 	inc	dptr
+      0000FA F0               [24] 1045 	movx	@dptr,a
+      0000FB ED               [12] 1046 	mov	a,r5
+      0000FC A3               [24] 1047 	inc	dptr
+      0000FD F0               [24] 1048 	movx	@dptr,a
+      0000FE EC               [12] 1049 	mov	a,r4
+      0000FF A3               [24] 1050 	inc	dptr
+      000100 F0               [24] 1051 	movx	@dptr,a
+                                   1052 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:18: float norm_temp = (temp - TEMP_MIN) / (TEMP_MAX - TEMP_MIN);
+      000101 90r00r08         [24] 1053 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_temp_65536_194
+      000104 E0               [24] 1054 	movx	a,@dptr
+      000105 FC               [12] 1055 	mov	r4,a
+      000106 A3               [24] 1056 	inc	dptr
+      000107 E0               [24] 1057 	movx	a,@dptr
+      000108 FD               [12] 1058 	mov	r5,a
+      000109 A3               [24] 1059 	inc	dptr
+      00010A E0               [24] 1060 	movx	a,@dptr
+      00010B FE               [12] 1061 	mov	r6,a
+      00010C A3               [24] 1062 	inc	dptr
+      00010D E0               [24] 1063 	movx	a,@dptr
+      00010E FF               [12] 1064 	mov	r7,a
+      00010F E4               [12] 1065 	clr	a
+      000110 C0 E0            [24] 1066 	push	acc
+      000112 C0 E0            [24] 1067 	push	acc
+      000114 74 F0            [12] 1068 	mov	a,#0xf0
+      000116 C0 E0            [24] 1069 	push	acc
+      000118 74 41            [12] 1070 	mov	a,#0x41
+      00011A C0 E0            [24] 1071 	push	acc
+      00011C 8C 82            [24] 1072 	mov	dpl,r4
+      00011E 8D 83            [24] 1073 	mov	dph,r5
+      000120 8E F0            [24] 1074 	mov	b,r6
+      000122 EF               [12] 1075 	mov	a,r7
+      000123 12r00r00         [24] 1076 	lcall	___fssub
+      000126 AC 82            [24] 1077 	mov	r4,dpl
+      000128 AD 83            [24] 1078 	mov	r5,dph
+      00012A AE F0            [24] 1079 	mov	r6,b
+      00012C FF               [12] 1080 	mov	r7,a
+      00012D E5 81            [12] 1081 	mov	a,sp
+      00012F 24 FC            [12] 1082 	add	a,#0xfc
+      000131 F5 81            [12] 1083 	mov	sp,a
+      000133 E4               [12] 1084 	clr	a
+      000134 C0 E0            [24] 1085 	push	acc
+      000136 C0 E0            [24] 1086 	push	acc
+      000138 74 70            [12] 1087 	mov	a,#0x70
+      00013A C0 E0            [24] 1088 	push	acc
+      00013C 74 41            [12] 1089 	mov	a,#0x41
+      00013E C0 E0            [24] 1090 	push	acc
+      000140 8C 82            [24] 1091 	mov	dpl,r4
+      000142 8D 83            [24] 1092 	mov	dph,r5
+      000144 8E F0            [24] 1093 	mov	b,r6
+      000146 EF               [12] 1094 	mov	a,r7
+      000147 12r00r00         [24] 1095 	lcall	___fsdiv
+      00014A AC 82            [24] 1096 	mov	r4,dpl
+      00014C AD 83            [24] 1097 	mov	r5,dph
+      00014E AE F0            [24] 1098 	mov	r6,b
+      000150 FF               [12] 1099 	mov	r7,a
+      000151 E5 81            [12] 1100 	mov	a,sp
+      000153 24 FC            [12] 1101 	add	a,#0xfc
+      000155 F5 81            [12] 1102 	mov	sp,a
+      000157 90r00r0C         [24] 1103 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_norm_temp_65536_195
+      00015A EC               [12] 1104 	mov	a,r4
+      00015B F0               [24] 1105 	movx	@dptr,a
+      00015C ED               [12] 1106 	mov	a,r5
+      00015D A3               [24] 1107 	inc	dptr
+      00015E F0               [24] 1108 	movx	@dptr,a
+      00015F EE               [12] 1109 	mov	a,r6
+      000160 A3               [24] 1110 	inc	dptr
+      000161 F0               [24] 1111 	movx	@dptr,a
+      000162 EF               [12] 1112 	mov	a,r7
+      000163 A3               [24] 1113 	inc	dptr
+      000164 F0               [24] 1114 	movx	@dptr,a
+                                   1115 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:21: if (norm_temp < 0.0f) norm_temp = 0.0f;
+      000165 E4               [12] 1116 	clr	a
+      000166 C0 E0            [24] 1117 	push	acc
+      000168 C0 E0            [24] 1118 	push	acc
+      00016A C0 E0            [24] 1119 	push	acc
+      00016C C0 E0            [24] 1120 	push	acc
+      00016E 8C 82            [24] 1121 	mov	dpl,r4
+      000170 8D 83            [24] 1122 	mov	dph,r5
+      000172 8E F0            [24] 1123 	mov	b,r6
+      000174 EF               [12] 1124 	mov	a,r7
+      000175 12r00r00         [24] 1125 	lcall	___fslt
+      000178 AF 82            [24] 1126 	mov	r7,dpl
+      00017A E5 81            [12] 1127 	mov	a,sp
+      00017C 24 FC            [12] 1128 	add	a,#0xfc
+      00017E F5 81            [12] 1129 	mov	sp,a
+      000180 EF               [12] 1130 	mov	a,r7
+      000181 60 0B            [24] 1131 	jz	00102$
+      000183 90r00r0C         [24] 1132 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_norm_temp_65536_195
+      000186 E4               [12] 1133 	clr	a
+      000187 F0               [24] 1134 	movx	@dptr,a
+      000188 A3               [24] 1135 	inc	dptr
+      000189 F0               [24] 1136 	movx	@dptr,a
+      00018A A3               [24] 1137 	inc	dptr
+      00018B F0               [24] 1138 	movx	@dptr,a
+      00018C A3               [24] 1139 	inc	dptr
+      00018D F0               [24] 1140 	movx	@dptr,a
+      00018E                       1141 00102$:
+                                   1142 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:22: if (norm_temp > 1.0f) norm_temp = 1.0f;
+      00018E 90r00r0C         [24] 1143 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_norm_temp_65536_195
+      000191 E0               [24] 1144 	movx	a,@dptr
+      000192 C0 E0            [24] 1145 	push	acc
+      000194 A3               [24] 1146 	inc	dptr
+      000195 E0               [24] 1147 	movx	a,@dptr
+      000196 C0 E0            [24] 1148 	push	acc
+      000198 A3               [24] 1149 	inc	dptr
+      000199 E0               [24] 1150 	movx	a,@dptr
+      00019A C0 E0            [24] 1151 	push	acc
+      00019C A3               [24] 1152 	inc	dptr
+      00019D E0               [24] 1153 	movx	a,@dptr
+      00019E C0 E0            [24] 1154 	push	acc
+      0001A0 90 00 00         [24] 1155 	mov	dptr,#0x0000
+      0001A3 75 F0 80         [24] 1156 	mov	b,#0x80
+      0001A6 74 3F            [12] 1157 	mov	a,#0x3f
+      0001A8 12r00r00         [24] 1158 	lcall	___fslt
+      0001AB AF 82            [24] 1159 	mov	r7,dpl
+      0001AD E5 81            [12] 1160 	mov	a,sp
+      0001AF 24 FC            [12] 1161 	add	a,#0xfc
+      0001B1 F5 81            [12] 1162 	mov	sp,a
+      0001B3 EF               [12] 1163 	mov	a,r7
+      0001B4 60 0F            [24] 1164 	jz	00104$
+      0001B6 90r00r0C         [24] 1165 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_norm_temp_65536_195
+      0001B9 E4               [12] 1166 	clr	a
+      0001BA F0               [24] 1167 	movx	@dptr,a
+      0001BB A3               [24] 1168 	inc	dptr
+      0001BC F0               [24] 1169 	movx	@dptr,a
+      0001BD 74 80            [12] 1170 	mov	a,#0x80
+      0001BF A3               [24] 1171 	inc	dptr
+      0001C0 F0               [24] 1172 	movx	@dptr,a
+      0001C1 74 3F            [12] 1173 	mov	a,#0x3f
+      0001C3 A3               [24] 1174 	inc	dptr
+      0001C4 F0               [24] 1175 	movx	@dptr,a
+      0001C5                       1176 00104$:
+                                   1177 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:24: voltage = VOUT_MIN + (VOUT_MAX - VOUT_MIN) * norm_temp * norm_temp;
+      0001C5 90r00r0C         [24] 1178 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_norm_temp_65536_195
+      0001C8 E0               [24] 1179 	movx	a,@dptr
+      0001C9 FC               [12] 1180 	mov	r4,a
+      0001CA A3               [24] 1181 	inc	dptr
+      0001CB E0               [24] 1182 	movx	a,@dptr
+      0001CC FD               [12] 1183 	mov	r5,a
+      0001CD A3               [24] 1184 	inc	dptr
+      0001CE E0               [24] 1185 	movx	a,@dptr
+      0001CF FE               [12] 1186 	mov	r6,a
+      0001D0 A3               [24] 1187 	inc	dptr
+      0001D1 E0               [24] 1188 	movx	a,@dptr
+      0001D2 FF               [12] 1189 	mov	r7,a
+      0001D3 C0 07            [24] 1190 	push	ar7
+      0001D5 C0 06            [24] 1191 	push	ar6
+      0001D7 C0 05            [24] 1192 	push	ar5
+      0001D9 C0 04            [24] 1193 	push	ar4
+      0001DB C0 04            [24] 1194 	push	ar4
+      0001DD C0 05            [24] 1195 	push	ar5
+      0001DF C0 06            [24] 1196 	push	ar6
+      0001E1 C0 07            [24] 1197 	push	ar7
+      0001E3 90 00 00         [24] 1198 	mov	dptr,#0x0000
+      0001E6 75 F0 E0         [24] 1199 	mov	b,#0xe0
+      0001E9 74 40            [12] 1200 	mov	a,#0x40
+      0001EB 12r00r00         [24] 1201 	lcall	___fsmul
+      0001EE A8 82            [24] 1202 	mov	r0,dpl
+      0001F0 A9 83            [24] 1203 	mov	r1,dph
+      0001F2 AA F0            [24] 1204 	mov	r2,b
+      0001F4 FB               [12] 1205 	mov	r3,a
+      0001F5 E5 81            [12] 1206 	mov	a,sp
+      0001F7 24 FC            [12] 1207 	add	a,#0xfc
+      0001F9 F5 81            [12] 1208 	mov	sp,a
+      0001FB D0 04            [24] 1209 	pop	ar4
+      0001FD D0 05            [24] 1210 	pop	ar5
+      0001FF D0 06            [24] 1211 	pop	ar6
+      000201 D0 07            [24] 1212 	pop	ar7
+      000203 C0 04            [24] 1213 	push	ar4
+      000205 C0 05            [24] 1214 	push	ar5
+      000207 C0 06            [24] 1215 	push	ar6
+      000209 C0 07            [24] 1216 	push	ar7
+      00020B 88 82            [24] 1217 	mov	dpl,r0
+      00020D 89 83            [24] 1218 	mov	dph,r1
+      00020F 8A F0            [24] 1219 	mov	b,r2
+      000211 EB               [12] 1220 	mov	a,r3
+      000212 12r00r00         [24] 1221 	lcall	___fsmul
+      000215 AC 82            [24] 1222 	mov	r4,dpl
+      000217 AD 83            [24] 1223 	mov	r5,dph
+      000219 AE F0            [24] 1224 	mov	r6,b
+      00021B FF               [12] 1225 	mov	r7,a
+      00021C E5 81            [12] 1226 	mov	a,sp
+      00021E 24 FC            [12] 1227 	add	a,#0xfc
+      000220 F5 81            [12] 1228 	mov	sp,a
+      000222 E4               [12] 1229 	clr	a
+      000223 C0 E0            [24] 1230 	push	acc
+      000225 C0 E0            [24] 1231 	push	acc
+      000227 74 A0            [12] 1232 	mov	a,#0xa0
+      000229 C0 E0            [24] 1233 	push	acc
+      00022B 74 40            [12] 1234 	mov	a,#0x40
+      00022D C0 E0            [24] 1235 	push	acc
+      00022F 8C 82            [24] 1236 	mov	dpl,r4
+      000231 8D 83            [24] 1237 	mov	dph,r5
+      000233 8E F0            [24] 1238 	mov	b,r6
+      000235 EF               [12] 1239 	mov	a,r7
+      000236 12r00r00         [24] 1240 	lcall	___fsadd
+      000239 AC 82            [24] 1241 	mov	r4,dpl
+      00023B AD 83            [24] 1242 	mov	r5,dph
+      00023D AE F0            [24] 1243 	mov	r6,b
+      00023F FF               [12] 1244 	mov	r7,a
+      000240 E5 81            [12] 1245 	mov	a,sp
+      000242 24 FC            [12] 1246 	add	a,#0xfc
+      000244 F5 81            [12] 1247 	mov	sp,a
+      000246 90r00r10         [24] 1248 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_voltage_65536_195
+      000249 EC               [12] 1249 	mov	a,r4
+      00024A F0               [24] 1250 	movx	@dptr,a
+      00024B ED               [12] 1251 	mov	a,r5
+      00024C A3               [24] 1252 	inc	dptr
+      00024D F0               [24] 1253 	movx	@dptr,a
+      00024E EE               [12] 1254 	mov	a,r6
+      00024F A3               [24] 1255 	inc	dptr
+      000250 F0               [24] 1256 	movx	@dptr,a
+      000251 EF               [12] 1257 	mov	a,r7
+      000252 A3               [24] 1258 	inc	dptr
+      000253 F0               [24] 1259 	movx	@dptr,a
+                                   1260 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:25: if (voltage < VOUT_MIN) voltage = VOUT_MIN;
+      000254 E4               [12] 1261 	clr	a
+      000255 C0 E0            [24] 1262 	push	acc
+      000257 C0 E0            [24] 1263 	push	acc
+      000259 74 A0            [12] 1264 	mov	a,#0xa0
+      00025B C0 E0            [24] 1265 	push	acc
+      00025D 74 40            [12] 1266 	mov	a,#0x40
+      00025F C0 E0            [24] 1267 	push	acc
+      000261 8C 82            [24] 1268 	mov	dpl,r4
+      000263 8D 83            [24] 1269 	mov	dph,r5
+      000265 8E F0            [24] 1270 	mov	b,r6
+      000267 EF               [12] 1271 	mov	a,r7
+      000268 12r00r00         [24] 1272 	lcall	___fslt
+      00026B AF 82            [24] 1273 	mov	r7,dpl
+      00026D E5 81            [12] 1274 	mov	a,sp
+      00026F 24 FC            [12] 1275 	add	a,#0xfc
+      000271 F5 81            [12] 1276 	mov	sp,a
+      000273 EF               [12] 1277 	mov	a,r7
+      000274 60 0F            [24] 1278 	jz	00106$
+      000276 90r00r10         [24] 1279 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_voltage_65536_195
+      000279 E4               [12] 1280 	clr	a
+      00027A F0               [24] 1281 	movx	@dptr,a
+      00027B A3               [24] 1282 	inc	dptr
+      00027C F0               [24] 1283 	movx	@dptr,a
+      00027D 74 A0            [12] 1284 	mov	a,#0xa0
+      00027F A3               [24] 1285 	inc	dptr
+      000280 F0               [24] 1286 	movx	@dptr,a
+      000281 74 40            [12] 1287 	mov	a,#0x40
+      000283 A3               [24] 1288 	inc	dptr
+      000284 F0               [24] 1289 	movx	@dptr,a
+      000285                       1290 00106$:
+                                   1291 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:26: if (voltage > VOUT_MAX) voltage = VOUT_MAX;
+      000285 90r00r10         [24] 1292 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_voltage_65536_195
+      000288 E0               [24] 1293 	movx	a,@dptr
+      000289 C0 E0            [24] 1294 	push	acc
+      00028B A3               [24] 1295 	inc	dptr
+      00028C E0               [24] 1296 	movx	a,@dptr
+      00028D C0 E0            [24] 1297 	push	acc
+      00028F A3               [24] 1298 	inc	dptr
+      000290 E0               [24] 1299 	movx	a,@dptr
+      000291 C0 E0            [24] 1300 	push	acc
+      000293 A3               [24] 1301 	inc	dptr
+      000294 E0               [24] 1302 	movx	a,@dptr
+      000295 C0 E0            [24] 1303 	push	acc
+      000297 90 00 00         [24] 1304 	mov	dptr,#0x0000
+      00029A 75 F0 40         [24] 1305 	mov	b,#0x40
+      00029D 74 41            [12] 1306 	mov	a,#0x41
+      00029F 12r00r00         [24] 1307 	lcall	___fslt
+      0002A2 AF 82            [24] 1308 	mov	r7,dpl
+      0002A4 E5 81            [12] 1309 	mov	a,sp
+      0002A6 24 FC            [12] 1310 	add	a,#0xfc
+      0002A8 F5 81            [12] 1311 	mov	sp,a
+      0002AA EF               [12] 1312 	mov	a,r7
+      0002AB 60 0E            [24] 1313 	jz	00108$
+      0002AD 90r00r10         [24] 1314 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_voltage_65536_195
+      0002B0 E4               [12] 1315 	clr	a
+      0002B1 F0               [24] 1316 	movx	@dptr,a
+      0002B2 A3               [24] 1317 	inc	dptr
+      0002B3 F0               [24] 1318 	movx	@dptr,a
+      0002B4 74 40            [12] 1319 	mov	a,#0x40
+      0002B6 A3               [24] 1320 	inc	dptr
+      0002B7 F0               [24] 1321 	movx	@dptr,a
+      0002B8 04               [12] 1322 	inc	a
+      0002B9 A3               [24] 1323 	inc	dptr
+      0002BA F0               [24] 1324 	movx	@dptr,a
+      0002BB                       1325 00108$:
+                                   1326 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:27: return voltage;
+      0002BB 90r00r10         [24] 1327 	mov	dptr,#_TempController_mapTempToVoltageQuadratic_voltage_65536_195
+      0002BE E0               [24] 1328 	movx	a,@dptr
+      0002BF FC               [12] 1329 	mov	r4,a
+      0002C0 A3               [24] 1330 	inc	dptr
+      0002C1 E0               [24] 1331 	movx	a,@dptr
+      0002C2 FD               [12] 1332 	mov	r5,a
+      0002C3 A3               [24] 1333 	inc	dptr
+      0002C4 E0               [24] 1334 	movx	a,@dptr
+      0002C5 FE               [12] 1335 	mov	r6,a
+      0002C6 A3               [24] 1336 	inc	dptr
+      0002C7 E0               [24] 1337 	movx	a,@dptr
+      0002C8 8C 82            [24] 1338 	mov	dpl,r4
+      0002CA 8D 83            [24] 1339 	mov	dph,r5
+      0002CC 8E F0            [24] 1340 	mov	b,r6
+                                   1341 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:28: }
+      0002CE 22               [24] 1342 	ret
+                                   1343 ;------------------------------------------------------------
+                                   1344 ;Allocation info for local variables in function 'TempController_mapTempToRPM'
+                                   1345 ;------------------------------------------------------------
+                                   1346 ;sloc0                     Allocated with name '_TempController_mapTempToRPM_sloc0_1_0'
+                                   1347 ;temp                      Allocated with name '_TempController_mapTempToRPM_temp_65536_196'
+                                   1348 ;norm                      Allocated with name '_TempController_mapTempToRPM_norm_65536_197'
+                                   1349 ;------------------------------------------------------------
+                                   1350 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:30: static uint32_t TempController_mapTempToRPM(float temp) {
+                                   1351 ;	-----------------------------------------
+                                   1352 ;	 function TempController_mapTempToRPM
+                                   1353 ;	-----------------------------------------
+      0002CF                       1354 _TempController_mapTempToRPM:
+      0002CF AF 82            [24] 1355 	mov	r7,dpl
+      0002D1 AE 83            [24] 1356 	mov	r6,dph
+      0002D3 AD F0            [24] 1357 	mov	r5,b
+      0002D5 FC               [12] 1358 	mov	r4,a
+      0002D6 90r00r14         [24] 1359 	mov	dptr,#_TempController_mapTempToRPM_temp_65536_196
+      0002D9 EF               [12] 1360 	mov	a,r7
+      0002DA F0               [24] 1361 	movx	@dptr,a
+      0002DB EE               [12] 1362 	mov	a,r6
+      0002DC A3               [24] 1363 	inc	dptr
+      0002DD F0               [24] 1364 	movx	@dptr,a
+      0002DE ED               [12] 1365 	mov	a,r5
+      0002DF A3               [24] 1366 	inc	dptr
+      0002E0 F0               [24] 1367 	movx	@dptr,a
+      0002E1 EC               [12] 1368 	mov	a,r4
+      0002E2 A3               [24] 1369 	inc	dptr
+      0002E3 F0               [24] 1370 	movx	@dptr,a
+                                   1371 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:31: float norm = (temp - TEMP_MIN) / (TEMP_MAX - TEMP_MIN);
+      0002E4 90r00r14         [24] 1372 	mov	dptr,#_TempController_mapTempToRPM_temp_65536_196
+      0002E7 E0               [24] 1373 	movx	a,@dptr
+      0002E8 FC               [12] 1374 	mov	r4,a
+      0002E9 A3               [24] 1375 	inc	dptr
+      0002EA E0               [24] 1376 	movx	a,@dptr
+      0002EB FD               [12] 1377 	mov	r5,a
+      0002EC A3               [24] 1378 	inc	dptr
+      0002ED E0               [24] 1379 	movx	a,@dptr
+      0002EE FE               [12] 1380 	mov	r6,a
+      0002EF A3               [24] 1381 	inc	dptr
+      0002F0 E0               [24] 1382 	movx	a,@dptr
+      0002F1 FF               [12] 1383 	mov	r7,a
+      0002F2 E4               [12] 1384 	clr	a
+      0002F3 C0 E0            [24] 1385 	push	acc
+      0002F5 C0 E0            [24] 1386 	push	acc
+      0002F7 74 F0            [12] 1387 	mov	a,#0xf0
+      0002F9 C0 E0            [24] 1388 	push	acc
+      0002FB 74 41            [12] 1389 	mov	a,#0x41
+      0002FD C0 E0            [24] 1390 	push	acc
+      0002FF 8C 82            [24] 1391 	mov	dpl,r4
+      000301 8D 83            [24] 1392 	mov	dph,r5
+      000303 8E F0            [24] 1393 	mov	b,r6
+      000305 EF               [12] 1394 	mov	a,r7
+      000306 12r00r00         [24] 1395 	lcall	___fssub
+      000309 AC 82            [24] 1396 	mov	r4,dpl
+      00030B AD 83            [24] 1397 	mov	r5,dph
+      00030D AE F0            [24] 1398 	mov	r6,b
+      00030F FF               [12] 1399 	mov	r7,a
+      000310 E5 81            [12] 1400 	mov	a,sp
+      000312 24 FC            [12] 1401 	add	a,#0xfc
+      000314 F5 81            [12] 1402 	mov	sp,a
+      000316 E4               [12] 1403 	clr	a
+      000317 C0 E0            [24] 1404 	push	acc
+      000319 C0 E0            [24] 1405 	push	acc
+      00031B 74 70            [12] 1406 	mov	a,#0x70
+      00031D C0 E0            [24] 1407 	push	acc
+      00031F 74 41            [12] 1408 	mov	a,#0x41
+      000321 C0 E0            [24] 1409 	push	acc
+                                   1410 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:32: norm = (norm < 0.0f) ? 0.0f : (norm > 1.0f) ? 1.0f : norm;
+      000323 8C 82            [24] 1411 	mov	dpl,r4
+      000325 8D 83            [24] 1412 	mov	dph,r5
+      000327 8E F0            [24] 1413 	mov	b,r6
+      000329 EF               [12] 1414 	mov	a,r7
+      00032A 12r00r00         [24] 1415 	lcall	___fsdiv
+      00032D 85 82*00         [24] 1416 	mov	_TempController_mapTempToRPM_sloc0_1_0,dpl
+      000330 85 83*01         [24] 1417 	mov	(_TempController_mapTempToRPM_sloc0_1_0 + 1),dph
+      000333 85 F0*02         [24] 1418 	mov	(_TempController_mapTempToRPM_sloc0_1_0 + 2),b
+      000336 F5*03            [12] 1419 	mov	(_TempController_mapTempToRPM_sloc0_1_0 + 3),a
+      000338 E5 81            [12] 1420 	mov	a,sp
+      00033A 24 FC            [12] 1421 	add	a,#0xfc
+      00033C F5 81            [12] 1422 	mov	sp,a
+      00033E E4               [12] 1423 	clr	a
+      00033F C0 E0            [24] 1424 	push	acc
+      000341 C0 E0            [24] 1425 	push	acc
+      000343 C0 E0            [24] 1426 	push	acc
+      000345 C0 E0            [24] 1427 	push	acc
+      000347 85*00 82         [24] 1428 	mov	dpl,_TempController_mapTempToRPM_sloc0_1_0
+      00034A 85*01 83         [24] 1429 	mov	dph,(_TempController_mapTempToRPM_sloc0_1_0 + 1)
+      00034D 85*02 F0         [24] 1430 	mov	b,(_TempController_mapTempToRPM_sloc0_1_0 + 2)
+      000350 E5*03            [12] 1431 	mov	a,(_TempController_mapTempToRPM_sloc0_1_0 + 3)
+      000352 12r00r00         [24] 1432 	lcall	___fslt
+      000355 AB 82            [24] 1433 	mov	r3,dpl
+      000357 E5 81            [12] 1434 	mov	a,sp
+      000359 24 FC            [12] 1435 	add	a,#0xfc
+      00035B F5 81            [12] 1436 	mov	sp,a
+      00035D EB               [12] 1437 	mov	a,r3
+      00035E 60 0A            [24] 1438 	jz	00103$
+      000360 78 00            [12] 1439 	mov	r0,#0x00
+      000362 79 00            [12] 1440 	mov	r1,#0x00
+      000364 7A 00            [12] 1441 	mov	r2,#0x00
+      000366 7B 00            [12] 1442 	mov	r3,#0x00
+      000368 80 38            [24] 1443 	sjmp	00104$
+      00036A                       1444 00103$:
+      00036A C0*00            [24] 1445 	push	_TempController_mapTempToRPM_sloc0_1_0
+      00036C C0*01            [24] 1446 	push	(_TempController_mapTempToRPM_sloc0_1_0 + 1)
+      00036E C0*02            [24] 1447 	push	(_TempController_mapTempToRPM_sloc0_1_0 + 2)
+      000370 C0*03            [24] 1448 	push	(_TempController_mapTempToRPM_sloc0_1_0 + 3)
+      000372 90 00 00         [24] 1449 	mov	dptr,#0x0000
+      000375 75 F0 80         [24] 1450 	mov	b,#0x80
+      000378 74 3F            [12] 1451 	mov	a,#0x3f
+      00037A 12r00r00         [24] 1452 	lcall	___fslt
+      00037D AF 82            [24] 1453 	mov	r7,dpl
+      00037F E5 81            [12] 1454 	mov	a,sp
+      000381 24 FC            [12] 1455 	add	a,#0xfc
+      000383 F5 81            [12] 1456 	mov	sp,a
+      000385 EF               [12] 1457 	mov	a,r7
+      000386 60 0A            [24] 1458 	jz	00105$
+      000388 7C 00            [12] 1459 	mov	r4,#0x00
+      00038A 7D 00            [12] 1460 	mov	r5,#0x00
+      00038C 7E 80            [12] 1461 	mov	r6,#0x80
+      00038E 7F 3F            [12] 1462 	mov	r7,#0x3f
+      000390 80 08            [24] 1463 	sjmp	00106$
+      000392                       1464 00105$:
+      000392 AC*00            [24] 1465 	mov	r4,_TempController_mapTempToRPM_sloc0_1_0
+      000394 AD*01            [24] 1466 	mov	r5,(_TempController_mapTempToRPM_sloc0_1_0 + 1)
+      000396 AE*02            [24] 1467 	mov	r6,(_TempController_mapTempToRPM_sloc0_1_0 + 2)
+      000398 AF*03            [24] 1468 	mov	r7,(_TempController_mapTempToRPM_sloc0_1_0 + 3)
+      00039A                       1469 00106$:
+      00039A 8C 00            [24] 1470 	mov	ar0,r4
+      00039C 8D 01            [24] 1471 	mov	ar1,r5
+      00039E 8E 02            [24] 1472 	mov	ar2,r6
+      0003A0 8F 03            [24] 1473 	mov	ar3,r7
+      0003A2                       1474 00104$:
+                                   1475 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:33: return (uint32_t)(RPM_TARGET_MIN + (RPM_TARGET_MAX - RPM_TARGET_MIN) * norm);
+      0003A2 C0 00            [24] 1476 	push	ar0
+      0003A4 C0 01            [24] 1477 	push	ar1
+      0003A6 C0 02            [24] 1478 	push	ar2
+      0003A8 C0 03            [24] 1479 	push	ar3
+      0003AA 90 00 00         [24] 1480 	mov	dptr,#0x0000
+      0003AD 75 F0 16         [24] 1481 	mov	b,#0x16
+      0003B0 74 45            [12] 1482 	mov	a,#0x45
+      0003B2 12r00r00         [24] 1483 	lcall	___fsmul
+      0003B5 AC 82            [24] 1484 	mov	r4,dpl
+      0003B7 AD 83            [24] 1485 	mov	r5,dph
+      0003B9 AE F0            [24] 1486 	mov	r6,b
+      0003BB FF               [12] 1487 	mov	r7,a
+      0003BC E5 81            [12] 1488 	mov	a,sp
+      0003BE 24 FC            [12] 1489 	add	a,#0xfc
+      0003C0 F5 81            [12] 1490 	mov	sp,a
+      0003C2 E4               [12] 1491 	clr	a
+      0003C3 C0 E0            [24] 1492 	push	acc
+      0003C5 C0 E0            [24] 1493 	push	acc
+      0003C7 74 16            [12] 1494 	mov	a,#0x16
+      0003C9 C0 E0            [24] 1495 	push	acc
+      0003CB 74 44            [12] 1496 	mov	a,#0x44
+      0003CD C0 E0            [24] 1497 	push	acc
+      0003CF 8C 82            [24] 1498 	mov	dpl,r4
+      0003D1 8D 83            [24] 1499 	mov	dph,r5
+      0003D3 8E F0            [24] 1500 	mov	b,r6
+      0003D5 EF               [12] 1501 	mov	a,r7
+      0003D6 12r00r00         [24] 1502 	lcall	___fsadd
+      0003D9 AC 82            [24] 1503 	mov	r4,dpl
+      0003DB AD 83            [24] 1504 	mov	r5,dph
+      0003DD AE F0            [24] 1505 	mov	r6,b
+      0003DF FF               [12] 1506 	mov	r7,a
+      0003E0 E5 81            [12] 1507 	mov	a,sp
+      0003E2 24 FC            [12] 1508 	add	a,#0xfc
+      0003E4 F5 81            [12] 1509 	mov	sp,a
+      0003E6 8C 82            [24] 1510 	mov	dpl,r4
+      0003E8 8D 83            [24] 1511 	mov	dph,r5
+      0003EA 8E F0            [24] 1512 	mov	b,r6
+      0003EC EF               [12] 1513 	mov	a,r7
+                                   1514 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:34: }
+      0003ED 02r00r00         [24] 1515 	ljmp	___fs2ulong
+                                   1516 ;------------------------------------------------------------
+                                   1517 ;Allocation info for local variables in function 'TempController_begin'
+                                   1518 ;------------------------------------------------------------
+                                   1519 ;sloc0                     Allocated with name '_TempController_begin_sloc0_1_0'
+                                   1520 ;sloc1                     Allocated with name '_TempController_begin_sloc1_1_0'
+                                   1521 ;sloc2                     Allocated with name '_TempController_begin_sloc2_1_0'
+                                   1522 ;sensor                    Allocated with name '_TempController_begin_PARM_2'
+                                   1523 ;vc                        Allocated with name '_TempController_begin_PARM_3'
+                                   1524 ;tc                        Allocated with name '_TempController_begin_tc_65536_198'
+                                   1525 ;test_temp                 Allocated with name '_TempController_begin_test_temp_65537_200'
+                                   1526 ;------------------------------------------------------------
+                                   1527 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:36: void TempController_begin(TempController* tc, DS18B20* sensor, VoltageController* vc) {
+                                   1528 ;	-----------------------------------------
+                                   1529 ;	 function TempController_begin
+                                   1530 ;	-----------------------------------------
+      0003F0                       1531 _TempController_begin:
+      0003F0 AF F0            [24] 1532 	mov	r7,b
+      0003F2 AE 83            [24] 1533 	mov	r6,dph
+      0003F4 E5 82            [12] 1534 	mov	a,dpl
+      0003F6 90r00r1E         [24] 1535 	mov	dptr,#_TempController_begin_tc_65536_198
+      0003F9 F0               [24] 1536 	movx	@dptr,a
+      0003FA EE               [12] 1537 	mov	a,r6
+      0003FB A3               [24] 1538 	inc	dptr
+      0003FC F0               [24] 1539 	movx	@dptr,a
+      0003FD EF               [12] 1540 	mov	a,r7
+      0003FE A3               [24] 1541 	inc	dptr
+      0003FF F0               [24] 1542 	movx	@dptr,a
+                                   1543 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:37: tc->tempSensor = sensor;
+      000400 90r00r1E         [24] 1544 	mov	dptr,#_TempController_begin_tc_65536_198
+      000403 E0               [24] 1545 	movx	a,@dptr
+      000404 FD               [12] 1546 	mov	r5,a
+      000405 A3               [24] 1547 	inc	dptr
+      000406 E0               [24] 1548 	movx	a,@dptr
+      000407 FE               [12] 1549 	mov	r6,a
+      000408 A3               [24] 1550 	inc	dptr
+      000409 E0               [24] 1551 	movx	a,@dptr
+      00040A FF               [12] 1552 	mov	r7,a
+      00040B 90r00r18         [24] 1553 	mov	dptr,#_TempController_begin_PARM_2
+      00040E E0               [24] 1554 	movx	a,@dptr
+      00040F F5*04            [12] 1555 	mov	_TempController_begin_sloc0_1_0,a
+      000411 A3               [24] 1556 	inc	dptr
+      000412 E0               [24] 1557 	movx	a,@dptr
+      000413 F5*05            [12] 1558 	mov	(_TempController_begin_sloc0_1_0 + 1),a
+      000415 A3               [24] 1559 	inc	dptr
+      000416 E0               [24] 1560 	movx	a,@dptr
+      000417 F5*06            [12] 1561 	mov	(_TempController_begin_sloc0_1_0 + 2),a
+      000419 8D 82            [24] 1562 	mov	dpl,r5
+      00041B 8E 83            [24] 1563 	mov	dph,r6
+      00041D 8F F0            [24] 1564 	mov	b,r7
+      00041F E5*04            [12] 1565 	mov	a,_TempController_begin_sloc0_1_0
+      000421 12r00r00         [24] 1566 	lcall	__gptrput
+      000424 A3               [24] 1567 	inc	dptr
+      000425 E5*05            [12] 1568 	mov	a,(_TempController_begin_sloc0_1_0 + 1)
+      000427 12r00r00         [24] 1569 	lcall	__gptrput
+      00042A A3               [24] 1570 	inc	dptr
+      00042B E5*06            [12] 1571 	mov	a,(_TempController_begin_sloc0_1_0 + 2)
+      00042D 12r00r00         [24] 1572 	lcall	__gptrput
+                                   1573 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:38: tc->voltCtrl = vc;
+      000430 74 03            [12] 1574 	mov	a,#0x03
+      000432 2D               [12] 1575 	add	a,r5
+      000433 F5*07            [12] 1576 	mov	_TempController_begin_sloc1_1_0,a
+      000435 E4               [12] 1577 	clr	a
+      000436 3E               [12] 1578 	addc	a,r6
+      000437 F5*08            [12] 1579 	mov	(_TempController_begin_sloc1_1_0 + 1),a
+      000439 8F*09            [24] 1580 	mov	(_TempController_begin_sloc1_1_0 + 2),r7
+      00043B 90r00r1B         [24] 1581 	mov	dptr,#_TempController_begin_PARM_3
+      00043E E0               [24] 1582 	movx	a,@dptr
+      00043F FA               [12] 1583 	mov	r2,a
+      000440 A3               [24] 1584 	inc	dptr
+      000441 E0               [24] 1585 	movx	a,@dptr
+      000442 FB               [12] 1586 	mov	r3,a
+      000443 A3               [24] 1587 	inc	dptr
+      000444 E0               [24] 1588 	movx	a,@dptr
+      000445 FC               [12] 1589 	mov	r4,a
+      000446 85*07 82         [24] 1590 	mov	dpl,_TempController_begin_sloc1_1_0
+      000449 85*08 83         [24] 1591 	mov	dph,(_TempController_begin_sloc1_1_0 + 1)
+      00044C 85*09 F0         [24] 1592 	mov	b,(_TempController_begin_sloc1_1_0 + 2)
+      00044F EA               [12] 1593 	mov	a,r2
+      000450 12r00r00         [24] 1594 	lcall	__gptrput
+      000453 A3               [24] 1595 	inc	dptr
+      000454 EB               [12] 1596 	mov	a,r3
+      000455 12r00r00         [24] 1597 	lcall	__gptrput
+      000458 A3               [24] 1598 	inc	dptr
+      000459 EC               [12] 1599 	mov	a,r4
+      00045A 12r00r00         [24] 1600 	lcall	__gptrput
+                                   1601 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:39: tc->current_temp = 25.0f;
+      00045D 74 06            [12] 1602 	mov	a,#0x06
+      00045F 2D               [12] 1603 	add	a,r5
+      000460 F5*07            [12] 1604 	mov	_TempController_begin_sloc1_1_0,a
+      000462 E4               [12] 1605 	clr	a
+      000463 3E               [12] 1606 	addc	a,r6
+      000464 F5*08            [12] 1607 	mov	(_TempController_begin_sloc1_1_0 + 1),a
+      000466 8F*09            [24] 1608 	mov	(_TempController_begin_sloc1_1_0 + 2),r7
+      000468 85*07 82         [24] 1609 	mov	dpl,_TempController_begin_sloc1_1_0
+      00046B 85*08 83         [24] 1610 	mov	dph,(_TempController_begin_sloc1_1_0 + 1)
+      00046E 85*09 F0         [24] 1611 	mov	b,(_TempController_begin_sloc1_1_0 + 2)
+      000471 E4               [12] 1612 	clr	a
+      000472 12r00r00         [24] 1613 	lcall	__gptrput
+      000475 A3               [24] 1614 	inc	dptr
+      000476 12r00r00         [24] 1615 	lcall	__gptrput
+      000479 A3               [24] 1616 	inc	dptr
+      00047A 74 C8            [12] 1617 	mov	a,#0xc8
+      00047C 12r00r00         [24] 1618 	lcall	__gptrput
+      00047F A3               [24] 1619 	inc	dptr
+      000480 74 41            [12] 1620 	mov	a,#0x41
+      000482 12r00r00         [24] 1621 	lcall	__gptrput
+                                   1622 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:40: tc->target_rpm = RPM_TARGET_MIN;
+      000485 74 0A            [12] 1623 	mov	a,#0x0a
+      000487 2D               [12] 1624 	add	a,r5
+      000488 F8               [12] 1625 	mov	r0,a
+      000489 E4               [12] 1626 	clr	a
+      00048A 3E               [12] 1627 	addc	a,r6
+      00048B F9               [12] 1628 	mov	r1,a
+      00048C 8F 04            [24] 1629 	mov	ar4,r7
+      00048E 88 82            [24] 1630 	mov	dpl,r0
+      000490 89 83            [24] 1631 	mov	dph,r1
+      000492 8C F0            [24] 1632 	mov	b,r4
+      000494 74 58            [12] 1633 	mov	a,#0x58
+      000496 12r00r00         [24] 1634 	lcall	__gptrput
+      000499 A3               [24] 1635 	inc	dptr
+      00049A 74 02            [12] 1636 	mov	a,#0x02
+      00049C 12r00r00         [24] 1637 	lcall	__gptrput
+      00049F A3               [24] 1638 	inc	dptr
+      0004A0 E4               [12] 1639 	clr	a
+      0004A1 12r00r00         [24] 1640 	lcall	__gptrput
+      0004A4 A3               [24] 1641 	inc	dptr
+      0004A5 12r00r00         [24] 1642 	lcall	__gptrput
+                                   1643 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:41: tc->sensor_ready = false;
+      0004A8 74 0E            [12] 1644 	mov	a,#0x0e
+      0004AA 2D               [12] 1645 	add	a,r5
+      0004AB F5*0A            [12] 1646 	mov	_TempController_begin_sloc2_1_0,a
+      0004AD E4               [12] 1647 	clr	a
+      0004AE 3E               [12] 1648 	addc	a,r6
+      0004AF F5*0B            [12] 1649 	mov	(_TempController_begin_sloc2_1_0 + 1),a
+      0004B1 8F*0C            [24] 1650 	mov	(_TempController_begin_sloc2_1_0 + 2),r7
+      0004B3 85*0A 82         [24] 1651 	mov	dpl,_TempController_begin_sloc2_1_0
+      0004B6 85*0B 83         [24] 1652 	mov	dph,(_TempController_begin_sloc2_1_0 + 1)
+      0004B9 85*0C F0         [24] 1653 	mov	b,(_TempController_begin_sloc2_1_0 + 2)
+      0004BC E4               [12] 1654 	clr	a
+      0004BD 12r00r00         [24] 1655 	lcall	__gptrput
+                                   1656 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:44: DS18B20_begin(tc->tempSensor);
+      0004C0 85*04 82         [24] 1657 	mov	dpl,_TempController_begin_sloc0_1_0
+      0004C3 85*05 83         [24] 1658 	mov	dph,(_TempController_begin_sloc0_1_0 + 1)
+      0004C6 85*06 F0         [24] 1659 	mov	b,(_TempController_begin_sloc0_1_0 + 2)
+      0004C9 C0 07            [24] 1660 	push	ar7
+      0004CB C0 06            [24] 1661 	push	ar6
+      0004CD C0 05            [24] 1662 	push	ar5
+      0004CF 12r00r00         [24] 1663 	lcall	_DS18B20_begin
+      0004D2 D0 05            [24] 1664 	pop	ar5
+      0004D4 D0 06            [24] 1665 	pop	ar6
+      0004D6 D0 07            [24] 1666 	pop	ar7
+                                   1667 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:47: DS18B20_setResolution(tc->tempSensor, DS18B20_RESOLUTION_10BIT);
+      0004D8 8D 82            [24] 1668 	mov	dpl,r5
+      0004DA 8E 83            [24] 1669 	mov	dph,r6
+      0004DC 8F F0            [24] 1670 	mov	b,r7
+      0004DE 12r00r00         [24] 1671 	lcall	__gptrget
+      0004E1 F8               [12] 1672 	mov	r0,a
+      0004E2 A3               [24] 1673 	inc	dptr
+      0004E3 12r00r00         [24] 1674 	lcall	__gptrget
+      0004E6 F9               [12] 1675 	mov	r1,a
+      0004E7 A3               [24] 1676 	inc	dptr
+      0004E8 12r00r00         [24] 1677 	lcall	__gptrget
+      0004EB FC               [12] 1678 	mov	r4,a
+      0004EC 90r00r00         [24] 1679 	mov	dptr,#_DS18B20_setResolution_PARM_2
+      0004EF 74 3F            [12] 1680 	mov	a,#0x3f
+      0004F1 F0               [24] 1681 	movx	@dptr,a
+      0004F2 88 82            [24] 1682 	mov	dpl,r0
+      0004F4 89 83            [24] 1683 	mov	dph,r1
+      0004F6 8C F0            [24] 1684 	mov	b,r4
+      0004F8 C0 07            [24] 1685 	push	ar7
+      0004FA C0 06            [24] 1686 	push	ar6
+      0004FC C0 05            [24] 1687 	push	ar5
+      0004FE 12r00r00         [24] 1688 	lcall	_DS18B20_setResolution
+      000501 D0 05            [24] 1689 	pop	ar5
+      000503 D0 06            [24] 1690 	pop	ar6
+      000505 D0 07            [24] 1691 	pop	ar7
+                                   1692 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:50: DS18B20_setAlarmTemperature(tc->tempSensor, TEMP_MAX, TEMP_MIN);
+      000507 8D 82            [24] 1693 	mov	dpl,r5
+      000509 8E 83            [24] 1694 	mov	dph,r6
+      00050B 8F F0            [24] 1695 	mov	b,r7
+      00050D 12r00r00         [24] 1696 	lcall	__gptrget
+      000510 FA               [12] 1697 	mov	r2,a
+      000511 A3               [24] 1698 	inc	dptr
+      000512 12r00r00         [24] 1699 	lcall	__gptrget
+      000515 FB               [12] 1700 	mov	r3,a
+      000516 A3               [24] 1701 	inc	dptr
+      000517 12r00r00         [24] 1702 	lcall	__gptrget
+      00051A FC               [12] 1703 	mov	r4,a
+      00051B 90r00r00         [24] 1704 	mov	dptr,#_DS18B20_setAlarmTemperature_PARM_2
+      00051E 74 2D            [12] 1705 	mov	a,#0x2d
+      000520 F0               [24] 1706 	movx	@dptr,a
+      000521 90r00r00         [24] 1707 	mov	dptr,#_DS18B20_setAlarmTemperature_PARM_3
+      000524 74 1E            [12] 1708 	mov	a,#0x1e
+      000526 F0               [24] 1709 	movx	@dptr,a
+      000527 8A 82            [24] 1710 	mov	dpl,r2
+      000529 8B 83            [24] 1711 	mov	dph,r3
+      00052B 8C F0            [24] 1712 	mov	b,r4
+      00052D C0 07            [24] 1713 	push	ar7
+      00052F C0 06            [24] 1714 	push	ar6
+      000531 C0 05            [24] 1715 	push	ar5
+      000533 12r00r00         [24] 1716 	lcall	_DS18B20_setAlarmTemperature
+                                   1717 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:53: delay(200);
+      000536 90 00 C8         [24] 1718 	mov	dptr,#(0xc8&0x00ff)
+      000539 E4               [12] 1719 	clr	a
+      00053A F5 F0            [12] 1720 	mov	b,a
+      00053C 12r00r00         [24] 1721 	lcall	_delay
+      00053F D0 05            [24] 1722 	pop	ar5
+      000541 D0 06            [24] 1723 	pop	ar6
+      000543 D0 07            [24] 1724 	pop	ar7
+                                   1725 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:54: float test_temp = DS18B20_readTemperatureFast(tc->tempSensor);
+      000545 8D 82            [24] 1726 	mov	dpl,r5
+      000547 8E 83            [24] 1727 	mov	dph,r6
+      000549 8F F0            [24] 1728 	mov	b,r7
+      00054B 12r00r00         [24] 1729 	lcall	__gptrget
+      00054E FD               [12] 1730 	mov	r5,a
+      00054F A3               [24] 1731 	inc	dptr
+      000550 12r00r00         [24] 1732 	lcall	__gptrget
+      000553 FE               [12] 1733 	mov	r6,a
+      000554 A3               [24] 1734 	inc	dptr
+      000555 12r00r00         [24] 1735 	lcall	__gptrget
+      000558 FF               [12] 1736 	mov	r7,a
+      000559 8D 82            [24] 1737 	mov	dpl,r5
+      00055B 8E 83            [24] 1738 	mov	dph,r6
+      00055D 8F F0            [24] 1739 	mov	b,r7
+      00055F 12r00r00         [24] 1740 	lcall	_DS18B20_readTemperatureFast
+      000562 AE 82            [24] 1741 	mov	r6,dpl
+      000564 AD 83            [24] 1742 	mov	r5,dph
+      000566 AC F0            [24] 1743 	mov	r4,b
+      000568 FF               [12] 1744 	mov	r7,a
+                                   1745 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:55: if (test_temp != -999.0) {
+      000569 C0 07            [24] 1746 	push	ar7
+      00056B C0 06            [24] 1747 	push	ar6
+      00056D C0 05            [24] 1748 	push	ar5
+      00056F C0 04            [24] 1749 	push	ar4
+      000571 E4               [12] 1750 	clr	a
+      000572 C0 E0            [24] 1751 	push	acc
+      000574 74 C0            [12] 1752 	mov	a,#0xc0
+      000576 C0 E0            [24] 1753 	push	acc
+      000578 74 79            [12] 1754 	mov	a,#0x79
+      00057A C0 E0            [24] 1755 	push	acc
+      00057C 74 C4            [12] 1756 	mov	a,#0xc4
+      00057E C0 E0            [24] 1757 	push	acc
+      000580 8E 82            [24] 1758 	mov	dpl,r6
+      000582 8D 83            [24] 1759 	mov	dph,r5
+      000584 8C F0            [24] 1760 	mov	b,r4
+      000586 EF               [12] 1761 	mov	a,r7
+      000587 12r00r00         [24] 1762 	lcall	___fseq
+      00058A E5 81            [12] 1763 	mov	a,sp
+      00058C 24 FC            [12] 1764 	add	a,#0xfc
+      00058E F5 81            [12] 1765 	mov	sp,a
+      000590 D0 04            [24] 1766 	pop	ar4
+      000592 D0 05            [24] 1767 	pop	ar5
+      000594 D0 06            [24] 1768 	pop	ar6
+      000596 D0 07            [24] 1769 	pop	ar7
+      000598 E5 82            [12] 1770 	mov	a,dpl
+      00059A 24 FF            [12] 1771 	add	a,#0xff
+      00059C 92*00            [24] 1772 	mov	_TempController_begin_sloc3_1_0,c
+      00059E 40 2A            [24] 1773 	jc	00103$
+                                   1774 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:56: tc->sensor_ready = true;
+      0005A0 85*0A 82         [24] 1775 	mov	dpl,_TempController_begin_sloc2_1_0
+      0005A3 85*0B 83         [24] 1776 	mov	dph,(_TempController_begin_sloc2_1_0 + 1)
+      0005A6 85*0C F0         [24] 1777 	mov	b,(_TempController_begin_sloc2_1_0 + 2)
+      0005A9 74 01            [12] 1778 	mov	a,#0x01
+      0005AB 12r00r00         [24] 1779 	lcall	__gptrput
+                                   1780 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:57: tc->current_temp = test_temp;
+      0005AE 85*07 82         [24] 1781 	mov	dpl,_TempController_begin_sloc1_1_0
+      0005B1 85*08 83         [24] 1782 	mov	dph,(_TempController_begin_sloc1_1_0 + 1)
+      0005B4 85*09 F0         [24] 1783 	mov	b,(_TempController_begin_sloc1_1_0 + 2)
+      0005B7 EE               [12] 1784 	mov	a,r6
+      0005B8 12r00r00         [24] 1785 	lcall	__gptrput
+      0005BB A3               [24] 1786 	inc	dptr
+      0005BC ED               [12] 1787 	mov	a,r5
+      0005BD 12r00r00         [24] 1788 	lcall	__gptrput
+      0005C0 A3               [24] 1789 	inc	dptr
+      0005C1 EC               [12] 1790 	mov	a,r4
+      0005C2 12r00r00         [24] 1791 	lcall	__gptrput
+      0005C5 A3               [24] 1792 	inc	dptr
+      0005C6 EF               [12] 1793 	mov	a,r7
+                                   1794 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:59: }
+      0005C7 02r00r00         [24] 1795 	ljmp	__gptrput
+      0005CA                       1796 00103$:
+      0005CA 22               [24] 1797 	ret
+                                   1798 ;------------------------------------------------------------
+                                   1799 ;Allocation info for local variables in function 'TempController_update'
+                                   1800 ;------------------------------------------------------------
+                                   1801 ;sloc0                     Allocated with name '_TempController_update_sloc0_1_0'
+                                   1802 ;sloc1                     Allocated with name '_TempController_update_sloc1_1_0'
+                                   1803 ;tc                        Allocated with name '_TempController_update_tc_65536_202'
+                                   1804 ;temp                      Allocated with name '_TempController_update_temp_65537_205'
+                                   1805 ;target_voltage            Allocated with name '_TempController_update_target_voltage_65538_207'
+                                   1806 ;------------------------------------------------------------
+                                   1807 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:61: bool TempController_update(TempController* tc) {
+                                   1808 ;	-----------------------------------------
+                                   1809 ;	 function TempController_update
+                                   1810 ;	-----------------------------------------
+      0005CB                       1811 _TempController_update:
+      0005CB AF F0            [24] 1812 	mov	r7,b
+      0005CD AE 83            [24] 1813 	mov	r6,dph
+      0005CF E5 82            [12] 1814 	mov	a,dpl
+      0005D1 90r00r21         [24] 1815 	mov	dptr,#_TempController_update_tc_65536_202
+      0005D4 F0               [24] 1816 	movx	@dptr,a
+      0005D5 EE               [12] 1817 	mov	a,r6
+      0005D6 A3               [24] 1818 	inc	dptr
+      0005D7 F0               [24] 1819 	movx	@dptr,a
+      0005D8 EF               [12] 1820 	mov	a,r7
+      0005D9 A3               [24] 1821 	inc	dptr
+      0005DA F0               [24] 1822 	movx	@dptr,a
+                                   1823 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:62: if (!tc->sensor_ready) {
+      0005DB 90r00r21         [24] 1824 	mov	dptr,#_TempController_update_tc_65536_202
+      0005DE E0               [24] 1825 	movx	a,@dptr
+      0005DF FD               [12] 1826 	mov	r5,a
+      0005E0 A3               [24] 1827 	inc	dptr
+      0005E1 E0               [24] 1828 	movx	a,@dptr
+      0005E2 FE               [12] 1829 	mov	r6,a
+      0005E3 A3               [24] 1830 	inc	dptr
+      0005E4 E0               [24] 1831 	movx	a,@dptr
+      0005E5 FF               [12] 1832 	mov	r7,a
+      0005E6 74 0E            [12] 1833 	mov	a,#0x0e
+      0005E8 2D               [12] 1834 	add	a,r5
+      0005E9 FA               [12] 1835 	mov	r2,a
+      0005EA E4               [12] 1836 	clr	a
+      0005EB 3E               [12] 1837 	addc	a,r6
+      0005EC FB               [12] 1838 	mov	r3,a
+      0005ED 8F 04            [24] 1839 	mov	ar4,r7
+      0005EF 8A 82            [24] 1840 	mov	dpl,r2
+      0005F1 8B 83            [24] 1841 	mov	dph,r3
+      0005F3 8C F0            [24] 1842 	mov	b,r4
+      0005F5 12r00r00         [24] 1843 	lcall	__gptrget
+                                   1844 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:63: return false;
+      0005F8 70 03            [24] 1845 	jnz	00102$
+      0005FA F5 82            [12] 1846 	mov	dpl,a
+      0005FC 22               [24] 1847 	ret
+      0005FD                       1848 00102$:
+                                   1849 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:66: float temp = DS18B20_readTemperatureFast(tc->tempSensor);
+      0005FD 8D 82            [24] 1850 	mov	dpl,r5
+      0005FF 8E 83            [24] 1851 	mov	dph,r6
+      000601 8F F0            [24] 1852 	mov	b,r7
+      000603 12r00r00         [24] 1853 	lcall	__gptrget
+      000606 FA               [12] 1854 	mov	r2,a
+      000607 A3               [24] 1855 	inc	dptr
+      000608 12r00r00         [24] 1856 	lcall	__gptrget
+      00060B FB               [12] 1857 	mov	r3,a
+      00060C A3               [24] 1858 	inc	dptr
+      00060D 12r00r00         [24] 1859 	lcall	__gptrget
+      000610 FC               [12] 1860 	mov	r4,a
+      000611 8A 82            [24] 1861 	mov	dpl,r2
+      000613 8B 83            [24] 1862 	mov	dph,r3
+      000615 8C F0            [24] 1863 	mov	b,r4
+      000617 C0 07            [24] 1864 	push	ar7
+      000619 C0 06            [24] 1865 	push	ar6
+      00061B C0 05            [24] 1866 	push	ar5
+      00061D 12r00r00         [24] 1867 	lcall	_DS18B20_readTemperatureFast
+      000620 85 82*0D         [24] 1868 	mov	_TempController_update_sloc0_1_0,dpl
+      000623 85 83*0E         [24] 1869 	mov	(_TempController_update_sloc0_1_0 + 1),dph
+      000626 85 F0*0F         [24] 1870 	mov	(_TempController_update_sloc0_1_0 + 2),b
+      000629 F5*10            [12] 1871 	mov	(_TempController_update_sloc0_1_0 + 3),a
+                                   1872 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:68: if (temp == -999.0) {
+      00062B E4               [12] 1873 	clr	a
+      00062C C0 E0            [24] 1874 	push	acc
+      00062E 74 C0            [12] 1875 	mov	a,#0xc0
+      000630 C0 E0            [24] 1876 	push	acc
+      000632 74 79            [12] 1877 	mov	a,#0x79
+      000634 C0 E0            [24] 1878 	push	acc
+      000636 74 C4            [12] 1879 	mov	a,#0xc4
+      000638 C0 E0            [24] 1880 	push	acc
+      00063A 85*0D 82         [24] 1881 	mov	dpl,_TempController_update_sloc0_1_0
+      00063D 85*0E 83         [24] 1882 	mov	dph,(_TempController_update_sloc0_1_0 + 1)
+      000640 85*0F F0         [24] 1883 	mov	b,(_TempController_update_sloc0_1_0 + 2)
+      000643 E5*10            [12] 1884 	mov	a,(_TempController_update_sloc0_1_0 + 3)
+      000645 12r00r00         [24] 1885 	lcall	___fseq
+      000648 A8 82            [24] 1886 	mov	r0,dpl
+      00064A E5 81            [12] 1887 	mov	a,sp
+      00064C 24 FC            [12] 1888 	add	a,#0xfc
+      00064E F5 81            [12] 1889 	mov	sp,a
+      000650 D0 05            [24] 1890 	pop	ar5
+      000652 D0 06            [24] 1891 	pop	ar6
+      000654 D0 07            [24] 1892 	pop	ar7
+      000656 E8               [12] 1893 	mov	a,r0
+      000657 60 04            [24] 1894 	jz	00104$
+                                   1895 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:69: return false;
+      000659 75 82 00         [24] 1896 	mov	dpl,#0x00
+      00065C 22               [24] 1897 	ret
+      00065D                       1898 00104$:
+                                   1899 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:72: tc->current_temp = temp;
+      00065D 74 06            [12] 1900 	mov	a,#0x06
+      00065F 2D               [12] 1901 	add	a,r5
+      000660 F8               [12] 1902 	mov	r0,a
+      000661 E4               [12] 1903 	clr	a
+      000662 3E               [12] 1904 	addc	a,r6
+      000663 FB               [12] 1905 	mov	r3,a
+      000664 8F 04            [24] 1906 	mov	ar4,r7
+      000666 88 82            [24] 1907 	mov	dpl,r0
+      000668 8B 83            [24] 1908 	mov	dph,r3
+      00066A 8C F0            [24] 1909 	mov	b,r4
+      00066C E5*0D            [12] 1910 	mov	a,_TempController_update_sloc0_1_0
+      00066E 12r00r00         [24] 1911 	lcall	__gptrput
+      000671 A3               [24] 1912 	inc	dptr
+      000672 E5*0E            [12] 1913 	mov	a,(_TempController_update_sloc0_1_0 + 1)
+      000674 12r00r00         [24] 1914 	lcall	__gptrput
+      000677 A3               [24] 1915 	inc	dptr
+      000678 E5*0F            [12] 1916 	mov	a,(_TempController_update_sloc0_1_0 + 2)
+      00067A 12r00r00         [24] 1917 	lcall	__gptrput
+      00067D A3               [24] 1918 	inc	dptr
+      00067E E5*10            [12] 1919 	mov	a,(_TempController_update_sloc0_1_0 + 3)
+      000680 12r00r00         [24] 1920 	lcall	__gptrput
+                                   1921 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:77: target_voltage = TempController_mapTempToVoltageLinear(temp);
+      000683 85*0D 82         [24] 1922 	mov	dpl,_TempController_update_sloc0_1_0
+      000686 85*0E 83         [24] 1923 	mov	dph,(_TempController_update_sloc0_1_0 + 1)
+      000689 85*0F F0         [24] 1924 	mov	b,(_TempController_update_sloc0_1_0 + 2)
+      00068C E5*10            [12] 1925 	mov	a,(_TempController_update_sloc0_1_0 + 3)
+      00068E C0 07            [24] 1926 	push	ar7
+      000690 C0 06            [24] 1927 	push	ar6
+      000692 C0 05            [24] 1928 	push	ar5
+      000694 12r00r00         [24] 1929 	lcall	_TempController_mapTempToVoltageLinear
+      000697 85 82*11         [24] 1930 	mov	_TempController_update_sloc1_1_0,dpl
+      00069A 85 83*12         [24] 1931 	mov	(_TempController_update_sloc1_1_0 + 1),dph
+      00069D 85 F0*13         [24] 1932 	mov	(_TempController_update_sloc1_1_0 + 2),b
+      0006A0 F5*14            [12] 1933 	mov	(_TempController_update_sloc1_1_0 + 3),a
+      0006A2 D0 05            [24] 1934 	pop	ar5
+      0006A4 D0 06            [24] 1935 	pop	ar6
+      0006A6 D0 07            [24] 1936 	pop	ar7
+                                   1937 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:82: VoltageController_setVoltage(tc->voltCtrl, target_voltage);
+      0006A8 74 03            [12] 1938 	mov	a,#0x03
+      0006AA 2D               [12] 1939 	add	a,r5
+      0006AB F8               [12] 1940 	mov	r0,a
+      0006AC E4               [12] 1941 	clr	a
+      0006AD 3E               [12] 1942 	addc	a,r6
+      0006AE FB               [12] 1943 	mov	r3,a
+      0006AF 8F 04            [24] 1944 	mov	ar4,r7
+      0006B1 88 82            [24] 1945 	mov	dpl,r0
+      0006B3 8B 83            [24] 1946 	mov	dph,r3
+      0006B5 8C F0            [24] 1947 	mov	b,r4
+      0006B7 12r00r00         [24] 1948 	lcall	__gptrget
+      0006BA F8               [12] 1949 	mov	r0,a
+      0006BB A3               [24] 1950 	inc	dptr
+      0006BC 12r00r00         [24] 1951 	lcall	__gptrget
+      0006BF FB               [12] 1952 	mov	r3,a
+      0006C0 A3               [24] 1953 	inc	dptr
+      0006C1 12r00r00         [24] 1954 	lcall	__gptrget
+      0006C4 FC               [12] 1955 	mov	r4,a
+      0006C5 90r00r00         [24] 1956 	mov	dptr,#_VoltageController_setVoltage_PARM_2
+      0006C8 E5*11            [12] 1957 	mov	a,_TempController_update_sloc1_1_0
+      0006CA F0               [24] 1958 	movx	@dptr,a
+      0006CB E5*12            [12] 1959 	mov	a,(_TempController_update_sloc1_1_0 + 1)
+      0006CD A3               [24] 1960 	inc	dptr
+      0006CE F0               [24] 1961 	movx	@dptr,a
+      0006CF E5*13            [12] 1962 	mov	a,(_TempController_update_sloc1_1_0 + 2)
+      0006D1 A3               [24] 1963 	inc	dptr
+      0006D2 F0               [24] 1964 	movx	@dptr,a
+      0006D3 E5*14            [12] 1965 	mov	a,(_TempController_update_sloc1_1_0 + 3)
+      0006D5 A3               [24] 1966 	inc	dptr
+      0006D6 F0               [24] 1967 	movx	@dptr,a
+      0006D7 88 82            [24] 1968 	mov	dpl,r0
+      0006D9 8B 83            [24] 1969 	mov	dph,r3
+      0006DB 8C F0            [24] 1970 	mov	b,r4
+      0006DD C0 07            [24] 1971 	push	ar7
+      0006DF C0 06            [24] 1972 	push	ar6
+      0006E1 C0 05            [24] 1973 	push	ar5
+      0006E3 12r00r00         [24] 1974 	lcall	_VoltageController_setVoltage
+      0006E6 D0 05            [24] 1975 	pop	ar5
+      0006E8 D0 06            [24] 1976 	pop	ar6
+                                   1977 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:84: tc->target_rpm = TempController_mapTempToRPM(temp);
+      0006EA 74 0A            [12] 1978 	mov	a,#0x0a
+      0006EC 2D               [12] 1979 	add	a,r5
+      0006ED FD               [12] 1980 	mov	r5,a
+      0006EE E4               [12] 1981 	clr	a
+      0006EF 3E               [12] 1982 	addc	a,r6
+      0006F0 FE               [12] 1983 	mov	r6,a
+      0006F1 85*0D 82         [24] 1984 	mov	dpl,_TempController_update_sloc0_1_0
+      0006F4 85*0E 83         [24] 1985 	mov	dph,(_TempController_update_sloc0_1_0 + 1)
+      0006F7 85*0F F0         [24] 1986 	mov	b,(_TempController_update_sloc0_1_0 + 2)
+      0006FA E5*10            [12] 1987 	mov	a,(_TempController_update_sloc0_1_0 + 3)
+      0006FC C0 06            [24] 1988 	push	ar6
+      0006FE C0 05            [24] 1989 	push	ar5
+      000700 12r02rCF         [24] 1990 	lcall	_TempController_mapTempToRPM
+      000703 A9 82            [24] 1991 	mov	r1,dpl
+      000705 AA 83            [24] 1992 	mov	r2,dph
+      000707 AB F0            [24] 1993 	mov	r3,b
+      000709 FC               [12] 1994 	mov	r4,a
+      00070A D0 05            [24] 1995 	pop	ar5
+      00070C D0 06            [24] 1996 	pop	ar6
+      00070E D0 07            [24] 1997 	pop	ar7
+      000710 8D 82            [24] 1998 	mov	dpl,r5
+      000712 8E 83            [24] 1999 	mov	dph,r6
+      000714 8F F0            [24] 2000 	mov	b,r7
+      000716 E9               [12] 2001 	mov	a,r1
+      000717 12r00r00         [24] 2002 	lcall	__gptrput
+      00071A A3               [24] 2003 	inc	dptr
+      00071B EA               [12] 2004 	mov	a,r2
+      00071C 12r00r00         [24] 2005 	lcall	__gptrput
+      00071F A3               [24] 2006 	inc	dptr
+      000720 EB               [12] 2007 	mov	a,r3
+      000721 12r00r00         [24] 2008 	lcall	__gptrput
+      000724 A3               [24] 2009 	inc	dptr
+      000725 EC               [12] 2010 	mov	a,r4
+      000726 12r00r00         [24] 2011 	lcall	__gptrput
+                                   2012 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:86: return true;
+      000729 75 82 01         [24] 2013 	mov	dpl,#0x01
+                                   2014 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:87: }
+      00072C 22               [24] 2015 	ret
+                                   2016 ;------------------------------------------------------------
+                                   2017 ;Allocation info for local variables in function 'TempController_isOverheat'
+                                   2018 ;------------------------------------------------------------
+                                   2019 ;tc                        Allocated with name '_TempController_isOverheat_tc_65536_208'
+                                   2020 ;------------------------------------------------------------
+                                   2021 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:89: bool TempController_isOverheat(const TempController* tc) {
+                                   2022 ;	-----------------------------------------
+                                   2023 ;	 function TempController_isOverheat
+                                   2024 ;	-----------------------------------------
+      00072D                       2025 _TempController_isOverheat:
+      00072D AF F0            [24] 2026 	mov	r7,b
+      00072F AE 83            [24] 2027 	mov	r6,dph
+      000731 E5 82            [12] 2028 	mov	a,dpl
+      000733 90r00r24         [24] 2029 	mov	dptr,#_TempController_isOverheat_tc_65536_208
+      000736 F0               [24] 2030 	movx	@dptr,a
+      000737 EE               [12] 2031 	mov	a,r6
+      000738 A3               [24] 2032 	inc	dptr
+      000739 F0               [24] 2033 	movx	@dptr,a
+      00073A EF               [12] 2034 	mov	a,r7
+      00073B A3               [24] 2035 	inc	dptr
+      00073C F0               [24] 2036 	movx	@dptr,a
+                                   2037 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:90: return (tc->current_temp >= TEMP_OVERHEAT);
+      00073D 90r00r24         [24] 2038 	mov	dptr,#_TempController_isOverheat_tc_65536_208
+      000740 E0               [24] 2039 	movx	a,@dptr
+      000741 FD               [12] 2040 	mov	r5,a
+      000742 A3               [24] 2041 	inc	dptr
+      000743 E0               [24] 2042 	movx	a,@dptr
+      000744 FE               [12] 2043 	mov	r6,a
+      000745 A3               [24] 2044 	inc	dptr
+      000746 E0               [24] 2045 	movx	a,@dptr
+      000747 FF               [12] 2046 	mov	r7,a
+      000748 74 06            [12] 2047 	mov	a,#0x06
+      00074A 2D               [12] 2048 	add	a,r5
+      00074B FD               [12] 2049 	mov	r5,a
+      00074C E4               [12] 2050 	clr	a
+      00074D 3E               [12] 2051 	addc	a,r6
+      00074E FE               [12] 2052 	mov	r6,a
+      00074F 8D 82            [24] 2053 	mov	dpl,r5
+      000751 8E 83            [24] 2054 	mov	dph,r6
+      000753 8F F0            [24] 2055 	mov	b,r7
+      000755 12r00r00         [24] 2056 	lcall	__gptrget
+      000758 FD               [12] 2057 	mov	r5,a
+      000759 A3               [24] 2058 	inc	dptr
+      00075A 12r00r00         [24] 2059 	lcall	__gptrget
+      00075D FE               [12] 2060 	mov	r6,a
+      00075E A3               [24] 2061 	inc	dptr
+      00075F 12r00r00         [24] 2062 	lcall	__gptrget
+      000762 FF               [12] 2063 	mov	r7,a
+      000763 A3               [24] 2064 	inc	dptr
+      000764 12r00r00         [24] 2065 	lcall	__gptrget
+      000767 FC               [12] 2066 	mov	r4,a
+      000768 E4               [12] 2067 	clr	a
+      000769 C0 E0            [24] 2068 	push	acc
+      00076B C0 E0            [24] 2069 	push	acc
+      00076D 74 48            [12] 2070 	mov	a,#0x48
+      00076F C0 E0            [24] 2071 	push	acc
+      000771 74 42            [12] 2072 	mov	a,#0x42
+      000773 C0 E0            [24] 2073 	push	acc
+      000775 8D 82            [24] 2074 	mov	dpl,r5
+      000777 8E 83            [24] 2075 	mov	dph,r6
+      000779 8F F0            [24] 2076 	mov	b,r7
+      00077B EC               [12] 2077 	mov	a,r4
+      00077C 12r00r00         [24] 2078 	lcall	___fslt
+      00077F E5 81            [12] 2079 	mov	a,sp
+      000781 24 FC            [12] 2080 	add	a,#0xfc
+      000783 F5 81            [12] 2081 	mov	sp,a
+      000785 E5 82            [12] 2082 	mov	a,dpl
+      000787 24 FF            [12] 2083 	add	a,#0xff
+      000789 B3               [12] 2084 	cpl	c
+      00078A 92*01            [24] 2085 	mov	_TempController_isOverheat_sloc0_1_0,c
+      00078C E4               [12] 2086 	clr	a
+      00078D 33               [12] 2087 	rlc	a
+      00078E F5 82            [12] 2088 	mov	dpl,a
+                                   2089 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:91: }
+      000790 22               [24] 2090 	ret
+                                   2091 ;------------------------------------------------------------
+                                   2092 ;Allocation info for local variables in function 'TempController_getTemperature'
+                                   2093 ;------------------------------------------------------------
+                                   2094 ;tc                        Allocated with name '_TempController_getTemperature_tc_65536_210'
+                                   2095 ;------------------------------------------------------------
+                                   2096 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:93: float TempController_getTemperature(const TempController* tc) {
+                                   2097 ;	-----------------------------------------
+                                   2098 ;	 function TempController_getTemperature
+                                   2099 ;	-----------------------------------------
+      000791                       2100 _TempController_getTemperature:
+      000791 AF F0            [24] 2101 	mov	r7,b
+      000793 AE 83            [24] 2102 	mov	r6,dph
+      000795 E5 82            [12] 2103 	mov	a,dpl
+      000797 90r00r27         [24] 2104 	mov	dptr,#_TempController_getTemperature_tc_65536_210
+      00079A F0               [24] 2105 	movx	@dptr,a
+      00079B EE               [12] 2106 	mov	a,r6
+      00079C A3               [24] 2107 	inc	dptr
+      00079D F0               [24] 2108 	movx	@dptr,a
+      00079E EF               [12] 2109 	mov	a,r7
+      00079F A3               [24] 2110 	inc	dptr
+      0007A0 F0               [24] 2111 	movx	@dptr,a
+                                   2112 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:94: return tc->current_temp;
+      0007A1 90r00r27         [24] 2113 	mov	dptr,#_TempController_getTemperature_tc_65536_210
+      0007A4 E0               [24] 2114 	movx	a,@dptr
+      0007A5 FD               [12] 2115 	mov	r5,a
+      0007A6 A3               [24] 2116 	inc	dptr
+      0007A7 E0               [24] 2117 	movx	a,@dptr
+      0007A8 FE               [12] 2118 	mov	r6,a
+      0007A9 A3               [24] 2119 	inc	dptr
+      0007AA E0               [24] 2120 	movx	a,@dptr
+      0007AB FF               [12] 2121 	mov	r7,a
+      0007AC 74 06            [12] 2122 	mov	a,#0x06
+      0007AE 2D               [12] 2123 	add	a,r5
+      0007AF FD               [12] 2124 	mov	r5,a
+      0007B0 E4               [12] 2125 	clr	a
+      0007B1 3E               [12] 2126 	addc	a,r6
+      0007B2 FE               [12] 2127 	mov	r6,a
+      0007B3 8D 82            [24] 2128 	mov	dpl,r5
+      0007B5 8E 83            [24] 2129 	mov	dph,r6
+      0007B7 8F F0            [24] 2130 	mov	b,r7
+      0007B9 12r00r00         [24] 2131 	lcall	__gptrget
+      0007BC FD               [12] 2132 	mov	r5,a
+      0007BD A3               [24] 2133 	inc	dptr
+      0007BE 12r00r00         [24] 2134 	lcall	__gptrget
+      0007C1 FE               [12] 2135 	mov	r6,a
+      0007C2 A3               [24] 2136 	inc	dptr
+      0007C3 12r00r00         [24] 2137 	lcall	__gptrget
+      0007C6 FF               [12] 2138 	mov	r7,a
+      0007C7 A3               [24] 2139 	inc	dptr
+      0007C8 12r00r00         [24] 2140 	lcall	__gptrget
+      0007CB 8D 82            [24] 2141 	mov	dpl,r5
+      0007CD 8E 83            [24] 2142 	mov	dph,r6
+      0007CF 8F F0            [24] 2143 	mov	b,r7
+                                   2144 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:95: }
+      0007D1 22               [24] 2145 	ret
+                                   2146 ;------------------------------------------------------------
+                                   2147 ;Allocation info for local variables in function 'TempController_getTargetRPM'
+                                   2148 ;------------------------------------------------------------
+                                   2149 ;tc                        Allocated with name '_TempController_getTargetRPM_tc_65536_212'
+                                   2150 ;------------------------------------------------------------
+                                   2151 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:97: uint32_t TempController_getTargetRPM(const TempController* tc) {
+                                   2152 ;	-----------------------------------------
+                                   2153 ;	 function TempController_getTargetRPM
+                                   2154 ;	-----------------------------------------
+      0007D2                       2155 _TempController_getTargetRPM:
+      0007D2 AF F0            [24] 2156 	mov	r7,b
+      0007D4 AE 83            [24] 2157 	mov	r6,dph
+      0007D6 E5 82            [12] 2158 	mov	a,dpl
+      0007D8 90r00r2A         [24] 2159 	mov	dptr,#_TempController_getTargetRPM_tc_65536_212
+      0007DB F0               [24] 2160 	movx	@dptr,a
+      0007DC EE               [12] 2161 	mov	a,r6
+      0007DD A3               [24] 2162 	inc	dptr
+      0007DE F0               [24] 2163 	movx	@dptr,a
+      0007DF EF               [12] 2164 	mov	a,r7
+      0007E0 A3               [24] 2165 	inc	dptr
+      0007E1 F0               [24] 2166 	movx	@dptr,a
+                                   2167 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:98: return tc->target_rpm;
+      0007E2 90r00r2A         [24] 2168 	mov	dptr,#_TempController_getTargetRPM_tc_65536_212
+      0007E5 E0               [24] 2169 	movx	a,@dptr
+      0007E6 FD               [12] 2170 	mov	r5,a
+      0007E7 A3               [24] 2171 	inc	dptr
+      0007E8 E0               [24] 2172 	movx	a,@dptr
+      0007E9 FE               [12] 2173 	mov	r6,a
+      0007EA A3               [24] 2174 	inc	dptr
+      0007EB E0               [24] 2175 	movx	a,@dptr
+      0007EC FF               [12] 2176 	mov	r7,a
+      0007ED 74 0A            [12] 2177 	mov	a,#0x0a
+      0007EF 2D               [12] 2178 	add	a,r5
+      0007F0 FD               [12] 2179 	mov	r5,a
+      0007F1 E4               [12] 2180 	clr	a
+      0007F2 3E               [12] 2181 	addc	a,r6
+      0007F3 FE               [12] 2182 	mov	r6,a
+      0007F4 8D 82            [24] 2183 	mov	dpl,r5
+      0007F6 8E 83            [24] 2184 	mov	dph,r6
+      0007F8 8F F0            [24] 2185 	mov	b,r7
+      0007FA 12r00r00         [24] 2186 	lcall	__gptrget
+      0007FD FD               [12] 2187 	mov	r5,a
+      0007FE A3               [24] 2188 	inc	dptr
+      0007FF 12r00r00         [24] 2189 	lcall	__gptrget
+      000802 FE               [12] 2190 	mov	r6,a
+      000803 A3               [24] 2191 	inc	dptr
+      000804 12r00r00         [24] 2192 	lcall	__gptrget
+      000807 FF               [12] 2193 	mov	r7,a
+      000808 A3               [24] 2194 	inc	dptr
+      000809 12r00r00         [24] 2195 	lcall	__gptrget
+      00080C 8D 82            [24] 2196 	mov	dpl,r5
+      00080E 8E 83            [24] 2197 	mov	dph,r6
+      000810 8F F0            [24] 2198 	mov	b,r7
+                                   2199 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:99: }
+      000812 22               [24] 2200 	ret
+                                   2201 ;------------------------------------------------------------
+                                   2202 ;Allocation info for local variables in function 'TempController_isReady'
+                                   2203 ;------------------------------------------------------------
+                                   2204 ;tc                        Allocated with name '_TempController_isReady_tc_65536_214'
+                                   2205 ;------------------------------------------------------------
+                                   2206 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:101: bool TempController_isReady(const TempController* tc) {
+                                   2207 ;	-----------------------------------------
+                                   2208 ;	 function TempController_isReady
+                                   2209 ;	-----------------------------------------
+      000813                       2210 _TempController_isReady:
+      000813 AF F0            [24] 2211 	mov	r7,b
+      000815 AE 83            [24] 2212 	mov	r6,dph
+      000817 E5 82            [12] 2213 	mov	a,dpl
+      000819 90r00r2D         [24] 2214 	mov	dptr,#_TempController_isReady_tc_65536_214
+      00081C F0               [24] 2215 	movx	@dptr,a
+      00081D EE               [12] 2216 	mov	a,r6
+      00081E A3               [24] 2217 	inc	dptr
+      00081F F0               [24] 2218 	movx	@dptr,a
+      000820 EF               [12] 2219 	mov	a,r7
+      000821 A3               [24] 2220 	inc	dptr
+      000822 F0               [24] 2221 	movx	@dptr,a
+                                   2222 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:102: return tc->sensor_ready;
+      000823 90r00r2D         [24] 2223 	mov	dptr,#_TempController_isReady_tc_65536_214
+      000826 E0               [24] 2224 	movx	a,@dptr
+      000827 FD               [12] 2225 	mov	r5,a
+      000828 A3               [24] 2226 	inc	dptr
+      000829 E0               [24] 2227 	movx	a,@dptr
+      00082A FE               [12] 2228 	mov	r6,a
+      00082B A3               [24] 2229 	inc	dptr
+      00082C E0               [24] 2230 	movx	a,@dptr
+      00082D FF               [12] 2231 	mov	r7,a
+      00082E 74 0E            [12] 2232 	mov	a,#0x0e
+      000830 2D               [12] 2233 	add	a,r5
+      000831 FD               [12] 2234 	mov	r5,a
+      000832 E4               [12] 2235 	clr	a
+      000833 3E               [12] 2236 	addc	a,r6
+      000834 FE               [12] 2237 	mov	r6,a
+      000835 8D 82            [24] 2238 	mov	dpl,r5
+      000837 8E 83            [24] 2239 	mov	dph,r6
+      000839 8F F0            [24] 2240 	mov	b,r7
+      00083B 12r00r00         [24] 2241 	lcall	__gptrget
+                                   2242 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\temp_sensor.c:103: }
+      00083E F5 82            [12] 2243 	mov	dpl,a
+      000840 22               [24] 2244 	ret
+                                   2245 	.area CSEG    (CODE)
+                                   2246 	.area CONST   (CODE)
+                                   2247 	.area XINIT   (CODE)
+                                   2248 	.area CABS    (ABS,CODE)

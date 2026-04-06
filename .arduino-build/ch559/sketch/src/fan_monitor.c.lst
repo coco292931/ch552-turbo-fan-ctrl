@@ -1,0 +1,1621 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.2 #13407 (MINGW32)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module fan_monitor
+                                      6 	.optsdcc -mmcs51 --model-large
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _attachInterrupt
+                                     12 	.globl _millis
+                                     13 	.globl _pinMode
+                                     14 	.globl _UIF_BUS_RST
+                                     15 	.globl _UIF_DETECT
+                                     16 	.globl _UIF_TRANSFER
+                                     17 	.globl _UIF_SUSPEND
+                                     18 	.globl _UIF_HST_SOF
+                                     19 	.globl _UIF_FIFO_OV
+                                     20 	.globl _U_SIE_FREE
+                                     21 	.globl _U_TOG_OK
+                                     22 	.globl _U_IS_NAK
+                                     23 	.globl _S0_R_FIFO0
+                                     24 	.globl _S0_R_FIFO1
+                                     25 	.globl _S0_T_FIFO
+                                     26 	.globl _S0_FREE
+                                     27 	.globl _S0_IF_BYTE
+                                     28 	.globl _S0_IF_FIRST
+                                     29 	.globl _S0_IF_OV
+                                     30 	.globl _S0_FST_ACT
+                                     31 	.globl _CP_RL2
+                                     32 	.globl _C_T2
+                                     33 	.globl _TR2
+                                     34 	.globl _EXEN2
+                                     35 	.globl _TCLK
+                                     36 	.globl _RCLK
+                                     37 	.globl _EXF2
+                                     38 	.globl _CAP1F
+                                     39 	.globl _TF2
+                                     40 	.globl _RI
+                                     41 	.globl _TI
+                                     42 	.globl _RB8
+                                     43 	.globl _TB8
+                                     44 	.globl _REN
+                                     45 	.globl _SM2
+                                     46 	.globl _SM1
+                                     47 	.globl _SM0
+                                     48 	.globl _IT0
+                                     49 	.globl _IE0
+                                     50 	.globl _IT1
+                                     51 	.globl _IE1
+                                     52 	.globl _TR0
+                                     53 	.globl _TF0
+                                     54 	.globl _TR1
+                                     55 	.globl _TF1
+                                     56 	.globl _P4_OUT_0
+                                     57 	.globl _P4_OUT_1
+                                     58 	.globl _P4_OUT_2
+                                     59 	.globl _P4_OUT_3
+                                     60 	.globl _P4_OUT_4
+                                     61 	.globl _P4_OUT_5
+                                     62 	.globl _P4_OUT_6
+                                     63 	.globl _P4_OUT_7
+                                     64 	.globl _RXD1_
+                                     65 	.globl _LED2
+                                     66 	.globl _CAP3_
+                                     67 	.globl _PWM3_
+                                     68 	.globl _PWM1_
+                                     69 	.globl _TXD1_
+                                     70 	.globl _TNOW_
+                                     71 	.globl _LED3
+                                     72 	.globl _PWM2_
+                                     73 	.globl _SCS_
+                                     74 	.globl _SCK_
+                                     75 	.globl _P3_0
+                                     76 	.globl _P3_1
+                                     77 	.globl _P3_2
+                                     78 	.globl _P3_3
+                                     79 	.globl _P3_4
+                                     80 	.globl _P3_5
+                                     81 	.globl _P3_6
+                                     82 	.globl _P3_7
+                                     83 	.globl _RXD
+                                     84 	.globl _TXD
+                                     85 	.globl _INT0
+                                     86 	.globl _LED0
+                                     87 	.globl _INT1
+                                     88 	.globl _LED1
+                                     89 	.globl _T0
+                                     90 	.globl _XCS0
+                                     91 	.globl _LEDC
+                                     92 	.globl _T1
+                                     93 	.globl _DA6
+                                     94 	.globl _WR
+                                     95 	.globl _RD
+                                     96 	.globl _P2_0
+                                     97 	.globl _P2_1
+                                     98 	.globl _P2_2
+                                     99 	.globl _P2_3
+                                    100 	.globl _P2_4
+                                    101 	.globl _P2_5
+                                    102 	.globl _P2_6
+                                    103 	.globl _P2_7
+                                    104 	.globl _MOSI1
+                                    105 	.globl _MISO1
+                                    106 	.globl _SCK1
+                                    107 	.globl _PWM1
+                                    108 	.globl _CAP2_
+                                    109 	.globl _T2EX_
+                                    110 	.globl _PWM2
+                                    111 	.globl _TNOW
+                                    112 	.globl _RXD1
+                                    113 	.globl _DA7
+                                    114 	.globl _TXD1
+                                    115 	.globl _P1_0
+                                    116 	.globl _P1_1
+                                    117 	.globl _P1_2
+                                    118 	.globl _P1_3
+                                    119 	.globl _P1_4
+                                    120 	.globl _P1_5
+                                    121 	.globl _P1_6
+                                    122 	.globl _P1_7
+                                    123 	.globl _CAP1
+                                    124 	.globl _T2
+                                    125 	.globl _CAP2
+                                    126 	.globl _T2EX
+                                    127 	.globl _CAP3
+                                    128 	.globl _PWM3
+                                    129 	.globl _SCS
+                                    130 	.globl _MOSI
+                                    131 	.globl _MISO
+                                    132 	.globl _SCK
+                                    133 	.globl _AIN0
+                                    134 	.globl _AIN1
+                                    135 	.globl _AIN2
+                                    136 	.globl _AIN3
+                                    137 	.globl _AIN4
+                                    138 	.globl _AIN5
+                                    139 	.globl _AIN6
+                                    140 	.globl _AIN7
+                                    141 	.globl _P0_0
+                                    142 	.globl _P0_1
+                                    143 	.globl _P0_2
+                                    144 	.globl _P0_3
+                                    145 	.globl _P0_4
+                                    146 	.globl _P0_5
+                                    147 	.globl _P0_6
+                                    148 	.globl _P0_7
+                                    149 	.globl _UDTR
+                                    150 	.globl _URTS
+                                    151 	.globl _RXD_
+                                    152 	.globl _TXD_
+                                    153 	.globl _UCTS
+                                    154 	.globl _UDSR
+                                    155 	.globl _URI
+                                    156 	.globl _UDCD
+                                    157 	.globl _IE_SPI0
+                                    158 	.globl _IE_TMR3
+                                    159 	.globl _IE_USB
+                                    160 	.globl _IE_ADC
+                                    161 	.globl _IE_UART1
+                                    162 	.globl _IE_PWM1
+                                    163 	.globl _IE_GPIO
+                                    164 	.globl _IE_WDOG
+                                    165 	.globl _PX0
+                                    166 	.globl _PT0
+                                    167 	.globl _PX1
+                                    168 	.globl _PT1
+                                    169 	.globl _PS
+                                    170 	.globl _PT2
+                                    171 	.globl _PL_FLAG
+                                    172 	.globl _PH_FLAG
+                                    173 	.globl _EX0
+                                    174 	.globl _ET0
+                                    175 	.globl _EX1
+                                    176 	.globl _ET1
+                                    177 	.globl _ES
+                                    178 	.globl _ET2
+                                    179 	.globl _E_DIS
+                                    180 	.globl _EA
+                                    181 	.globl _P
+                                    182 	.globl _F1
+                                    183 	.globl _OV
+                                    184 	.globl _RS0
+                                    185 	.globl _RS1
+                                    186 	.globl _F0
+                                    187 	.globl _AC
+                                    188 	.globl _CY
+                                    189 	.globl _USB_DMA_AH
+                                    190 	.globl _USB_DMA_AL
+                                    191 	.globl _USB_DMA
+                                    192 	.globl _UHUB1_CTRL
+                                    193 	.globl _UDEV_CTRL
+                                    194 	.globl _USB_DEV_AD
+                                    195 	.globl _USB_CTRL
+                                    196 	.globl _USB_INT_EN
+                                    197 	.globl _UEP4_T_LEN
+                                    198 	.globl _UEP4_CTRL
+                                    199 	.globl _UEP0_T_LEN
+                                    200 	.globl _UEP0_CTRL
+                                    201 	.globl _USB_HUB_ST
+                                    202 	.globl _USB_MIS_ST
+                                    203 	.globl _USB_INT_ST
+                                    204 	.globl _USB_INT_FG
+                                    205 	.globl _UEP3_T_LEN
+                                    206 	.globl _UEP3_CTRL
+                                    207 	.globl _UEP2_T_LEN
+                                    208 	.globl _UEP2_CTRL
+                                    209 	.globl _UEP1_T_LEN
+                                    210 	.globl _UEP1_CTRL
+                                    211 	.globl _USB_RX_LEN
+                                    212 	.globl _ADC_EX_SW
+                                    213 	.globl _ADC_SETUP
+                                    214 	.globl _ADC_FIFO_H
+                                    215 	.globl _ADC_FIFO_L
+                                    216 	.globl _ADC_FIFO
+                                    217 	.globl _ADC_CHANN
+                                    218 	.globl _ADC_CTRL
+                                    219 	.globl _ADC_STAT
+                                    220 	.globl _ADC_CK_SE
+                                    221 	.globl _ADC_DMA_CN
+                                    222 	.globl _ADC_DMA_AH
+                                    223 	.globl _ADC_DMA_AL
+                                    224 	.globl _ADC_DMA
+                                    225 	.globl _SER1_ADDR
+                                    226 	.globl _SER1_MSR
+                                    227 	.globl _SER1_LSR
+                                    228 	.globl _SER1_MCR
+                                    229 	.globl _SER1_LCR
+                                    230 	.globl _SER1_IIR
+                                    231 	.globl _SER1_IER
+                                    232 	.globl _SER1_FIFO
+                                    233 	.globl _SPI1_CK_SE
+                                    234 	.globl _SPI1_CTRL
+                                    235 	.globl _SPI1_DATA
+                                    236 	.globl _SPI1_STAT
+                                    237 	.globl _SPI0_SETUP
+                                    238 	.globl _SPI0_CK_SE
+                                    239 	.globl _SPI0_CTRL
+                                    240 	.globl _SPI0_DATA
+                                    241 	.globl _SPI0_STAT
+                                    242 	.globl _PWM_CYCLE
+                                    243 	.globl _PWM_CK_SE
+                                    244 	.globl _PWM_CTRL
+                                    245 	.globl _PWM_DATA
+                                    246 	.globl _PWM_DATA2
+                                    247 	.globl _T3_FIFO_H
+                                    248 	.globl _T3_FIFO_L
+                                    249 	.globl _T3_FIFO
+                                    250 	.globl _T3_DMA_AH
+                                    251 	.globl _T3_DMA_AL
+                                    252 	.globl _T3_DMA
+                                    253 	.globl _T3_DMA_CN
+                                    254 	.globl _T3_CTRL
+                                    255 	.globl _T3_STAT
+                                    256 	.globl _T3_END_H
+                                    257 	.globl _T3_END_L
+                                    258 	.globl _T3_END
+                                    259 	.globl _T3_COUNT_H
+                                    260 	.globl _T3_COUNT_L
+                                    261 	.globl _T3_COUNT
+                                    262 	.globl _T3_SETUP
+                                    263 	.globl _TH2
+                                    264 	.globl _TL2
+                                    265 	.globl _T2COUNT
+                                    266 	.globl _RCAP2H
+                                    267 	.globl _RCAP2L
+                                    268 	.globl _RCAP2
+                                    269 	.globl _T2MOD
+                                    270 	.globl _T2CON
+                                    271 	.globl _SBUF
+                                    272 	.globl _SCON
+                                    273 	.globl _TH1
+                                    274 	.globl _TH0
+                                    275 	.globl _TL1
+                                    276 	.globl _TL0
+                                    277 	.globl _TMOD
+                                    278 	.globl _TCON
+                                    279 	.globl _XBUS_SPEED
+                                    280 	.globl _XBUS_AUX
+                                    281 	.globl _PIN_FUNC
+                                    282 	.globl _PORT_CFG
+                                    283 	.globl _P5_IN
+                                    284 	.globl _P4_PU
+                                    285 	.globl _P4_DIR
+                                    286 	.globl _P4_IN
+                                    287 	.globl _P4_OUT
+                                    288 	.globl _P3_PU
+                                    289 	.globl _P3_DIR
+                                    290 	.globl _P3
+                                    291 	.globl _P2_PU
+                                    292 	.globl _P2_DIR
+                                    293 	.globl _P2
+                                    294 	.globl _P1_PU
+                                    295 	.globl _P1_DIR
+                                    296 	.globl _P1_IE
+                                    297 	.globl _P1
+                                    298 	.globl _P0_PU
+                                    299 	.globl _P0_DIR
+                                    300 	.globl _P0
+                                    301 	.globl _ROM_CTRL
+                                    302 	.globl _ROM_DATA_H
+                                    303 	.globl _ROM_DATA_L
+                                    304 	.globl _ROM_DATA
+                                    305 	.globl _ROM_ADDR_H
+                                    306 	.globl _ROM_ADDR_L
+                                    307 	.globl _ROM_ADDR
+                                    308 	.globl _GPIO_IE
+                                    309 	.globl _IP_EX
+                                    310 	.globl _IE_EX
+                                    311 	.globl _IP
+                                    312 	.globl _IE
+                                    313 	.globl _WDOG_COUNT
+                                    314 	.globl _RESET_KEEP
+                                    315 	.globl _WAKE_CTRL
+                                    316 	.globl _SLEEP_CTRL
+                                    317 	.globl _CLOCK_CFG
+                                    318 	.globl _PLL_CFG
+                                    319 	.globl _PCON
+                                    320 	.globl _GLOBAL_CFG
+                                    321 	.globl _SAFE_MOD
+                                    322 	.globl _DPH
+                                    323 	.globl _DPL
+                                    324 	.globl _SP
+                                    325 	.globl _B
+                                    326 	.globl _ACC
+                                    327 	.globl _PSW
+                                    328 	.globl _FanMonitor_begin_PARM_2
+                                    329 	.globl _LED_DMA_XL
+                                    330 	.globl _LED_DMA_XH
+                                    331 	.globl _LED_DMA_CN
+                                    332 	.globl _LED_DMA_AL
+                                    333 	.globl _LED_DMA_AH
+                                    334 	.globl _LED_CK_SE
+                                    335 	.globl _LED_DATA
+                                    336 	.globl _LED_CTRL
+                                    337 	.globl _LED_STAT
+                                    338 	.globl _UEP3_DMA_L
+                                    339 	.globl _UEP3_DMA_H
+                                    340 	.globl _UEP2_DMA_L
+                                    341 	.globl _UEP2_DMA_H
+                                    342 	.globl _UEP1_DMA_L
+                                    343 	.globl _UEP1_DMA_H
+                                    344 	.globl _UEP0_DMA_L
+                                    345 	.globl _UEP0_DMA_H
+                                    346 	.globl _UEP2_3_MOD
+                                    347 	.globl _UEP4_1_MOD
+                                    348 	.globl _pLED_DMA_XL
+                                    349 	.globl _pLED_DMA_XH
+                                    350 	.globl _pLED_DMA_CN
+                                    351 	.globl _pLED_DMA_AL
+                                    352 	.globl _pLED_DMA_AH
+                                    353 	.globl _pLED_CK_SE
+                                    354 	.globl _pLED_DATA
+                                    355 	.globl _pLED_CTRL
+                                    356 	.globl _pLED_STAT
+                                    357 	.globl _pUEP3_DMA_L
+                                    358 	.globl _pUEP3_DMA_H
+                                    359 	.globl _pUEP2_DMA_L
+                                    360 	.globl _pUEP2_DMA_H
+                                    361 	.globl _pUEP1_DMA_L
+                                    362 	.globl _pUEP1_DMA_H
+                                    363 	.globl _pUEP0_DMA_L
+                                    364 	.globl _pUEP0_DMA_H
+                                    365 	.globl _pUEP2_3_MOD
+                                    366 	.globl _pUEP4_1_MOD
+                                    367 	.globl _FanMonitor_begin
+                                    368 	.globl _FanMonitor_updateRPM
+                                    369 	.globl _FanMonitor_getRPM
+                                    370 	.globl _FanMonitor_isStalled
+                                    371 	.globl _FanMonitor_resetStall
+                                    372 	.globl _FanMonitor_getStallCount
+                                    373 ;--------------------------------------------------------
+                                    374 ; special function registers
+                                    375 ;--------------------------------------------------------
+                                    376 	.area RSEG    (ABS,DATA)
+      000000                        377 	.org 0x0000
+                           0000D0   378 _PSW	=	0x00d0
+                           0000E0   379 _ACC	=	0x00e0
+                           0000F0   380 _B	=	0x00f0
+                           000081   381 _SP	=	0x0081
+                           000082   382 _DPL	=	0x0082
+                           000083   383 _DPH	=	0x0083
+                           0000A1   384 _SAFE_MOD	=	0x00a1
+                           0000B1   385 _GLOBAL_CFG	=	0x00b1
+                           000087   386 _PCON	=	0x0087
+                           0000B2   387 _PLL_CFG	=	0x00b2
+                           0000B3   388 _CLOCK_CFG	=	0x00b3
+                           0000EA   389 _SLEEP_CTRL	=	0x00ea
+                           0000EB   390 _WAKE_CTRL	=	0x00eb
+                           0000FE   391 _RESET_KEEP	=	0x00fe
+                           0000FF   392 _WDOG_COUNT	=	0x00ff
+                           0000A8   393 _IE	=	0x00a8
+                           0000B8   394 _IP	=	0x00b8
+                           0000E8   395 _IE_EX	=	0x00e8
+                           0000E9   396 _IP_EX	=	0x00e9
+                           0000CF   397 _GPIO_IE	=	0x00cf
+                           008584   398 _ROM_ADDR	=	0x8584
+                           000084   399 _ROM_ADDR_L	=	0x0084
+                           000085   400 _ROM_ADDR_H	=	0x0085
+                           008F8E   401 _ROM_DATA	=	0x8f8e
+                           00008E   402 _ROM_DATA_L	=	0x008e
+                           00008F   403 _ROM_DATA_H	=	0x008f
+                           000086   404 _ROM_CTRL	=	0x0086
+                           000080   405 _P0	=	0x0080
+                           0000C4   406 _P0_DIR	=	0x00c4
+                           0000C5   407 _P0_PU	=	0x00c5
+                           000090   408 _P1	=	0x0090
+                           0000B9   409 _P1_IE	=	0x00b9
+                           0000BA   410 _P1_DIR	=	0x00ba
+                           0000BB   411 _P1_PU	=	0x00bb
+                           0000A0   412 _P2	=	0x00a0
+                           0000BC   413 _P2_DIR	=	0x00bc
+                           0000BD   414 _P2_PU	=	0x00bd
+                           0000B0   415 _P3	=	0x00b0
+                           0000BE   416 _P3_DIR	=	0x00be
+                           0000BF   417 _P3_PU	=	0x00bf
+                           0000C0   418 _P4_OUT	=	0x00c0
+                           0000C1   419 _P4_IN	=	0x00c1
+                           0000C2   420 _P4_DIR	=	0x00c2
+                           0000C3   421 _P4_PU	=	0x00c3
+                           0000C7   422 _P5_IN	=	0x00c7
+                           0000C6   423 _PORT_CFG	=	0x00c6
+                           0000CE   424 _PIN_FUNC	=	0x00ce
+                           0000A2   425 _XBUS_AUX	=	0x00a2
+                           0000FD   426 _XBUS_SPEED	=	0x00fd
+                           000088   427 _TCON	=	0x0088
+                           000089   428 _TMOD	=	0x0089
+                           00008A   429 _TL0	=	0x008a
+                           00008B   430 _TL1	=	0x008b
+                           00008C   431 _TH0	=	0x008c
+                           00008D   432 _TH1	=	0x008d
+                           000098   433 _SCON	=	0x0098
+                           000099   434 _SBUF	=	0x0099
+                           0000C8   435 _T2CON	=	0x00c8
+                           0000C9   436 _T2MOD	=	0x00c9
+                           00CBCA   437 _RCAP2	=	0xcbca
+                           0000CA   438 _RCAP2L	=	0x00ca
+                           0000CB   439 _RCAP2H	=	0x00cb
+                           00CDCC   440 _T2COUNT	=	0xcdcc
+                           0000CC   441 _TL2	=	0x00cc
+                           0000CD   442 _TH2	=	0x00cd
+                           0000A3   443 _T3_SETUP	=	0x00a3
+                           00A5A4   444 _T3_COUNT	=	0xa5a4
+                           0000A4   445 _T3_COUNT_L	=	0x00a4
+                           0000A5   446 _T3_COUNT_H	=	0x00a5
+                           00A7A6   447 _T3_END	=	0xa7a6
+                           0000A6   448 _T3_END_L	=	0x00a6
+                           0000A7   449 _T3_END_H	=	0x00a7
+                           0000A9   450 _T3_STAT	=	0x00a9
+                           0000AA   451 _T3_CTRL	=	0x00aa
+                           0000AB   452 _T3_DMA_CN	=	0x00ab
+                           00ADAC   453 _T3_DMA	=	0xadac
+                           0000AC   454 _T3_DMA_AL	=	0x00ac
+                           0000AD   455 _T3_DMA_AH	=	0x00ad
+                           00AFAE   456 _T3_FIFO	=	0xafae
+                           0000AE   457 _T3_FIFO_L	=	0x00ae
+                           0000AF   458 _T3_FIFO_H	=	0x00af
+                           00009B   459 _PWM_DATA2	=	0x009b
+                           00009C   460 _PWM_DATA	=	0x009c
+                           00009D   461 _PWM_CTRL	=	0x009d
+                           00009E   462 _PWM_CK_SE	=	0x009e
+                           00009F   463 _PWM_CYCLE	=	0x009f
+                           0000F8   464 _SPI0_STAT	=	0x00f8
+                           0000F9   465 _SPI0_DATA	=	0x00f9
+                           0000FA   466 _SPI0_CTRL	=	0x00fa
+                           0000FB   467 _SPI0_CK_SE	=	0x00fb
+                           0000FC   468 _SPI0_SETUP	=	0x00fc
+                           0000B4   469 _SPI1_STAT	=	0x00b4
+                           0000B5   470 _SPI1_DATA	=	0x00b5
+                           0000B6   471 _SPI1_CTRL	=	0x00b6
+                           0000B7   472 _SPI1_CK_SE	=	0x00b7
+                           00009A   473 _SER1_FIFO	=	0x009a
+                           000091   474 _SER1_IER	=	0x0091
+                           000092   475 _SER1_IIR	=	0x0092
+                           000093   476 _SER1_LCR	=	0x0093
+                           000094   477 _SER1_MCR	=	0x0094
+                           000095   478 _SER1_LSR	=	0x0095
+                           000096   479 _SER1_MSR	=	0x0096
+                           000097   480 _SER1_ADDR	=	0x0097
+                           00EDEC   481 _ADC_DMA	=	0xedec
+                           0000EC   482 _ADC_DMA_AL	=	0x00ec
+                           0000ED   483 _ADC_DMA_AH	=	0x00ed
+                           0000EE   484 _ADC_DMA_CN	=	0x00ee
+                           0000EF   485 _ADC_CK_SE	=	0x00ef
+                           0000F1   486 _ADC_STAT	=	0x00f1
+                           0000F2   487 _ADC_CTRL	=	0x00f2
+                           0000F3   488 _ADC_CHANN	=	0x00f3
+                           00F5F4   489 _ADC_FIFO	=	0xf5f4
+                           0000F4   490 _ADC_FIFO_L	=	0x00f4
+                           0000F5   491 _ADC_FIFO_H	=	0x00f5
+                           0000F6   492 _ADC_SETUP	=	0x00f6
+                           0000F7   493 _ADC_EX_SW	=	0x00f7
+                           0000D1   494 _USB_RX_LEN	=	0x00d1
+                           0000D2   495 _UEP1_CTRL	=	0x00d2
+                           0000D3   496 _UEP1_T_LEN	=	0x00d3
+                           0000D4   497 _UEP2_CTRL	=	0x00d4
+                           0000D5   498 _UEP2_T_LEN	=	0x00d5
+                           0000D6   499 _UEP3_CTRL	=	0x00d6
+                           0000D7   500 _UEP3_T_LEN	=	0x00d7
+                           0000D8   501 _USB_INT_FG	=	0x00d8
+                           0000D9   502 _USB_INT_ST	=	0x00d9
+                           0000DA   503 _USB_MIS_ST	=	0x00da
+                           0000DB   504 _USB_HUB_ST	=	0x00db
+                           0000DC   505 _UEP0_CTRL	=	0x00dc
+                           0000DD   506 _UEP0_T_LEN	=	0x00dd
+                           0000DE   507 _UEP4_CTRL	=	0x00de
+                           0000DF   508 _UEP4_T_LEN	=	0x00df
+                           0000E1   509 _USB_INT_EN	=	0x00e1
+                           0000E2   510 _USB_CTRL	=	0x00e2
+                           0000E3   511 _USB_DEV_AD	=	0x00e3
+                           0000E4   512 _UDEV_CTRL	=	0x00e4
+                           0000E5   513 _UHUB1_CTRL	=	0x00e5
+                           00E7E6   514 _USB_DMA	=	0xe7e6
+                           0000E6   515 _USB_DMA_AL	=	0x00e6
+                           0000E7   516 _USB_DMA_AH	=	0x00e7
+                                    517 ;--------------------------------------------------------
+                                    518 ; special function bits
+                                    519 ;--------------------------------------------------------
+                                    520 	.area RSEG    (ABS,DATA)
+      000000                        521 	.org 0x0000
+                           0000D7   522 _CY	=	0x00d7
+                           0000D6   523 _AC	=	0x00d6
+                           0000D5   524 _F0	=	0x00d5
+                           0000D4   525 _RS1	=	0x00d4
+                           0000D3   526 _RS0	=	0x00d3
+                           0000D2   527 _OV	=	0x00d2
+                           0000D1   528 _F1	=	0x00d1
+                           0000D0   529 _P	=	0x00d0
+                           0000AF   530 _EA	=	0x00af
+                           0000AE   531 _E_DIS	=	0x00ae
+                           0000AD   532 _ET2	=	0x00ad
+                           0000AC   533 _ES	=	0x00ac
+                           0000AB   534 _ET1	=	0x00ab
+                           0000AA   535 _EX1	=	0x00aa
+                           0000A9   536 _ET0	=	0x00a9
+                           0000A8   537 _EX0	=	0x00a8
+                           0000BF   538 _PH_FLAG	=	0x00bf
+                           0000BE   539 _PL_FLAG	=	0x00be
+                           0000BD   540 _PT2	=	0x00bd
+                           0000BC   541 _PS	=	0x00bc
+                           0000BB   542 _PT1	=	0x00bb
+                           0000BA   543 _PX1	=	0x00ba
+                           0000B9   544 _PT0	=	0x00b9
+                           0000B8   545 _PX0	=	0x00b8
+                           0000EF   546 _IE_WDOG	=	0x00ef
+                           0000EE   547 _IE_GPIO	=	0x00ee
+                           0000ED   548 _IE_PWM1	=	0x00ed
+                           0000EC   549 _IE_UART1	=	0x00ec
+                           0000EB   550 _IE_ADC	=	0x00eb
+                           0000EA   551 _IE_USB	=	0x00ea
+                           0000E9   552 _IE_TMR3	=	0x00e9
+                           0000E8   553 _IE_SPI0	=	0x00e8
+                           000087   554 _UDCD	=	0x0087
+                           000086   555 _URI	=	0x0086
+                           000085   556 _UDSR	=	0x0085
+                           000084   557 _UCTS	=	0x0084
+                           000083   558 _TXD_	=	0x0083
+                           000082   559 _RXD_	=	0x0082
+                           000081   560 _URTS	=	0x0081
+                           000080   561 _UDTR	=	0x0080
+                           000087   562 _P0_7	=	0x0087
+                           000086   563 _P0_6	=	0x0086
+                           000085   564 _P0_5	=	0x0085
+                           000084   565 _P0_4	=	0x0084
+                           000083   566 _P0_3	=	0x0083
+                           000082   567 _P0_2	=	0x0082
+                           000081   568 _P0_1	=	0x0081
+                           000080   569 _P0_0	=	0x0080
+                           000097   570 _AIN7	=	0x0097
+                           000096   571 _AIN6	=	0x0096
+                           000095   572 _AIN5	=	0x0095
+                           000094   573 _AIN4	=	0x0094
+                           000093   574 _AIN3	=	0x0093
+                           000092   575 _AIN2	=	0x0092
+                           000091   576 _AIN1	=	0x0091
+                           000090   577 _AIN0	=	0x0090
+                           000097   578 _SCK	=	0x0097
+                           000096   579 _MISO	=	0x0096
+                           000095   580 _MOSI	=	0x0095
+                           000094   581 _SCS	=	0x0094
+                           000092   582 _PWM3	=	0x0092
+                           000092   583 _CAP3	=	0x0092
+                           000091   584 _T2EX	=	0x0091
+                           000091   585 _CAP2	=	0x0091
+                           000090   586 _T2	=	0x0090
+                           000090   587 _CAP1	=	0x0090
+                           000097   588 _P1_7	=	0x0097
+                           000096   589 _P1_6	=	0x0096
+                           000095   590 _P1_5	=	0x0095
+                           000094   591 _P1_4	=	0x0094
+                           000093   592 _P1_3	=	0x0093
+                           000092   593 _P1_2	=	0x0092
+                           000091   594 _P1_1	=	0x0091
+                           000090   595 _P1_0	=	0x0090
+                           0000A7   596 _TXD1	=	0x00a7
+                           0000A7   597 _DA7	=	0x00a7
+                           0000A6   598 _RXD1	=	0x00a6
+                           0000A5   599 _TNOW	=	0x00a5
+                           0000A5   600 _PWM2	=	0x00a5
+                           0000A5   601 _T2EX_	=	0x00a5
+                           0000A5   602 _CAP2_	=	0x00a5
+                           0000A4   603 _PWM1	=	0x00a4
+                           0000A3   604 _SCK1	=	0x00a3
+                           0000A2   605 _MISO1	=	0x00a2
+                           0000A1   606 _MOSI1	=	0x00a1
+                           0000A7   607 _P2_7	=	0x00a7
+                           0000A6   608 _P2_6	=	0x00a6
+                           0000A5   609 _P2_5	=	0x00a5
+                           0000A4   610 _P2_4	=	0x00a4
+                           0000A3   611 _P2_3	=	0x00a3
+                           0000A2   612 _P2_2	=	0x00a2
+                           0000A1   613 _P2_1	=	0x00a1
+                           0000A0   614 _P2_0	=	0x00a0
+                           0000B7   615 _RD	=	0x00b7
+                           0000B6   616 _WR	=	0x00b6
+                           0000B5   617 _DA6	=	0x00b5
+                           0000B5   618 _T1	=	0x00b5
+                           0000B4   619 _LEDC	=	0x00b4
+                           0000B4   620 _XCS0	=	0x00b4
+                           0000B4   621 _T0	=	0x00b4
+                           0000B3   622 _LED1	=	0x00b3
+                           0000B3   623 _INT1	=	0x00b3
+                           0000B2   624 _LED0	=	0x00b2
+                           0000B2   625 _INT0	=	0x00b2
+                           0000B1   626 _TXD	=	0x00b1
+                           0000B0   627 _RXD	=	0x00b0
+                           0000B7   628 _P3_7	=	0x00b7
+                           0000B6   629 _P3_6	=	0x00b6
+                           0000B5   630 _P3_5	=	0x00b5
+                           0000B4   631 _P3_4	=	0x00b4
+                           0000B3   632 _P3_3	=	0x00b3
+                           0000B2   633 _P3_2	=	0x00b2
+                           0000B1   634 _P3_1	=	0x00b1
+                           0000B0   635 _P3_0	=	0x00b0
+                           0000C7   636 _SCK_	=	0x00c7
+                           0000C6   637 _SCS_	=	0x00c6
+                           0000C5   638 _PWM2_	=	0x00c5
+                           0000C4   639 _LED3	=	0x00c4
+                           0000C4   640 _TNOW_	=	0x00c4
+                           0000C4   641 _TXD1_	=	0x00c4
+                           0000C3   642 _PWM1_	=	0x00c3
+                           0000C2   643 _PWM3_	=	0x00c2
+                           0000C2   644 _CAP3_	=	0x00c2
+                           0000C0   645 _LED2	=	0x00c0
+                           0000C0   646 _RXD1_	=	0x00c0
+                           0000C7   647 _P4_OUT_7	=	0x00c7
+                           0000C6   648 _P4_OUT_6	=	0x00c6
+                           0000C5   649 _P4_OUT_5	=	0x00c5
+                           0000C4   650 _P4_OUT_4	=	0x00c4
+                           0000C3   651 _P4_OUT_3	=	0x00c3
+                           0000C2   652 _P4_OUT_2	=	0x00c2
+                           0000C1   653 _P4_OUT_1	=	0x00c1
+                           0000C0   654 _P4_OUT_0	=	0x00c0
+                           00008F   655 _TF1	=	0x008f
+                           00008E   656 _TR1	=	0x008e
+                           00008D   657 _TF0	=	0x008d
+                           00008C   658 _TR0	=	0x008c
+                           00008B   659 _IE1	=	0x008b
+                           00008A   660 _IT1	=	0x008a
+                           000089   661 _IE0	=	0x0089
+                           000088   662 _IT0	=	0x0088
+                           00009F   663 _SM0	=	0x009f
+                           00009E   664 _SM1	=	0x009e
+                           00009D   665 _SM2	=	0x009d
+                           00009C   666 _REN	=	0x009c
+                           00009B   667 _TB8	=	0x009b
+                           00009A   668 _RB8	=	0x009a
+                           000099   669 _TI	=	0x0099
+                           000098   670 _RI	=	0x0098
+                           0000CF   671 _TF2	=	0x00cf
+                           0000CF   672 _CAP1F	=	0x00cf
+                           0000CE   673 _EXF2	=	0x00ce
+                           0000CD   674 _RCLK	=	0x00cd
+                           0000CC   675 _TCLK	=	0x00cc
+                           0000CB   676 _EXEN2	=	0x00cb
+                           0000CA   677 _TR2	=	0x00ca
+                           0000C9   678 _C_T2	=	0x00c9
+                           0000C8   679 _CP_RL2	=	0x00c8
+                           0000FF   680 _S0_FST_ACT	=	0x00ff
+                           0000FE   681 _S0_IF_OV	=	0x00fe
+                           0000FD   682 _S0_IF_FIRST	=	0x00fd
+                           0000FC   683 _S0_IF_BYTE	=	0x00fc
+                           0000FB   684 _S0_FREE	=	0x00fb
+                           0000FA   685 _S0_T_FIFO	=	0x00fa
+                           0000F9   686 _S0_R_FIFO1	=	0x00f9
+                           0000F8   687 _S0_R_FIFO0	=	0x00f8
+                           0000DF   688 _U_IS_NAK	=	0x00df
+                           0000DE   689 _U_TOG_OK	=	0x00de
+                           0000DD   690 _U_SIE_FREE	=	0x00dd
+                           0000DC   691 _UIF_FIFO_OV	=	0x00dc
+                           0000DB   692 _UIF_HST_SOF	=	0x00db
+                           0000DA   693 _UIF_SUSPEND	=	0x00da
+                           0000D9   694 _UIF_TRANSFER	=	0x00d9
+                           0000D8   695 _UIF_DETECT	=	0x00d8
+                           0000D8   696 _UIF_BUS_RST	=	0x00d8
+                                    697 ;--------------------------------------------------------
+                                    698 ; overlayable register banks
+                                    699 ;--------------------------------------------------------
+                                    700 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        701 	.ds 8
+                                    702 ;--------------------------------------------------------
+                                    703 ; internal ram data
+                                    704 ;--------------------------------------------------------
+                                    705 	.area DSEG    (DATA)
+      000000                        706 _FanMonitor_begin_sloc0_1_0:
+      000000                        707 	.ds 3
+      000003                        708 _FanMonitor_updateRPM_sloc0_1_0:
+      000003                        709 	.ds 3
+      000006                        710 _FanMonitor_updateRPM_sloc1_1_0:
+      000006                        711 	.ds 4
+      00000A                        712 _FanMonitor_updateRPM_sloc2_1_0:
+      00000A                        713 	.ds 4
+      00000E                        714 _FanMonitor_updateRPM_sloc3_1_0:
+      00000E                        715 	.ds 3
+      000011                        716 _FanMonitor_updateRPM_sloc4_1_0:
+      000011                        717 	.ds 4
+                                    718 ;--------------------------------------------------------
+                                    719 ; overlayable items in internal ram
+                                    720 ;--------------------------------------------------------
+                                    721 ;--------------------------------------------------------
+                                    722 ; indirectly addressable internal ram data
+                                    723 ;--------------------------------------------------------
+                                    724 	.area ISEG    (DATA)
+                                    725 ;--------------------------------------------------------
+                                    726 ; absolute internal ram data
+                                    727 ;--------------------------------------------------------
+                                    728 	.area IABS    (ABS,DATA)
+                                    729 	.area IABS    (ABS,DATA)
+                                    730 ;--------------------------------------------------------
+                                    731 ; bit data
+                                    732 ;--------------------------------------------------------
+                                    733 	.area BSEG    (BIT)
+                                    734 ;--------------------------------------------------------
+                                    735 ; paged external ram data
+                                    736 ;--------------------------------------------------------
+                                    737 	.area PSEG    (PAG,XDATA)
+                           002546   738 _pUEP4_1_MOD	=	0x2546
+                           002547   739 _pUEP2_3_MOD	=	0x2547
+                           002548   740 _pUEP0_DMA_H	=	0x2548
+                           002549   741 _pUEP0_DMA_L	=	0x2549
+                           00254A   742 _pUEP1_DMA_H	=	0x254a
+                           00254B   743 _pUEP1_DMA_L	=	0x254b
+                           00254C   744 _pUEP2_DMA_H	=	0x254c
+                           00254D   745 _pUEP2_DMA_L	=	0x254d
+                           00254E   746 _pUEP3_DMA_H	=	0x254e
+                           00254F   747 _pUEP3_DMA_L	=	0x254f
+                           002980   748 _pLED_STAT	=	0x2980
+                           002981   749 _pLED_CTRL	=	0x2981
+                           002982   750 _pLED_DATA	=	0x2982
+                           002983   751 _pLED_CK_SE	=	0x2983
+                           002984   752 _pLED_DMA_AH	=	0x2984
+                           002985   753 _pLED_DMA_AL	=	0x2985
+                           002986   754 _pLED_DMA_CN	=	0x2986
+                           002988   755 _pLED_DMA_XH	=	0x2988
+                           002989   756 _pLED_DMA_XL	=	0x2989
+                                    757 ;--------------------------------------------------------
+                                    758 ; uninitialized external ram data
+                                    759 ;--------------------------------------------------------
+                                    760 	.area XSEG    (XDATA)
+                           002446   761 _UEP4_1_MOD	=	0x2446
+                           002447   762 _UEP2_3_MOD	=	0x2447
+                           002448   763 _UEP0_DMA_H	=	0x2448
+                           002449   764 _UEP0_DMA_L	=	0x2449
+                           00244A   765 _UEP1_DMA_H	=	0x244a
+                           00244B   766 _UEP1_DMA_L	=	0x244b
+                           00244C   767 _UEP2_DMA_H	=	0x244c
+                           00244D   768 _UEP2_DMA_L	=	0x244d
+                           00244E   769 _UEP3_DMA_H	=	0x244e
+                           00244F   770 _UEP3_DMA_L	=	0x244f
+                           002880   771 _LED_STAT	=	0x2880
+                           002881   772 _LED_CTRL	=	0x2881
+                           002882   773 _LED_DATA	=	0x2882
+                           002883   774 _LED_CK_SE	=	0x2883
+                           002884   775 _LED_DMA_AH	=	0x2884
+                           002885   776 _LED_DMA_AL	=	0x2885
+                           002886   777 _LED_DMA_CN	=	0x2886
+                           002888   778 _LED_DMA_XH	=	0x2888
+                           002889   779 _LED_DMA_XL	=	0x2889
+      000000                        780 _FanMonitor_begin_PARM_2:
+      000000                        781 	.ds 1
+      000001                        782 _FanMonitor_begin_fm_65536_178:
+      000001                        783 	.ds 3
+      000004                        784 _FanMonitor_updateRPM_fm_65536_180:
+      000004                        785 	.ds 3
+      000007                        786 _FanMonitor_getRPM_fm_65536_186:
+      000007                        787 	.ds 3
+      00000A                        788 _FanMonitor_isStalled_fm_65536_188:
+      00000A                        789 	.ds 3
+      00000D                        790 _FanMonitor_resetStall_fm_65536_190:
+      00000D                        791 	.ds 3
+      000010                        792 _FanMonitor_getStallCount_fm_65536_192:
+      000010                        793 	.ds 3
+                                    794 ;--------------------------------------------------------
+                                    795 ; absolute external ram data
+                                    796 ;--------------------------------------------------------
+                                    797 	.area XABS    (ABS,XDATA)
+                                    798 ;--------------------------------------------------------
+                                    799 ; initialized external ram data
+                                    800 ;--------------------------------------------------------
+                                    801 	.area XISEG   (XDATA)
+      000000                        802 _g_fan_monitor_instance:
+      000000                        803 	.ds 3
+                                    804 	.area HOME    (CODE)
+                                    805 	.area GSINIT0 (CODE)
+                                    806 	.area GSINIT1 (CODE)
+                                    807 	.area GSINIT2 (CODE)
+                                    808 	.area GSINIT3 (CODE)
+                                    809 	.area GSINIT4 (CODE)
+                                    810 	.area GSINIT5 (CODE)
+                                    811 	.area GSINIT  (CODE)
+                                    812 	.area GSFINAL (CODE)
+                                    813 	.area CSEG    (CODE)
+                                    814 ;--------------------------------------------------------
+                                    815 ; global & static initialisations
+                                    816 ;--------------------------------------------------------
+                                    817 	.area HOME    (CODE)
+                                    818 	.area GSINIT  (CODE)
+                                    819 	.area GSFINAL (CODE)
+                                    820 	.area GSINIT  (CODE)
+                                    821 ;--------------------------------------------------------
+                                    822 ; Home
+                                    823 ;--------------------------------------------------------
+                                    824 	.area HOME    (CODE)
+                                    825 	.area HOME    (CODE)
+                                    826 ;--------------------------------------------------------
+                                    827 ; code
+                                    828 ;--------------------------------------------------------
+                                    829 	.area CSEG    (CODE)
+                                    830 ;------------------------------------------------------------
+                                    831 ;Allocation info for local variables in function 'fan_monitor_tachISR'
+                                    832 ;------------------------------------------------------------
+                                    833 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:11: static void fan_monitor_tachISR(void) {
+                                    834 ;	-----------------------------------------
+                                    835 ;	 function fan_monitor_tachISR
+                                    836 ;	-----------------------------------------
+      000000                        837 _fan_monitor_tachISR:
+                           000007   838 	ar7 = 0x07
+                           000006   839 	ar6 = 0x06
+                           000005   840 	ar5 = 0x05
+                           000004   841 	ar4 = 0x04
+                           000003   842 	ar3 = 0x03
+                           000002   843 	ar2 = 0x02
+                           000001   844 	ar1 = 0x01
+                           000000   845 	ar0 = 0x00
+                                    846 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:12: if (g_fan_monitor_instance != 0) {
+      000000 90r00r00         [24]  847 	mov	dptr,#_g_fan_monitor_instance
+      000003 E0               [24]  848 	movx	a,@dptr
+      000004 FD               [12]  849 	mov	r5,a
+      000005 A3               [24]  850 	inc	dptr
+      000006 E0               [24]  851 	movx	a,@dptr
+      000007 FE               [12]  852 	mov	r6,a
+      000008 A3               [24]  853 	inc	dptr
+      000009 E0               [24]  854 	movx	a,@dptr
+      00000A FF               [12]  855 	mov	r7,a
+      00000B 90r00r00         [24]  856 	mov	dptr,#_g_fan_monitor_instance
+      00000E E0               [24]  857 	movx	a,@dptr
+      00000F F5 F0            [12]  858 	mov	b,a
+      000011 A3               [24]  859 	inc	dptr
+      000012 E0               [24]  860 	movx	a,@dptr
+      000013 45 F0            [12]  861 	orl	a,b
+      000015 60 44            [24]  862 	jz	00103$
+                                    863 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:13: g_fan_monitor_instance->pulse_count++;
+      000017 0D               [12]  864 	inc	r5
+      000018 BD 00 01         [24]  865 	cjne	r5,#0x00,00110$
+      00001B 0E               [12]  866 	inc	r6
+      00001C                        867 00110$:
+      00001C 8D 82            [24]  868 	mov	dpl,r5
+      00001E 8E 83            [24]  869 	mov	dph,r6
+      000020 8F F0            [24]  870 	mov	b,r7
+      000022 12r00r00         [24]  871 	lcall	__gptrget
+      000025 F9               [12]  872 	mov	r1,a
+      000026 A3               [24]  873 	inc	dptr
+      000027 12r00r00         [24]  874 	lcall	__gptrget
+      00002A FA               [12]  875 	mov	r2,a
+      00002B A3               [24]  876 	inc	dptr
+      00002C 12r00r00         [24]  877 	lcall	__gptrget
+      00002F FB               [12]  878 	mov	r3,a
+      000030 A3               [24]  879 	inc	dptr
+      000031 12r00r00         [24]  880 	lcall	__gptrget
+      000034 FC               [12]  881 	mov	r4,a
+      000035 09               [12]  882 	inc	r1
+      000036 B9 00 09         [24]  883 	cjne	r1,#0x00,00111$
+      000039 0A               [12]  884 	inc	r2
+      00003A BA 00 05         [24]  885 	cjne	r2,#0x00,00111$
+      00003D 0B               [12]  886 	inc	r3
+      00003E BB 00 01         [24]  887 	cjne	r3,#0x00,00111$
+      000041 0C               [12]  888 	inc	r4
+      000042                        889 00111$:
+      000042 8D 82            [24]  890 	mov	dpl,r5
+      000044 8E 83            [24]  891 	mov	dph,r6
+      000046 8F F0            [24]  892 	mov	b,r7
+      000048 E9               [12]  893 	mov	a,r1
+      000049 12r00r00         [24]  894 	lcall	__gptrput
+      00004C A3               [24]  895 	inc	dptr
+      00004D EA               [12]  896 	mov	a,r2
+      00004E 12r00r00         [24]  897 	lcall	__gptrput
+      000051 A3               [24]  898 	inc	dptr
+      000052 EB               [12]  899 	mov	a,r3
+      000053 12r00r00         [24]  900 	lcall	__gptrput
+      000056 A3               [24]  901 	inc	dptr
+      000057 EC               [12]  902 	mov	a,r4
+                                    903 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:15: }
+      000058 02r00r00         [24]  904 	ljmp	__gptrput
+      00005B                        905 00103$:
+      00005B 22               [24]  906 	ret
+                                    907 ;------------------------------------------------------------
+                                    908 ;Allocation info for local variables in function 'FanMonitor_begin'
+                                    909 ;------------------------------------------------------------
+                                    910 ;sloc0                     Allocated with name '_FanMonitor_begin_sloc0_1_0'
+                                    911 ;pin                       Allocated with name '_FanMonitor_begin_PARM_2'
+                                    912 ;fm                        Allocated with name '_FanMonitor_begin_fm_65536_178'
+                                    913 ;------------------------------------------------------------
+                                    914 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:17: void FanMonitor_begin(FanMonitor* fm, uint8_t pin) {
+                                    915 ;	-----------------------------------------
+                                    916 ;	 function FanMonitor_begin
+                                    917 ;	-----------------------------------------
+      00005C                        918 _FanMonitor_begin:
+      00005C AF F0            [24]  919 	mov	r7,b
+      00005E AE 83            [24]  920 	mov	r6,dph
+      000060 E5 82            [12]  921 	mov	a,dpl
+      000062 90r00r01         [24]  922 	mov	dptr,#_FanMonitor_begin_fm_65536_178
+      000065 F0               [24]  923 	movx	@dptr,a
+      000066 EE               [12]  924 	mov	a,r6
+      000067 A3               [24]  925 	inc	dptr
+      000068 F0               [24]  926 	movx	@dptr,a
+      000069 EF               [12]  927 	mov	a,r7
+      00006A A3               [24]  928 	inc	dptr
+      00006B F0               [24]  929 	movx	@dptr,a
+                                    930 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:18: fm->tach_pin = pin;
+      00006C 90r00r01         [24]  931 	mov	dptr,#_FanMonitor_begin_fm_65536_178
+      00006F E0               [24]  932 	movx	a,@dptr
+      000070 FD               [12]  933 	mov	r5,a
+      000071 A3               [24]  934 	inc	dptr
+      000072 E0               [24]  935 	movx	a,@dptr
+      000073 FE               [12]  936 	mov	r6,a
+      000074 A3               [24]  937 	inc	dptr
+      000075 E0               [24]  938 	movx	a,@dptr
+      000076 FF               [12]  939 	mov	r7,a
+      000077 90r00r00         [24]  940 	mov	dptr,#_FanMonitor_begin_PARM_2
+      00007A E0               [24]  941 	movx	a,@dptr
+      00007B 8D 82            [24]  942 	mov	dpl,r5
+      00007D 8E 83            [24]  943 	mov	dph,r6
+      00007F 8F F0            [24]  944 	mov	b,r7
+      000081 12r00r00         [24]  945 	lcall	__gptrput
+                                    946 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:19: fm->pulse_count = 0;
+      000084 74 01            [12]  947 	mov	a,#0x01
+      000086 2D               [12]  948 	add	a,r5
+      000087 FA               [12]  949 	mov	r2,a
+      000088 E4               [12]  950 	clr	a
+      000089 3E               [12]  951 	addc	a,r6
+      00008A FB               [12]  952 	mov	r3,a
+      00008B 8F 04            [24]  953 	mov	ar4,r7
+      00008D 8A 82            [24]  954 	mov	dpl,r2
+      00008F 8B 83            [24]  955 	mov	dph,r3
+      000091 8C F0            [24]  956 	mov	b,r4
+      000093 E4               [12]  957 	clr	a
+      000094 12r00r00         [24]  958 	lcall	__gptrput
+      000097 A3               [24]  959 	inc	dptr
+      000098 12r00r00         [24]  960 	lcall	__gptrput
+      00009B A3               [24]  961 	inc	dptr
+      00009C 12r00r00         [24]  962 	lcall	__gptrput
+      00009F A3               [24]  963 	inc	dptr
+      0000A0 12r00r00         [24]  964 	lcall	__gptrput
+                                    965 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:20: fm->last_rpm = 0;
+      0000A3 74 05            [12]  966 	mov	a,#0x05
+      0000A5 2D               [12]  967 	add	a,r5
+      0000A6 FA               [12]  968 	mov	r2,a
+      0000A7 E4               [12]  969 	clr	a
+      0000A8 3E               [12]  970 	addc	a,r6
+      0000A9 FB               [12]  971 	mov	r3,a
+      0000AA 8F 04            [24]  972 	mov	ar4,r7
+      0000AC 8A 82            [24]  973 	mov	dpl,r2
+      0000AE 8B 83            [24]  974 	mov	dph,r3
+      0000B0 8C F0            [24]  975 	mov	b,r4
+      0000B2 E4               [12]  976 	clr	a
+      0000B3 12r00r00         [24]  977 	lcall	__gptrput
+      0000B6 A3               [24]  978 	inc	dptr
+      0000B7 12r00r00         [24]  979 	lcall	__gptrput
+      0000BA A3               [24]  980 	inc	dptr
+      0000BB 12r00r00         [24]  981 	lcall	__gptrput
+      0000BE A3               [24]  982 	inc	dptr
+      0000BF 12r00r00         [24]  983 	lcall	__gptrput
+                                    984 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:21: fm->last_calc_time = millis();
+      0000C2 74 09            [12]  985 	mov	a,#0x09
+      0000C4 2D               [12]  986 	add	a,r5
+      0000C5 F5*00            [12]  987 	mov	_FanMonitor_begin_sloc0_1_0,a
+      0000C7 E4               [12]  988 	clr	a
+      0000C8 3E               [12]  989 	addc	a,r6
+      0000C9 F5*01            [12]  990 	mov	(_FanMonitor_begin_sloc0_1_0 + 1),a
+      0000CB 8F*02            [24]  991 	mov	(_FanMonitor_begin_sloc0_1_0 + 2),r7
+      0000CD C0 07            [24]  992 	push	ar7
+      0000CF C0 06            [24]  993 	push	ar6
+      0000D1 C0 05            [24]  994 	push	ar5
+      0000D3 12r00r00         [24]  995 	lcall	_millis
+      0000D6 A8 82            [24]  996 	mov	r0,dpl
+      0000D8 AB 83            [24]  997 	mov	r3,dph
+      0000DA A9 F0            [24]  998 	mov	r1,b
+      0000DC FC               [12]  999 	mov	r4,a
+      0000DD D0 05            [24] 1000 	pop	ar5
+      0000DF D0 06            [24] 1001 	pop	ar6
+      0000E1 D0 07            [24] 1002 	pop	ar7
+      0000E3 85*00 82         [24] 1003 	mov	dpl,_FanMonitor_begin_sloc0_1_0
+      0000E6 85*01 83         [24] 1004 	mov	dph,(_FanMonitor_begin_sloc0_1_0 + 1)
+      0000E9 85*02 F0         [24] 1005 	mov	b,(_FanMonitor_begin_sloc0_1_0 + 2)
+      0000EC E8               [12] 1006 	mov	a,r0
+      0000ED 12r00r00         [24] 1007 	lcall	__gptrput
+      0000F0 A3               [24] 1008 	inc	dptr
+      0000F1 EB               [12] 1009 	mov	a,r3
+      0000F2 12r00r00         [24] 1010 	lcall	__gptrput
+      0000F5 A3               [24] 1011 	inc	dptr
+      0000F6 E9               [12] 1012 	mov	a,r1
+      0000F7 12r00r00         [24] 1013 	lcall	__gptrput
+      0000FA A3               [24] 1014 	inc	dptr
+      0000FB EC               [12] 1015 	mov	a,r4
+      0000FC 12r00r00         [24] 1016 	lcall	__gptrput
+                                   1017 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:22: fm->stall_count = 0;
+      0000FF 74 0D            [12] 1018 	mov	a,#0x0d
+      000101 2D               [12] 1019 	add	a,r5
+      000102 FA               [12] 1020 	mov	r2,a
+      000103 E4               [12] 1021 	clr	a
+      000104 3E               [12] 1022 	addc	a,r6
+      000105 FB               [12] 1023 	mov	r3,a
+      000106 8F 04            [24] 1024 	mov	ar4,r7
+      000108 8A 82            [24] 1025 	mov	dpl,r2
+      00010A 8B 83            [24] 1026 	mov	dph,r3
+      00010C 8C F0            [24] 1027 	mov	b,r4
+      00010E E4               [12] 1028 	clr	a
+      00010F 12r00r00         [24] 1029 	lcall	__gptrput
+                                   1030 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:23: fm->is_stalled = false;
+      000112 74 0E            [12] 1031 	mov	a,#0x0e
+      000114 2D               [12] 1032 	add	a,r5
+      000115 FA               [12] 1033 	mov	r2,a
+      000116 E4               [12] 1034 	clr	a
+      000117 3E               [12] 1035 	addc	a,r6
+      000118 FB               [12] 1036 	mov	r3,a
+      000119 8F 04            [24] 1037 	mov	ar4,r7
+      00011B 8A 82            [24] 1038 	mov	dpl,r2
+      00011D 8B 83            [24] 1039 	mov	dph,r3
+      00011F 8C F0            [24] 1040 	mov	b,r4
+      000121 E4               [12] 1041 	clr	a
+      000122 12r00r00         [24] 1042 	lcall	__gptrput
+                                   1043 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:26: pinMode(fm->tach_pin, INPUT_PULLUP);
+      000125 8D 82            [24] 1044 	mov	dpl,r5
+      000127 8E 83            [24] 1045 	mov	dph,r6
+      000129 8F F0            [24] 1046 	mov	b,r7
+      00012B 12r00r00         [24] 1047 	lcall	__gptrget
+      00012E FC               [12] 1048 	mov	r4,a
+      00012F 90r00r00         [24] 1049 	mov	dptr,#_pinMode_PARM_2
+      000132 74 02            [12] 1050 	mov	a,#0x02
+      000134 F0               [24] 1051 	movx	@dptr,a
+      000135 8C 82            [24] 1052 	mov	dpl,r4
+      000137 C0 07            [24] 1053 	push	ar7
+      000139 C0 06            [24] 1054 	push	ar6
+      00013B C0 05            [24] 1055 	push	ar5
+      00013D 12r00r00         [24] 1056 	lcall	_pinMode
+      000140 D0 05            [24] 1057 	pop	ar5
+      000142 D0 06            [24] 1058 	pop	ar6
+      000144 D0 07            [24] 1059 	pop	ar7
+                                   1060 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:29: g_fan_monitor_instance = fm;
+      000146 90r00r00         [24] 1061 	mov	dptr,#_g_fan_monitor_instance
+      000149 ED               [12] 1062 	mov	a,r5
+      00014A F0               [24] 1063 	movx	@dptr,a
+      00014B EE               [12] 1064 	mov	a,r6
+      00014C A3               [24] 1065 	inc	dptr
+      00014D F0               [24] 1066 	movx	@dptr,a
+      00014E EF               [12] 1067 	mov	a,r7
+      00014F A3               [24] 1068 	inc	dptr
+      000150 F0               [24] 1069 	movx	@dptr,a
+                                   1070 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:31: attachInterrupt(0, fan_monitor_tachISR, FALLING);
+      000151 90r00r00         [24] 1071 	mov	dptr,#_attachInterrupt_PARM_2
+      000154 74r00            [12] 1072 	mov	a,#_fan_monitor_tachISR
+      000156 F0               [24] 1073 	movx	@dptr,a
+      000157 74s00            [12] 1074 	mov	a,#(_fan_monitor_tachISR >> 8)
+      000159 A3               [24] 1075 	inc	dptr
+      00015A F0               [24] 1076 	movx	@dptr,a
+      00015B 90r00r00         [24] 1077 	mov	dptr,#_attachInterrupt_PARM_3
+      00015E 74 01            [12] 1078 	mov	a,#0x01
+      000160 F0               [24] 1079 	movx	@dptr,a
+      000161 75 82 00         [24] 1080 	mov	dpl,#0x00
+                                   1081 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:32: }
+      000164 02r00r00         [24] 1082 	ljmp	_attachInterrupt
+                                   1083 ;------------------------------------------------------------
+                                   1084 ;Allocation info for local variables in function 'FanMonitor_updateRPM'
+                                   1085 ;------------------------------------------------------------
+                                   1086 ;sloc0                     Allocated with name '_FanMonitor_updateRPM_sloc0_1_0'
+                                   1087 ;sloc1                     Allocated with name '_FanMonitor_updateRPM_sloc1_1_0'
+                                   1088 ;sloc2                     Allocated with name '_FanMonitor_updateRPM_sloc2_1_0'
+                                   1089 ;sloc3                     Allocated with name '_FanMonitor_updateRPM_sloc3_1_0'
+                                   1090 ;sloc4                     Allocated with name '_FanMonitor_updateRPM_sloc4_1_0'
+                                   1091 ;fm                        Allocated with name '_FanMonitor_updateRPM_fm_65536_180'
+                                   1092 ;now                       Allocated with name '_FanMonitor_updateRPM_now_65536_181'
+                                   1093 ;elapsed                   Allocated with name '_FanMonitor_updateRPM_elapsed_65536_181'
+                                   1094 ;pulses                    Allocated with name '_FanMonitor_updateRPM_pulses_131072_182'
+                                   1095 ;------------------------------------------------------------
+                                   1096 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:34: uint32_t FanMonitor_updateRPM(FanMonitor* fm) {
+                                   1097 ;	-----------------------------------------
+                                   1098 ;	 function FanMonitor_updateRPM
+                                   1099 ;	-----------------------------------------
+      000167                       1100 _FanMonitor_updateRPM:
+      000167 AF F0            [24] 1101 	mov	r7,b
+      000169 AE 83            [24] 1102 	mov	r6,dph
+      00016B E5 82            [12] 1103 	mov	a,dpl
+      00016D 90r00r04         [24] 1104 	mov	dptr,#_FanMonitor_updateRPM_fm_65536_180
+      000170 F0               [24] 1105 	movx	@dptr,a
+      000171 EE               [12] 1106 	mov	a,r6
+      000172 A3               [24] 1107 	inc	dptr
+      000173 F0               [24] 1108 	movx	@dptr,a
+      000174 EF               [12] 1109 	mov	a,r7
+      000175 A3               [24] 1110 	inc	dptr
+      000176 F0               [24] 1111 	movx	@dptr,a
+                                   1112 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:35: unsigned long now = millis();
+      000177 12r00r00         [24] 1113 	lcall	_millis
+      00017A 85 82*06         [24] 1114 	mov	_FanMonitor_updateRPM_sloc1_1_0,dpl
+      00017D 85 83*07         [24] 1115 	mov	(_FanMonitor_updateRPM_sloc1_1_0 + 1),dph
+      000180 85 F0*08         [24] 1116 	mov	(_FanMonitor_updateRPM_sloc1_1_0 + 2),b
+      000183 F5*09            [12] 1117 	mov	(_FanMonitor_updateRPM_sloc1_1_0 + 3),a
+                                   1118 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:36: unsigned long elapsed = now - fm->last_calc_time;
+      000185 90r00r04         [24] 1119 	mov	dptr,#_FanMonitor_updateRPM_fm_65536_180
+      000188 E0               [24] 1120 	movx	a,@dptr
+      000189 F9               [12] 1121 	mov	r1,a
+      00018A A3               [24] 1122 	inc	dptr
+      00018B E0               [24] 1123 	movx	a,@dptr
+      00018C FA               [12] 1124 	mov	r2,a
+      00018D A3               [24] 1125 	inc	dptr
+      00018E E0               [24] 1126 	movx	a,@dptr
+      00018F FB               [12] 1127 	mov	r3,a
+      000190 74 09            [12] 1128 	mov	a,#0x09
+      000192 29               [12] 1129 	add	a,r1
+      000193 F5*03            [12] 1130 	mov	_FanMonitor_updateRPM_sloc0_1_0,a
+      000195 E4               [12] 1131 	clr	a
+      000196 3A               [12] 1132 	addc	a,r2
+      000197 F5*04            [12] 1133 	mov	(_FanMonitor_updateRPM_sloc0_1_0 + 1),a
+      000199 8B*05            [24] 1134 	mov	(_FanMonitor_updateRPM_sloc0_1_0 + 2),r3
+      00019B 85*03 82         [24] 1135 	mov	dpl,_FanMonitor_updateRPM_sloc0_1_0
+      00019E 85*04 83         [24] 1136 	mov	dph,(_FanMonitor_updateRPM_sloc0_1_0 + 1)
+      0001A1 85*05 F0         [24] 1137 	mov	b,(_FanMonitor_updateRPM_sloc0_1_0 + 2)
+      0001A4 12r00r00         [24] 1138 	lcall	__gptrget
+      0001A7 F8               [12] 1139 	mov	r0,a
+      0001A8 A3               [24] 1140 	inc	dptr
+      0001A9 12r00r00         [24] 1141 	lcall	__gptrget
+      0001AC FD               [12] 1142 	mov	r5,a
+      0001AD A3               [24] 1143 	inc	dptr
+      0001AE 12r00r00         [24] 1144 	lcall	__gptrget
+      0001B1 FE               [12] 1145 	mov	r6,a
+      0001B2 A3               [24] 1146 	inc	dptr
+      0001B3 12r00r00         [24] 1147 	lcall	__gptrget
+      0001B6 FF               [12] 1148 	mov	r7,a
+      0001B7 E5*06            [12] 1149 	mov	a,_FanMonitor_updateRPM_sloc1_1_0
+      0001B9 C3               [12] 1150 	clr	c
+      0001BA 98               [12] 1151 	subb	a,r0
+      0001BB F5*0A            [12] 1152 	mov	_FanMonitor_updateRPM_sloc2_1_0,a
+      0001BD E5*07            [12] 1153 	mov	a,(_FanMonitor_updateRPM_sloc1_1_0 + 1)
+      0001BF 9D               [12] 1154 	subb	a,r5
+      0001C0 F5*0B            [12] 1155 	mov	(_FanMonitor_updateRPM_sloc2_1_0 + 1),a
+      0001C2 E5*08            [12] 1156 	mov	a,(_FanMonitor_updateRPM_sloc1_1_0 + 2)
+      0001C4 9E               [12] 1157 	subb	a,r6
+      0001C5 F5*0C            [12] 1158 	mov	(_FanMonitor_updateRPM_sloc2_1_0 + 2),a
+      0001C7 E5*09            [12] 1159 	mov	a,(_FanMonitor_updateRPM_sloc1_1_0 + 3)
+      0001C9 9F               [12] 1160 	subb	a,r7
+      0001CA F5*0D            [12] 1161 	mov	(_FanMonitor_updateRPM_sloc2_1_0 + 3),a
+                                   1162 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:39: if (elapsed >= 1000) {
+      0001CC C3               [12] 1163 	clr	c
+      0001CD E5*0A            [12] 1164 	mov	a,_FanMonitor_updateRPM_sloc2_1_0
+      0001CF 94 E8            [12] 1165 	subb	a,#0xe8
+      0001D1 E5*0B            [12] 1166 	mov	a,(_FanMonitor_updateRPM_sloc2_1_0 + 1)
+      0001D3 94 03            [12] 1167 	subb	a,#0x03
+      0001D5 E5*0C            [12] 1168 	mov	a,(_FanMonitor_updateRPM_sloc2_1_0 + 2)
+      0001D7 94 00            [12] 1169 	subb	a,#0x00
+      0001D9 E5*0D            [12] 1170 	mov	a,(_FanMonitor_updateRPM_sloc2_1_0 + 3)
+      0001DB 94 00            [12] 1171 	subb	a,#0x00
+      0001DD 50 03            [24] 1172 	jnc	00122$
+      0001DF 02r03r4B         [24] 1173 	ljmp	00107$
+      0001E2                       1174 00122$:
+                                   1175 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:40: uint32_t pulses = fm->pulse_count;
+      0001E2 74 01            [12] 1176 	mov	a,#0x01
+      0001E4 29               [12] 1177 	add	a,r1
+      0001E5 F5*0E            [12] 1178 	mov	_FanMonitor_updateRPM_sloc3_1_0,a
+      0001E7 E4               [12] 1179 	clr	a
+      0001E8 3A               [12] 1180 	addc	a,r2
+      0001E9 F5*0F            [12] 1181 	mov	(_FanMonitor_updateRPM_sloc3_1_0 + 1),a
+      0001EB 8B*10            [24] 1182 	mov	(_FanMonitor_updateRPM_sloc3_1_0 + 2),r3
+      0001ED 85*0E 82         [24] 1183 	mov	dpl,_FanMonitor_updateRPM_sloc3_1_0
+      0001F0 85*0F 83         [24] 1184 	mov	dph,(_FanMonitor_updateRPM_sloc3_1_0 + 1)
+      0001F3 85*10 F0         [24] 1185 	mov	b,(_FanMonitor_updateRPM_sloc3_1_0 + 2)
+      0001F6 12r00r00         [24] 1186 	lcall	__gptrget
+      0001F9 F5*11            [12] 1187 	mov	_FanMonitor_updateRPM_sloc4_1_0,a
+      0001FB A3               [24] 1188 	inc	dptr
+      0001FC 12r00r00         [24] 1189 	lcall	__gptrget
+      0001FF F5*12            [12] 1190 	mov	(_FanMonitor_updateRPM_sloc4_1_0 + 1),a
+      000201 A3               [24] 1191 	inc	dptr
+      000202 12r00r00         [24] 1192 	lcall	__gptrget
+      000205 F5*13            [12] 1193 	mov	(_FanMonitor_updateRPM_sloc4_1_0 + 2),a
+      000207 A3               [24] 1194 	inc	dptr
+      000208 12r00r00         [24] 1195 	lcall	__gptrget
+      00020B F5*14            [12] 1196 	mov	(_FanMonitor_updateRPM_sloc4_1_0 + 3),a
+                                   1197 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:41: fm->pulse_count = 0;
+      00020D 85*0E 82         [24] 1198 	mov	dpl,_FanMonitor_updateRPM_sloc3_1_0
+      000210 85*0F 83         [24] 1199 	mov	dph,(_FanMonitor_updateRPM_sloc3_1_0 + 1)
+      000213 85*10 F0         [24] 1200 	mov	b,(_FanMonitor_updateRPM_sloc3_1_0 + 2)
+      000216 E4               [12] 1201 	clr	a
+      000217 12r00r00         [24] 1202 	lcall	__gptrput
+      00021A A3               [24] 1203 	inc	dptr
+      00021B 12r00r00         [24] 1204 	lcall	__gptrput
+      00021E A3               [24] 1205 	inc	dptr
+      00021F 12r00r00         [24] 1206 	lcall	__gptrput
+      000222 A3               [24] 1207 	inc	dptr
+      000223 12r00r00         [24] 1208 	lcall	__gptrput
+                                   1209 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:46: fm->last_rpm = (pulses * 60000) / (elapsed * 2);
+      000226 74 05            [12] 1210 	mov	a,#0x05
+      000228 29               [12] 1211 	add	a,r1
+      000229 F5*0E            [12] 1212 	mov	_FanMonitor_updateRPM_sloc3_1_0,a
+      00022B E4               [12] 1213 	clr	a
+      00022C 3A               [12] 1214 	addc	a,r2
+      00022D F5*0F            [12] 1215 	mov	(_FanMonitor_updateRPM_sloc3_1_0 + 1),a
+      00022F 8B*10            [24] 1216 	mov	(_FanMonitor_updateRPM_sloc3_1_0 + 2),r3
+      000231 C0 03            [24] 1217 	push	ar3
+      000233 C0 02            [24] 1218 	push	ar2
+      000235 C0 01            [24] 1219 	push	ar1
+      000237 C0*11            [24] 1220 	push	_FanMonitor_updateRPM_sloc4_1_0
+      000239 C0*12            [24] 1221 	push	(_FanMonitor_updateRPM_sloc4_1_0 + 1)
+      00023B C0*13            [24] 1222 	push	(_FanMonitor_updateRPM_sloc4_1_0 + 2)
+      00023D C0*14            [24] 1223 	push	(_FanMonitor_updateRPM_sloc4_1_0 + 3)
+      00023F 90 EA 60         [24] 1224 	mov	dptr,#0xea60
+      000242 E4               [12] 1225 	clr	a
+      000243 F5 F0            [12] 1226 	mov	b,a
+      000245 12r00r00         [24] 1227 	lcall	__mullong
+      000248 AC 82            [24] 1228 	mov	r4,dpl
+      00024A AD 83            [24] 1229 	mov	r5,dph
+      00024C AE F0            [24] 1230 	mov	r6,b
+      00024E FF               [12] 1231 	mov	r7,a
+      00024F E5 81            [12] 1232 	mov	a,sp
+      000251 24 FC            [12] 1233 	add	a,#0xfc
+      000253 F5 81            [12] 1234 	mov	sp,a
+      000255 D0 01            [24] 1235 	pop	ar1
+      000257 D0 02            [24] 1236 	pop	ar2
+      000259 D0 03            [24] 1237 	pop	ar3
+      00025B C0 01            [24] 1238 	push	ar1
+      00025D C0 02            [24] 1239 	push	ar2
+      00025F C0 03            [24] 1240 	push	ar3
+      000261 E5*0A            [12] 1241 	mov	a,_FanMonitor_updateRPM_sloc2_1_0
+      000263 25*0A            [12] 1242 	add	a,_FanMonitor_updateRPM_sloc2_1_0
+      000265 F8               [12] 1243 	mov	r0,a
+      000266 E5*0B            [12] 1244 	mov	a,(_FanMonitor_updateRPM_sloc2_1_0 + 1)
+      000268 33               [12] 1245 	rlc	a
+      000269 F9               [12] 1246 	mov	r1,a
+      00026A E5*0C            [12] 1247 	mov	a,(_FanMonitor_updateRPM_sloc2_1_0 + 2)
+      00026C 33               [12] 1248 	rlc	a
+      00026D FA               [12] 1249 	mov	r2,a
+      00026E E5*0D            [12] 1250 	mov	a,(_FanMonitor_updateRPM_sloc2_1_0 + 3)
+      000270 33               [12] 1251 	rlc	a
+      000271 FB               [12] 1252 	mov	r3,a
+      000272 C0 03            [24] 1253 	push	ar3
+      000274 C0 02            [24] 1254 	push	ar2
+      000276 C0 01            [24] 1255 	push	ar1
+      000278 C0 00            [24] 1256 	push	ar0
+      00027A C0 01            [24] 1257 	push	ar1
+      00027C C0 02            [24] 1258 	push	ar2
+      00027E C0 03            [24] 1259 	push	ar3
+      000280 8C 82            [24] 1260 	mov	dpl,r4
+      000282 8D 83            [24] 1261 	mov	dph,r5
+      000284 8E F0            [24] 1262 	mov	b,r6
+      000286 EF               [12] 1263 	mov	a,r7
+      000287 12r00r00         [24] 1264 	lcall	__divulong
+      00028A AC 82            [24] 1265 	mov	r4,dpl
+      00028C AE 83            [24] 1266 	mov	r6,dph
+      00028E AD F0            [24] 1267 	mov	r5,b
+      000290 FF               [12] 1268 	mov	r7,a
+      000291 E5 81            [12] 1269 	mov	a,sp
+      000293 24 FC            [12] 1270 	add	a,#0xfc
+      000295 F5 81            [12] 1271 	mov	sp,a
+      000297 D0 01            [24] 1272 	pop	ar1
+      000299 D0 02            [24] 1273 	pop	ar2
+      00029B D0 03            [24] 1274 	pop	ar3
+      00029D 85*0E 82         [24] 1275 	mov	dpl,_FanMonitor_updateRPM_sloc3_1_0
+      0002A0 85*0F 83         [24] 1276 	mov	dph,(_FanMonitor_updateRPM_sloc3_1_0 + 1)
+      0002A3 85*10 F0         [24] 1277 	mov	b,(_FanMonitor_updateRPM_sloc3_1_0 + 2)
+      0002A6 EC               [12] 1278 	mov	a,r4
+      0002A7 12r00r00         [24] 1279 	lcall	__gptrput
+      0002AA A3               [24] 1280 	inc	dptr
+      0002AB EE               [12] 1281 	mov	a,r6
+      0002AC 12r00r00         [24] 1282 	lcall	__gptrput
+      0002AF A3               [24] 1283 	inc	dptr
+      0002B0 ED               [12] 1284 	mov	a,r5
+      0002B1 12r00r00         [24] 1285 	lcall	__gptrput
+      0002B4 A3               [24] 1286 	inc	dptr
+      0002B5 EF               [12] 1287 	mov	a,r7
+      0002B6 12r00r00         [24] 1288 	lcall	__gptrput
+                                   1289 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:47: fm->last_calc_time = now;
+      0002B9 85*03 82         [24] 1290 	mov	dpl,_FanMonitor_updateRPM_sloc0_1_0
+      0002BC 85*04 83         [24] 1291 	mov	dph,(_FanMonitor_updateRPM_sloc0_1_0 + 1)
+      0002BF 85*05 F0         [24] 1292 	mov	b,(_FanMonitor_updateRPM_sloc0_1_0 + 2)
+      0002C2 E5*06            [12] 1293 	mov	a,_FanMonitor_updateRPM_sloc1_1_0
+      0002C4 12r00r00         [24] 1294 	lcall	__gptrput
+      0002C7 A3               [24] 1295 	inc	dptr
+      0002C8 E5*07            [12] 1296 	mov	a,(_FanMonitor_updateRPM_sloc1_1_0 + 1)
+      0002CA 12r00r00         [24] 1297 	lcall	__gptrput
+      0002CD A3               [24] 1298 	inc	dptr
+      0002CE E5*08            [12] 1299 	mov	a,(_FanMonitor_updateRPM_sloc1_1_0 + 2)
+      0002D0 12r00r00         [24] 1300 	lcall	__gptrput
+      0002D3 A3               [24] 1301 	inc	dptr
+      0002D4 E5*09            [12] 1302 	mov	a,(_FanMonitor_updateRPM_sloc1_1_0 + 3)
+      0002D6 12r00r00         [24] 1303 	lcall	__gptrput
+                                   1304 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:50: if (fm->last_rpm < RPM_STALL_THRESH) {
+      0002D9 C3               [12] 1305 	clr	c
+      0002DA EC               [12] 1306 	mov	a,r4
+      0002DB 94 64            [12] 1307 	subb	a,#0x64
+      0002DD EE               [12] 1308 	mov	a,r6
+      0002DE 94 00            [12] 1309 	subb	a,#0x00
+      0002E0 ED               [12] 1310 	mov	a,r5
+      0002E1 94 00            [12] 1311 	subb	a,#0x00
+      0002E3 EF               [12] 1312 	mov	a,r7
+      0002E4 94 00            [12] 1313 	subb	a,#0x00
+      0002E6 D0 03            [24] 1314 	pop	ar3
+      0002E8 D0 02            [24] 1315 	pop	ar2
+      0002EA D0 01            [24] 1316 	pop	ar1
+      0002EC 50 39            [24] 1317 	jnc	00104$
+                                   1318 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:51: fm->stall_count++;
+      0002EE 74 0D            [12] 1319 	mov	a,#0x0d
+      0002F0 29               [12] 1320 	add	a,r1
+      0002F1 FD               [12] 1321 	mov	r5,a
+      0002F2 E4               [12] 1322 	clr	a
+      0002F3 3A               [12] 1323 	addc	a,r2
+      0002F4 FE               [12] 1324 	mov	r6,a
+      0002F5 8B 07            [24] 1325 	mov	ar7,r3
+      0002F7 8D 82            [24] 1326 	mov	dpl,r5
+      0002F9 8E 83            [24] 1327 	mov	dph,r6
+      0002FB 8F F0            [24] 1328 	mov	b,r7
+      0002FD 12r00r00         [24] 1329 	lcall	__gptrget
+      000300 FC               [12] 1330 	mov	r4,a
+      000301 0C               [12] 1331 	inc	r4
+      000302 8D 82            [24] 1332 	mov	dpl,r5
+      000304 8E 83            [24] 1333 	mov	dph,r6
+      000306 8F F0            [24] 1334 	mov	b,r7
+      000308 EC               [12] 1335 	mov	a,r4
+      000309 12r00r00         [24] 1336 	lcall	__gptrput
+                                   1337 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:52: if (fm->stall_count >= 2) {
+      00030C BC 02 00         [24] 1338 	cjne	r4,#0x02,00124$
+      00030F                       1339 00124$:
+      00030F 40 3A            [24] 1340 	jc	00107$
+                                   1341 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:53: fm->is_stalled = true;
+      000311 74 0E            [12] 1342 	mov	a,#0x0e
+      000313 29               [12] 1343 	add	a,r1
+      000314 FD               [12] 1344 	mov	r5,a
+      000315 E4               [12] 1345 	clr	a
+      000316 3A               [12] 1346 	addc	a,r2
+      000317 FE               [12] 1347 	mov	r6,a
+      000318 8B 07            [24] 1348 	mov	ar7,r3
+      00031A 8D 82            [24] 1349 	mov	dpl,r5
+      00031C 8E 83            [24] 1350 	mov	dph,r6
+      00031E 8F F0            [24] 1351 	mov	b,r7
+      000320 74 01            [12] 1352 	mov	a,#0x01
+      000322 12r00r00         [24] 1353 	lcall	__gptrput
+      000325 80 24            [24] 1354 	sjmp	00107$
+      000327                       1355 00104$:
+                                   1356 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:56: fm->stall_count = 0;
+      000327 74 0D            [12] 1357 	mov	a,#0x0d
+      000329 29               [12] 1358 	add	a,r1
+      00032A FD               [12] 1359 	mov	r5,a
+      00032B E4               [12] 1360 	clr	a
+      00032C 3A               [12] 1361 	addc	a,r2
+      00032D FE               [12] 1362 	mov	r6,a
+      00032E 8B 07            [24] 1363 	mov	ar7,r3
+      000330 8D 82            [24] 1364 	mov	dpl,r5
+      000332 8E 83            [24] 1365 	mov	dph,r6
+      000334 8F F0            [24] 1366 	mov	b,r7
+      000336 E4               [12] 1367 	clr	a
+      000337 12r00r00         [24] 1368 	lcall	__gptrput
+                                   1369 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:57: fm->is_stalled = false;
+      00033A 74 0E            [12] 1370 	mov	a,#0x0e
+      00033C 29               [12] 1371 	add	a,r1
+      00033D F9               [12] 1372 	mov	r1,a
+      00033E E4               [12] 1373 	clr	a
+      00033F 3A               [12] 1374 	addc	a,r2
+      000340 FA               [12] 1375 	mov	r2,a
+      000341 89 82            [24] 1376 	mov	dpl,r1
+      000343 8A 83            [24] 1377 	mov	dph,r2
+      000345 8B F0            [24] 1378 	mov	b,r3
+      000347 E4               [12] 1379 	clr	a
+      000348 12r00r00         [24] 1380 	lcall	__gptrput
+      00034B                       1381 00107$:
+                                   1382 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:61: return fm->last_rpm;
+      00034B 90r00r04         [24] 1383 	mov	dptr,#_FanMonitor_updateRPM_fm_65536_180
+      00034E E0               [24] 1384 	movx	a,@dptr
+      00034F FD               [12] 1385 	mov	r5,a
+      000350 A3               [24] 1386 	inc	dptr
+      000351 E0               [24] 1387 	movx	a,@dptr
+      000352 FE               [12] 1388 	mov	r6,a
+      000353 A3               [24] 1389 	inc	dptr
+      000354 E0               [24] 1390 	movx	a,@dptr
+      000355 FF               [12] 1391 	mov	r7,a
+      000356 74 05            [12] 1392 	mov	a,#0x05
+      000358 2D               [12] 1393 	add	a,r5
+      000359 FD               [12] 1394 	mov	r5,a
+      00035A E4               [12] 1395 	clr	a
+      00035B 3E               [12] 1396 	addc	a,r6
+      00035C FE               [12] 1397 	mov	r6,a
+      00035D 8D 82            [24] 1398 	mov	dpl,r5
+      00035F 8E 83            [24] 1399 	mov	dph,r6
+      000361 8F F0            [24] 1400 	mov	b,r7
+      000363 12r00r00         [24] 1401 	lcall	__gptrget
+      000366 FD               [12] 1402 	mov	r5,a
+      000367 A3               [24] 1403 	inc	dptr
+      000368 12r00r00         [24] 1404 	lcall	__gptrget
+      00036B FE               [12] 1405 	mov	r6,a
+      00036C A3               [24] 1406 	inc	dptr
+      00036D 12r00r00         [24] 1407 	lcall	__gptrget
+      000370 FF               [12] 1408 	mov	r7,a
+      000371 A3               [24] 1409 	inc	dptr
+      000372 12r00r00         [24] 1410 	lcall	__gptrget
+      000375 8D 82            [24] 1411 	mov	dpl,r5
+      000377 8E 83            [24] 1412 	mov	dph,r6
+      000379 8F F0            [24] 1413 	mov	b,r7
+                                   1414 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:62: }
+      00037B 22               [24] 1415 	ret
+                                   1416 ;------------------------------------------------------------
+                                   1417 ;Allocation info for local variables in function 'FanMonitor_getRPM'
+                                   1418 ;------------------------------------------------------------
+                                   1419 ;fm                        Allocated with name '_FanMonitor_getRPM_fm_65536_186'
+                                   1420 ;------------------------------------------------------------
+                                   1421 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:64: uint32_t FanMonitor_getRPM(const FanMonitor* fm) {
+                                   1422 ;	-----------------------------------------
+                                   1423 ;	 function FanMonitor_getRPM
+                                   1424 ;	-----------------------------------------
+      00037C                       1425 _FanMonitor_getRPM:
+      00037C AF F0            [24] 1426 	mov	r7,b
+      00037E AE 83            [24] 1427 	mov	r6,dph
+      000380 E5 82            [12] 1428 	mov	a,dpl
+      000382 90r00r07         [24] 1429 	mov	dptr,#_FanMonitor_getRPM_fm_65536_186
+      000385 F0               [24] 1430 	movx	@dptr,a
+      000386 EE               [12] 1431 	mov	a,r6
+      000387 A3               [24] 1432 	inc	dptr
+      000388 F0               [24] 1433 	movx	@dptr,a
+      000389 EF               [12] 1434 	mov	a,r7
+      00038A A3               [24] 1435 	inc	dptr
+      00038B F0               [24] 1436 	movx	@dptr,a
+                                   1437 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:65: return fm->last_rpm;
+      00038C 90r00r07         [24] 1438 	mov	dptr,#_FanMonitor_getRPM_fm_65536_186
+      00038F E0               [24] 1439 	movx	a,@dptr
+      000390 FD               [12] 1440 	mov	r5,a
+      000391 A3               [24] 1441 	inc	dptr
+      000392 E0               [24] 1442 	movx	a,@dptr
+      000393 FE               [12] 1443 	mov	r6,a
+      000394 A3               [24] 1444 	inc	dptr
+      000395 E0               [24] 1445 	movx	a,@dptr
+      000396 FF               [12] 1446 	mov	r7,a
+      000397 74 05            [12] 1447 	mov	a,#0x05
+      000399 2D               [12] 1448 	add	a,r5
+      00039A FD               [12] 1449 	mov	r5,a
+      00039B E4               [12] 1450 	clr	a
+      00039C 3E               [12] 1451 	addc	a,r6
+      00039D FE               [12] 1452 	mov	r6,a
+      00039E 8D 82            [24] 1453 	mov	dpl,r5
+      0003A0 8E 83            [24] 1454 	mov	dph,r6
+      0003A2 8F F0            [24] 1455 	mov	b,r7
+      0003A4 12r00r00         [24] 1456 	lcall	__gptrget
+      0003A7 FD               [12] 1457 	mov	r5,a
+      0003A8 A3               [24] 1458 	inc	dptr
+      0003A9 12r00r00         [24] 1459 	lcall	__gptrget
+      0003AC FE               [12] 1460 	mov	r6,a
+      0003AD A3               [24] 1461 	inc	dptr
+      0003AE 12r00r00         [24] 1462 	lcall	__gptrget
+      0003B1 FF               [12] 1463 	mov	r7,a
+      0003B2 A3               [24] 1464 	inc	dptr
+      0003B3 12r00r00         [24] 1465 	lcall	__gptrget
+      0003B6 8D 82            [24] 1466 	mov	dpl,r5
+      0003B8 8E 83            [24] 1467 	mov	dph,r6
+      0003BA 8F F0            [24] 1468 	mov	b,r7
+                                   1469 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:66: }
+      0003BC 22               [24] 1470 	ret
+                                   1471 ;------------------------------------------------------------
+                                   1472 ;Allocation info for local variables in function 'FanMonitor_isStalled'
+                                   1473 ;------------------------------------------------------------
+                                   1474 ;fm                        Allocated with name '_FanMonitor_isStalled_fm_65536_188'
+                                   1475 ;------------------------------------------------------------
+                                   1476 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:68: bool FanMonitor_isStalled(const FanMonitor* fm) {
+                                   1477 ;	-----------------------------------------
+                                   1478 ;	 function FanMonitor_isStalled
+                                   1479 ;	-----------------------------------------
+      0003BD                       1480 _FanMonitor_isStalled:
+      0003BD AF F0            [24] 1481 	mov	r7,b
+      0003BF AE 83            [24] 1482 	mov	r6,dph
+      0003C1 E5 82            [12] 1483 	mov	a,dpl
+      0003C3 90r00r0A         [24] 1484 	mov	dptr,#_FanMonitor_isStalled_fm_65536_188
+      0003C6 F0               [24] 1485 	movx	@dptr,a
+      0003C7 EE               [12] 1486 	mov	a,r6
+      0003C8 A3               [24] 1487 	inc	dptr
+      0003C9 F0               [24] 1488 	movx	@dptr,a
+      0003CA EF               [12] 1489 	mov	a,r7
+      0003CB A3               [24] 1490 	inc	dptr
+      0003CC F0               [24] 1491 	movx	@dptr,a
+                                   1492 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:69: return fm->is_stalled;
+      0003CD 90r00r0A         [24] 1493 	mov	dptr,#_FanMonitor_isStalled_fm_65536_188
+      0003D0 E0               [24] 1494 	movx	a,@dptr
+      0003D1 FD               [12] 1495 	mov	r5,a
+      0003D2 A3               [24] 1496 	inc	dptr
+      0003D3 E0               [24] 1497 	movx	a,@dptr
+      0003D4 FE               [12] 1498 	mov	r6,a
+      0003D5 A3               [24] 1499 	inc	dptr
+      0003D6 E0               [24] 1500 	movx	a,@dptr
+      0003D7 FF               [12] 1501 	mov	r7,a
+      0003D8 74 0E            [12] 1502 	mov	a,#0x0e
+      0003DA 2D               [12] 1503 	add	a,r5
+      0003DB FD               [12] 1504 	mov	r5,a
+      0003DC E4               [12] 1505 	clr	a
+      0003DD 3E               [12] 1506 	addc	a,r6
+      0003DE FE               [12] 1507 	mov	r6,a
+      0003DF 8D 82            [24] 1508 	mov	dpl,r5
+      0003E1 8E 83            [24] 1509 	mov	dph,r6
+      0003E3 8F F0            [24] 1510 	mov	b,r7
+      0003E5 12r00r00         [24] 1511 	lcall	__gptrget
+                                   1512 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:70: }
+      0003E8 F5 82            [12] 1513 	mov	dpl,a
+      0003EA 22               [24] 1514 	ret
+                                   1515 ;------------------------------------------------------------
+                                   1516 ;Allocation info for local variables in function 'FanMonitor_resetStall'
+                                   1517 ;------------------------------------------------------------
+                                   1518 ;fm                        Allocated with name '_FanMonitor_resetStall_fm_65536_190'
+                                   1519 ;------------------------------------------------------------
+                                   1520 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:72: void FanMonitor_resetStall(FanMonitor* fm) {
+                                   1521 ;	-----------------------------------------
+                                   1522 ;	 function FanMonitor_resetStall
+                                   1523 ;	-----------------------------------------
+      0003EB                       1524 _FanMonitor_resetStall:
+      0003EB AF F0            [24] 1525 	mov	r7,b
+      0003ED AE 83            [24] 1526 	mov	r6,dph
+      0003EF E5 82            [12] 1527 	mov	a,dpl
+      0003F1 90r00r0D         [24] 1528 	mov	dptr,#_FanMonitor_resetStall_fm_65536_190
+      0003F4 F0               [24] 1529 	movx	@dptr,a
+      0003F5 EE               [12] 1530 	mov	a,r6
+      0003F6 A3               [24] 1531 	inc	dptr
+      0003F7 F0               [24] 1532 	movx	@dptr,a
+      0003F8 EF               [12] 1533 	mov	a,r7
+      0003F9 A3               [24] 1534 	inc	dptr
+      0003FA F0               [24] 1535 	movx	@dptr,a
+                                   1536 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:73: fm->is_stalled = false;
+      0003FB 90r00r0D         [24] 1537 	mov	dptr,#_FanMonitor_resetStall_fm_65536_190
+      0003FE E0               [24] 1538 	movx	a,@dptr
+      0003FF FD               [12] 1539 	mov	r5,a
+      000400 A3               [24] 1540 	inc	dptr
+      000401 E0               [24] 1541 	movx	a,@dptr
+      000402 FE               [12] 1542 	mov	r6,a
+      000403 A3               [24] 1543 	inc	dptr
+      000404 E0               [24] 1544 	movx	a,@dptr
+      000405 FF               [12] 1545 	mov	r7,a
+      000406 74 0E            [12] 1546 	mov	a,#0x0e
+      000408 2D               [12] 1547 	add	a,r5
+      000409 FA               [12] 1548 	mov	r2,a
+      00040A E4               [12] 1549 	clr	a
+      00040B 3E               [12] 1550 	addc	a,r6
+      00040C FB               [12] 1551 	mov	r3,a
+      00040D 8F 04            [24] 1552 	mov	ar4,r7
+      00040F 8A 82            [24] 1553 	mov	dpl,r2
+      000411 8B 83            [24] 1554 	mov	dph,r3
+      000413 8C F0            [24] 1555 	mov	b,r4
+      000415 E4               [12] 1556 	clr	a
+      000416 12r00r00         [24] 1557 	lcall	__gptrput
+                                   1558 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:74: fm->stall_count = 0;
+      000419 74 0D            [12] 1559 	mov	a,#0x0d
+      00041B 2D               [12] 1560 	add	a,r5
+      00041C FD               [12] 1561 	mov	r5,a
+      00041D E4               [12] 1562 	clr	a
+      00041E 3E               [12] 1563 	addc	a,r6
+      00041F FE               [12] 1564 	mov	r6,a
+      000420 8D 82            [24] 1565 	mov	dpl,r5
+      000422 8E 83            [24] 1566 	mov	dph,r6
+      000424 8F F0            [24] 1567 	mov	b,r7
+      000426 E4               [12] 1568 	clr	a
+                                   1569 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:75: }
+      000427 02r00r00         [24] 1570 	ljmp	__gptrput
+                                   1571 ;------------------------------------------------------------
+                                   1572 ;Allocation info for local variables in function 'FanMonitor_getStallCount'
+                                   1573 ;------------------------------------------------------------
+                                   1574 ;fm                        Allocated with name '_FanMonitor_getStallCount_fm_65536_192'
+                                   1575 ;------------------------------------------------------------
+                                   1576 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:77: uint8_t FanMonitor_getStallCount(const FanMonitor* fm) {
+                                   1577 ;	-----------------------------------------
+                                   1578 ;	 function FanMonitor_getStallCount
+                                   1579 ;	-----------------------------------------
+      00042A                       1580 _FanMonitor_getStallCount:
+      00042A AF F0            [24] 1581 	mov	r7,b
+      00042C AE 83            [24] 1582 	mov	r6,dph
+      00042E E5 82            [12] 1583 	mov	a,dpl
+      000430 90r00r10         [24] 1584 	mov	dptr,#_FanMonitor_getStallCount_fm_65536_192
+      000433 F0               [24] 1585 	movx	@dptr,a
+      000434 EE               [12] 1586 	mov	a,r6
+      000435 A3               [24] 1587 	inc	dptr
+      000436 F0               [24] 1588 	movx	@dptr,a
+      000437 EF               [12] 1589 	mov	a,r7
+      000438 A3               [24] 1590 	inc	dptr
+      000439 F0               [24] 1591 	movx	@dptr,a
+                                   1592 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:78: return fm->stall_count;
+      00043A 90r00r10         [24] 1593 	mov	dptr,#_FanMonitor_getStallCount_fm_65536_192
+      00043D E0               [24] 1594 	movx	a,@dptr
+      00043E FD               [12] 1595 	mov	r5,a
+      00043F A3               [24] 1596 	inc	dptr
+      000440 E0               [24] 1597 	movx	a,@dptr
+      000441 FE               [12] 1598 	mov	r6,a
+      000442 A3               [24] 1599 	inc	dptr
+      000443 E0               [24] 1600 	movx	a,@dptr
+      000444 FF               [12] 1601 	mov	r7,a
+      000445 74 0D            [12] 1602 	mov	a,#0x0d
+      000447 2D               [12] 1603 	add	a,r5
+      000448 FD               [12] 1604 	mov	r5,a
+      000449 E4               [12] 1605 	clr	a
+      00044A 3E               [12] 1606 	addc	a,r6
+      00044B FE               [12] 1607 	mov	r6,a
+      00044C 8D 82            [24] 1608 	mov	dpl,r5
+      00044E 8E 83            [24] 1609 	mov	dph,r6
+      000450 8F F0            [24] 1610 	mov	b,r7
+      000452 12r00r00         [24] 1611 	lcall	__gptrget
+                                   1612 ;	C:\Users\tonyp\Downloads\ch552-turbo-fan-ctrl\src\fan_monitor.c:79: }
+      000455 F5 82            [12] 1613 	mov	dpl,a
+      000457 22               [24] 1614 	ret
+                                   1615 	.area CSEG    (CODE)
+                                   1616 	.area CONST   (CODE)
+                                   1617 	.area XINIT   (CODE)
+      000000                       1618 __xinit__g_fan_monitor_instance:
+                                   1619 ; generic printIvalPtr
+      000000 00 00 00              1620 	.byte #0x00,#0x00,#0x00
+                                   1621 	.area CABS    (ABS,CODE)

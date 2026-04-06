@@ -1,0 +1,1028 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.2 #13407 (MINGW32)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module genericPrintUSBSerial
+                                      6 	.optsdcc -mmcs51 --model-large
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _Print_print_ib
+                                     12 	.globl _Print_print_u
+                                     13 	.globl _Print_print_i
+                                     14 	.globl _Print_print_sn
+                                     15 	.globl _Print_print_s
+                                     16 	.globl _USBSerial_write
+                                     17 	.globl _UIF_BUS_RST
+                                     18 	.globl _UIF_DETECT
+                                     19 	.globl _UIF_TRANSFER
+                                     20 	.globl _UIF_SUSPEND
+                                     21 	.globl _UIF_HST_SOF
+                                     22 	.globl _UIF_FIFO_OV
+                                     23 	.globl _U_SIE_FREE
+                                     24 	.globl _U_TOG_OK
+                                     25 	.globl _U_IS_NAK
+                                     26 	.globl _S0_R_FIFO0
+                                     27 	.globl _S0_R_FIFO1
+                                     28 	.globl _S0_T_FIFO
+                                     29 	.globl _S0_FREE
+                                     30 	.globl _S0_IF_BYTE
+                                     31 	.globl _S0_IF_FIRST
+                                     32 	.globl _S0_IF_OV
+                                     33 	.globl _S0_FST_ACT
+                                     34 	.globl _CP_RL2
+                                     35 	.globl _C_T2
+                                     36 	.globl _TR2
+                                     37 	.globl _EXEN2
+                                     38 	.globl _TCLK
+                                     39 	.globl _RCLK
+                                     40 	.globl _EXF2
+                                     41 	.globl _CAP1F
+                                     42 	.globl _TF2
+                                     43 	.globl _RI
+                                     44 	.globl _TI
+                                     45 	.globl _RB8
+                                     46 	.globl _TB8
+                                     47 	.globl _REN
+                                     48 	.globl _SM2
+                                     49 	.globl _SM1
+                                     50 	.globl _SM0
+                                     51 	.globl _IT0
+                                     52 	.globl _IE0
+                                     53 	.globl _IT1
+                                     54 	.globl _IE1
+                                     55 	.globl _TR0
+                                     56 	.globl _TF0
+                                     57 	.globl _TR1
+                                     58 	.globl _TF1
+                                     59 	.globl _P4_OUT_0
+                                     60 	.globl _P4_OUT_1
+                                     61 	.globl _P4_OUT_2
+                                     62 	.globl _P4_OUT_3
+                                     63 	.globl _P4_OUT_4
+                                     64 	.globl _P4_OUT_5
+                                     65 	.globl _P4_OUT_6
+                                     66 	.globl _P4_OUT_7
+                                     67 	.globl _RXD1_
+                                     68 	.globl _LED2
+                                     69 	.globl _CAP3_
+                                     70 	.globl _PWM3_
+                                     71 	.globl _PWM1_
+                                     72 	.globl _TXD1_
+                                     73 	.globl _TNOW_
+                                     74 	.globl _LED3
+                                     75 	.globl _PWM2_
+                                     76 	.globl _SCS_
+                                     77 	.globl _SCK_
+                                     78 	.globl _P3_0
+                                     79 	.globl _P3_1
+                                     80 	.globl _P3_2
+                                     81 	.globl _P3_3
+                                     82 	.globl _P3_4
+                                     83 	.globl _P3_5
+                                     84 	.globl _P3_6
+                                     85 	.globl _P3_7
+                                     86 	.globl _RXD
+                                     87 	.globl _TXD
+                                     88 	.globl _INT0
+                                     89 	.globl _LED0
+                                     90 	.globl _INT1
+                                     91 	.globl _LED1
+                                     92 	.globl _T0
+                                     93 	.globl _XCS0
+                                     94 	.globl _LEDC
+                                     95 	.globl _T1
+                                     96 	.globl _DA6
+                                     97 	.globl _WR
+                                     98 	.globl _RD
+                                     99 	.globl _P2_0
+                                    100 	.globl _P2_1
+                                    101 	.globl _P2_2
+                                    102 	.globl _P2_3
+                                    103 	.globl _P2_4
+                                    104 	.globl _P2_5
+                                    105 	.globl _P2_6
+                                    106 	.globl _P2_7
+                                    107 	.globl _MOSI1
+                                    108 	.globl _MISO1
+                                    109 	.globl _SCK1
+                                    110 	.globl _PWM1
+                                    111 	.globl _CAP2_
+                                    112 	.globl _T2EX_
+                                    113 	.globl _PWM2
+                                    114 	.globl _TNOW
+                                    115 	.globl _RXD1
+                                    116 	.globl _DA7
+                                    117 	.globl _TXD1
+                                    118 	.globl _P1_0
+                                    119 	.globl _P1_1
+                                    120 	.globl _P1_2
+                                    121 	.globl _P1_3
+                                    122 	.globl _P1_4
+                                    123 	.globl _P1_5
+                                    124 	.globl _P1_6
+                                    125 	.globl _P1_7
+                                    126 	.globl _CAP1
+                                    127 	.globl _T2
+                                    128 	.globl _CAP2
+                                    129 	.globl _T2EX
+                                    130 	.globl _CAP3
+                                    131 	.globl _PWM3
+                                    132 	.globl _SCS
+                                    133 	.globl _MOSI
+                                    134 	.globl _MISO
+                                    135 	.globl _SCK
+                                    136 	.globl _AIN0
+                                    137 	.globl _AIN1
+                                    138 	.globl _AIN2
+                                    139 	.globl _AIN3
+                                    140 	.globl _AIN4
+                                    141 	.globl _AIN5
+                                    142 	.globl _AIN6
+                                    143 	.globl _AIN7
+                                    144 	.globl _P0_0
+                                    145 	.globl _P0_1
+                                    146 	.globl _P0_2
+                                    147 	.globl _P0_3
+                                    148 	.globl _P0_4
+                                    149 	.globl _P0_5
+                                    150 	.globl _P0_6
+                                    151 	.globl _P0_7
+                                    152 	.globl _UDTR
+                                    153 	.globl _URTS
+                                    154 	.globl _RXD_
+                                    155 	.globl _TXD_
+                                    156 	.globl _UCTS
+                                    157 	.globl _UDSR
+                                    158 	.globl _URI
+                                    159 	.globl _UDCD
+                                    160 	.globl _IE_SPI0
+                                    161 	.globl _IE_TMR3
+                                    162 	.globl _IE_USB
+                                    163 	.globl _IE_ADC
+                                    164 	.globl _IE_UART1
+                                    165 	.globl _IE_PWM1
+                                    166 	.globl _IE_GPIO
+                                    167 	.globl _IE_WDOG
+                                    168 	.globl _PX0
+                                    169 	.globl _PT0
+                                    170 	.globl _PX1
+                                    171 	.globl _PT1
+                                    172 	.globl _PS
+                                    173 	.globl _PT2
+                                    174 	.globl _PL_FLAG
+                                    175 	.globl _PH_FLAG
+                                    176 	.globl _EX0
+                                    177 	.globl _ET0
+                                    178 	.globl _EX1
+                                    179 	.globl _ET1
+                                    180 	.globl _ES
+                                    181 	.globl _ET2
+                                    182 	.globl _E_DIS
+                                    183 	.globl _EA
+                                    184 	.globl _P
+                                    185 	.globl _F1
+                                    186 	.globl _OV
+                                    187 	.globl _RS0
+                                    188 	.globl _RS1
+                                    189 	.globl _F0
+                                    190 	.globl _AC
+                                    191 	.globl _CY
+                                    192 	.globl _USB_DMA_AH
+                                    193 	.globl _USB_DMA_AL
+                                    194 	.globl _USB_DMA
+                                    195 	.globl _UHUB1_CTRL
+                                    196 	.globl _UDEV_CTRL
+                                    197 	.globl _USB_DEV_AD
+                                    198 	.globl _USB_CTRL
+                                    199 	.globl _USB_INT_EN
+                                    200 	.globl _UEP4_T_LEN
+                                    201 	.globl _UEP4_CTRL
+                                    202 	.globl _UEP0_T_LEN
+                                    203 	.globl _UEP0_CTRL
+                                    204 	.globl _USB_HUB_ST
+                                    205 	.globl _USB_MIS_ST
+                                    206 	.globl _USB_INT_ST
+                                    207 	.globl _USB_INT_FG
+                                    208 	.globl _UEP3_T_LEN
+                                    209 	.globl _UEP3_CTRL
+                                    210 	.globl _UEP2_T_LEN
+                                    211 	.globl _UEP2_CTRL
+                                    212 	.globl _UEP1_T_LEN
+                                    213 	.globl _UEP1_CTRL
+                                    214 	.globl _USB_RX_LEN
+                                    215 	.globl _ADC_EX_SW
+                                    216 	.globl _ADC_SETUP
+                                    217 	.globl _ADC_FIFO_H
+                                    218 	.globl _ADC_FIFO_L
+                                    219 	.globl _ADC_FIFO
+                                    220 	.globl _ADC_CHANN
+                                    221 	.globl _ADC_CTRL
+                                    222 	.globl _ADC_STAT
+                                    223 	.globl _ADC_CK_SE
+                                    224 	.globl _ADC_DMA_CN
+                                    225 	.globl _ADC_DMA_AH
+                                    226 	.globl _ADC_DMA_AL
+                                    227 	.globl _ADC_DMA
+                                    228 	.globl _SER1_ADDR
+                                    229 	.globl _SER1_MSR
+                                    230 	.globl _SER1_LSR
+                                    231 	.globl _SER1_MCR
+                                    232 	.globl _SER1_LCR
+                                    233 	.globl _SER1_IIR
+                                    234 	.globl _SER1_IER
+                                    235 	.globl _SER1_FIFO
+                                    236 	.globl _SPI1_CK_SE
+                                    237 	.globl _SPI1_CTRL
+                                    238 	.globl _SPI1_DATA
+                                    239 	.globl _SPI1_STAT
+                                    240 	.globl _SPI0_SETUP
+                                    241 	.globl _SPI0_CK_SE
+                                    242 	.globl _SPI0_CTRL
+                                    243 	.globl _SPI0_DATA
+                                    244 	.globl _SPI0_STAT
+                                    245 	.globl _PWM_CYCLE
+                                    246 	.globl _PWM_CK_SE
+                                    247 	.globl _PWM_CTRL
+                                    248 	.globl _PWM_DATA
+                                    249 	.globl _PWM_DATA2
+                                    250 	.globl _T3_FIFO_H
+                                    251 	.globl _T3_FIFO_L
+                                    252 	.globl _T3_FIFO
+                                    253 	.globl _T3_DMA_AH
+                                    254 	.globl _T3_DMA_AL
+                                    255 	.globl _T3_DMA
+                                    256 	.globl _T3_DMA_CN
+                                    257 	.globl _T3_CTRL
+                                    258 	.globl _T3_STAT
+                                    259 	.globl _T3_END_H
+                                    260 	.globl _T3_END_L
+                                    261 	.globl _T3_END
+                                    262 	.globl _T3_COUNT_H
+                                    263 	.globl _T3_COUNT_L
+                                    264 	.globl _T3_COUNT
+                                    265 	.globl _T3_SETUP
+                                    266 	.globl _TH2
+                                    267 	.globl _TL2
+                                    268 	.globl _T2COUNT
+                                    269 	.globl _RCAP2H
+                                    270 	.globl _RCAP2L
+                                    271 	.globl _RCAP2
+                                    272 	.globl _T2MOD
+                                    273 	.globl _T2CON
+                                    274 	.globl _SBUF
+                                    275 	.globl _SCON
+                                    276 	.globl _TH1
+                                    277 	.globl _TH0
+                                    278 	.globl _TL1
+                                    279 	.globl _TL0
+                                    280 	.globl _TMOD
+                                    281 	.globl _TCON
+                                    282 	.globl _XBUS_SPEED
+                                    283 	.globl _XBUS_AUX
+                                    284 	.globl _PIN_FUNC
+                                    285 	.globl _PORT_CFG
+                                    286 	.globl _P5_IN
+                                    287 	.globl _P4_PU
+                                    288 	.globl _P4_DIR
+                                    289 	.globl _P4_IN
+                                    290 	.globl _P4_OUT
+                                    291 	.globl _P3_PU
+                                    292 	.globl _P3_DIR
+                                    293 	.globl _P3
+                                    294 	.globl _P2_PU
+                                    295 	.globl _P2_DIR
+                                    296 	.globl _P2
+                                    297 	.globl _P1_PU
+                                    298 	.globl _P1_DIR
+                                    299 	.globl _P1_IE
+                                    300 	.globl _P1
+                                    301 	.globl _P0_PU
+                                    302 	.globl _P0_DIR
+                                    303 	.globl _P0
+                                    304 	.globl _ROM_CTRL
+                                    305 	.globl _ROM_DATA_H
+                                    306 	.globl _ROM_DATA_L
+                                    307 	.globl _ROM_DATA
+                                    308 	.globl _ROM_ADDR_H
+                                    309 	.globl _ROM_ADDR_L
+                                    310 	.globl _ROM_ADDR
+                                    311 	.globl _GPIO_IE
+                                    312 	.globl _IP_EX
+                                    313 	.globl _IE_EX
+                                    314 	.globl _IP
+                                    315 	.globl _IE
+                                    316 	.globl _WDOG_COUNT
+                                    317 	.globl _RESET_KEEP
+                                    318 	.globl _WAKE_CTRL
+                                    319 	.globl _SLEEP_CTRL
+                                    320 	.globl _CLOCK_CFG
+                                    321 	.globl _PLL_CFG
+                                    322 	.globl _PCON
+                                    323 	.globl _GLOBAL_CFG
+                                    324 	.globl _SAFE_MOD
+                                    325 	.globl _DPH
+                                    326 	.globl _DPL
+                                    327 	.globl _SP
+                                    328 	.globl _B
+                                    329 	.globl _ACC
+                                    330 	.globl _PSW
+                                    331 	.globl _USBSerial_print_sn_func_PARM_2
+                                    332 	.globl _USBSerial_print_ub_func_PARM_2
+                                    333 	.globl _USBSerial_print_ib_func_PARM_2
+                                    334 	.globl _LED_DMA_XL
+                                    335 	.globl _LED_DMA_XH
+                                    336 	.globl _LED_DMA_CN
+                                    337 	.globl _LED_DMA_AL
+                                    338 	.globl _LED_DMA_AH
+                                    339 	.globl _LED_CK_SE
+                                    340 	.globl _LED_DATA
+                                    341 	.globl _LED_CTRL
+                                    342 	.globl _LED_STAT
+                                    343 	.globl _UEP3_DMA_L
+                                    344 	.globl _UEP3_DMA_H
+                                    345 	.globl _UEP2_DMA_L
+                                    346 	.globl _UEP2_DMA_H
+                                    347 	.globl _UEP1_DMA_L
+                                    348 	.globl _UEP1_DMA_H
+                                    349 	.globl _UEP0_DMA_L
+                                    350 	.globl _UEP0_DMA_H
+                                    351 	.globl _UEP2_3_MOD
+                                    352 	.globl _UEP4_1_MOD
+                                    353 	.globl _pLED_DMA_XL
+                                    354 	.globl _pLED_DMA_XH
+                                    355 	.globl _pLED_DMA_CN
+                                    356 	.globl _pLED_DMA_AL
+                                    357 	.globl _pLED_DMA_AH
+                                    358 	.globl _pLED_CK_SE
+                                    359 	.globl _pLED_DATA
+                                    360 	.globl _pLED_CTRL
+                                    361 	.globl _pLED_STAT
+                                    362 	.globl _pUEP3_DMA_L
+                                    363 	.globl _pUEP3_DMA_H
+                                    364 	.globl _pUEP2_DMA_L
+                                    365 	.globl _pUEP2_DMA_H
+                                    366 	.globl _pUEP1_DMA_L
+                                    367 	.globl _pUEP1_DMA_H
+                                    368 	.globl _pUEP0_DMA_L
+                                    369 	.globl _pUEP0_DMA_H
+                                    370 	.globl _pUEP2_3_MOD
+                                    371 	.globl _pUEP4_1_MOD
+                                    372 	.globl _printNothing
+                                    373 	.globl _USBSerial_print_i_func
+                                    374 	.globl _USBSerial_print_ib_func
+                                    375 	.globl _USBSerial_print_u_func
+                                    376 	.globl _USBSerial_print_ub_func
+                                    377 	.globl _USBSerial_print_s_func
+                                    378 	.globl _USBSerial_print_sn_func
+                                    379 ;--------------------------------------------------------
+                                    380 ; special function registers
+                                    381 ;--------------------------------------------------------
+                                    382 	.area RSEG    (ABS,DATA)
+      000000                        383 	.org 0x0000
+                           0000D0   384 _PSW	=	0x00d0
+                           0000E0   385 _ACC	=	0x00e0
+                           0000F0   386 _B	=	0x00f0
+                           000081   387 _SP	=	0x0081
+                           000082   388 _DPL	=	0x0082
+                           000083   389 _DPH	=	0x0083
+                           0000A1   390 _SAFE_MOD	=	0x00a1
+                           0000B1   391 _GLOBAL_CFG	=	0x00b1
+                           000087   392 _PCON	=	0x0087
+                           0000B2   393 _PLL_CFG	=	0x00b2
+                           0000B3   394 _CLOCK_CFG	=	0x00b3
+                           0000EA   395 _SLEEP_CTRL	=	0x00ea
+                           0000EB   396 _WAKE_CTRL	=	0x00eb
+                           0000FE   397 _RESET_KEEP	=	0x00fe
+                           0000FF   398 _WDOG_COUNT	=	0x00ff
+                           0000A8   399 _IE	=	0x00a8
+                           0000B8   400 _IP	=	0x00b8
+                           0000E8   401 _IE_EX	=	0x00e8
+                           0000E9   402 _IP_EX	=	0x00e9
+                           0000CF   403 _GPIO_IE	=	0x00cf
+                           008584   404 _ROM_ADDR	=	0x8584
+                           000084   405 _ROM_ADDR_L	=	0x0084
+                           000085   406 _ROM_ADDR_H	=	0x0085
+                           008F8E   407 _ROM_DATA	=	0x8f8e
+                           00008E   408 _ROM_DATA_L	=	0x008e
+                           00008F   409 _ROM_DATA_H	=	0x008f
+                           000086   410 _ROM_CTRL	=	0x0086
+                           000080   411 _P0	=	0x0080
+                           0000C4   412 _P0_DIR	=	0x00c4
+                           0000C5   413 _P0_PU	=	0x00c5
+                           000090   414 _P1	=	0x0090
+                           0000B9   415 _P1_IE	=	0x00b9
+                           0000BA   416 _P1_DIR	=	0x00ba
+                           0000BB   417 _P1_PU	=	0x00bb
+                           0000A0   418 _P2	=	0x00a0
+                           0000BC   419 _P2_DIR	=	0x00bc
+                           0000BD   420 _P2_PU	=	0x00bd
+                           0000B0   421 _P3	=	0x00b0
+                           0000BE   422 _P3_DIR	=	0x00be
+                           0000BF   423 _P3_PU	=	0x00bf
+                           0000C0   424 _P4_OUT	=	0x00c0
+                           0000C1   425 _P4_IN	=	0x00c1
+                           0000C2   426 _P4_DIR	=	0x00c2
+                           0000C3   427 _P4_PU	=	0x00c3
+                           0000C7   428 _P5_IN	=	0x00c7
+                           0000C6   429 _PORT_CFG	=	0x00c6
+                           0000CE   430 _PIN_FUNC	=	0x00ce
+                           0000A2   431 _XBUS_AUX	=	0x00a2
+                           0000FD   432 _XBUS_SPEED	=	0x00fd
+                           000088   433 _TCON	=	0x0088
+                           000089   434 _TMOD	=	0x0089
+                           00008A   435 _TL0	=	0x008a
+                           00008B   436 _TL1	=	0x008b
+                           00008C   437 _TH0	=	0x008c
+                           00008D   438 _TH1	=	0x008d
+                           000098   439 _SCON	=	0x0098
+                           000099   440 _SBUF	=	0x0099
+                           0000C8   441 _T2CON	=	0x00c8
+                           0000C9   442 _T2MOD	=	0x00c9
+                           00CBCA   443 _RCAP2	=	0xcbca
+                           0000CA   444 _RCAP2L	=	0x00ca
+                           0000CB   445 _RCAP2H	=	0x00cb
+                           00CDCC   446 _T2COUNT	=	0xcdcc
+                           0000CC   447 _TL2	=	0x00cc
+                           0000CD   448 _TH2	=	0x00cd
+                           0000A3   449 _T3_SETUP	=	0x00a3
+                           00A5A4   450 _T3_COUNT	=	0xa5a4
+                           0000A4   451 _T3_COUNT_L	=	0x00a4
+                           0000A5   452 _T3_COUNT_H	=	0x00a5
+                           00A7A6   453 _T3_END	=	0xa7a6
+                           0000A6   454 _T3_END_L	=	0x00a6
+                           0000A7   455 _T3_END_H	=	0x00a7
+                           0000A9   456 _T3_STAT	=	0x00a9
+                           0000AA   457 _T3_CTRL	=	0x00aa
+                           0000AB   458 _T3_DMA_CN	=	0x00ab
+                           00ADAC   459 _T3_DMA	=	0xadac
+                           0000AC   460 _T3_DMA_AL	=	0x00ac
+                           0000AD   461 _T3_DMA_AH	=	0x00ad
+                           00AFAE   462 _T3_FIFO	=	0xafae
+                           0000AE   463 _T3_FIFO_L	=	0x00ae
+                           0000AF   464 _T3_FIFO_H	=	0x00af
+                           00009B   465 _PWM_DATA2	=	0x009b
+                           00009C   466 _PWM_DATA	=	0x009c
+                           00009D   467 _PWM_CTRL	=	0x009d
+                           00009E   468 _PWM_CK_SE	=	0x009e
+                           00009F   469 _PWM_CYCLE	=	0x009f
+                           0000F8   470 _SPI0_STAT	=	0x00f8
+                           0000F9   471 _SPI0_DATA	=	0x00f9
+                           0000FA   472 _SPI0_CTRL	=	0x00fa
+                           0000FB   473 _SPI0_CK_SE	=	0x00fb
+                           0000FC   474 _SPI0_SETUP	=	0x00fc
+                           0000B4   475 _SPI1_STAT	=	0x00b4
+                           0000B5   476 _SPI1_DATA	=	0x00b5
+                           0000B6   477 _SPI1_CTRL	=	0x00b6
+                           0000B7   478 _SPI1_CK_SE	=	0x00b7
+                           00009A   479 _SER1_FIFO	=	0x009a
+                           000091   480 _SER1_IER	=	0x0091
+                           000092   481 _SER1_IIR	=	0x0092
+                           000093   482 _SER1_LCR	=	0x0093
+                           000094   483 _SER1_MCR	=	0x0094
+                           000095   484 _SER1_LSR	=	0x0095
+                           000096   485 _SER1_MSR	=	0x0096
+                           000097   486 _SER1_ADDR	=	0x0097
+                           00EDEC   487 _ADC_DMA	=	0xedec
+                           0000EC   488 _ADC_DMA_AL	=	0x00ec
+                           0000ED   489 _ADC_DMA_AH	=	0x00ed
+                           0000EE   490 _ADC_DMA_CN	=	0x00ee
+                           0000EF   491 _ADC_CK_SE	=	0x00ef
+                           0000F1   492 _ADC_STAT	=	0x00f1
+                           0000F2   493 _ADC_CTRL	=	0x00f2
+                           0000F3   494 _ADC_CHANN	=	0x00f3
+                           00F5F4   495 _ADC_FIFO	=	0xf5f4
+                           0000F4   496 _ADC_FIFO_L	=	0x00f4
+                           0000F5   497 _ADC_FIFO_H	=	0x00f5
+                           0000F6   498 _ADC_SETUP	=	0x00f6
+                           0000F7   499 _ADC_EX_SW	=	0x00f7
+                           0000D1   500 _USB_RX_LEN	=	0x00d1
+                           0000D2   501 _UEP1_CTRL	=	0x00d2
+                           0000D3   502 _UEP1_T_LEN	=	0x00d3
+                           0000D4   503 _UEP2_CTRL	=	0x00d4
+                           0000D5   504 _UEP2_T_LEN	=	0x00d5
+                           0000D6   505 _UEP3_CTRL	=	0x00d6
+                           0000D7   506 _UEP3_T_LEN	=	0x00d7
+                           0000D8   507 _USB_INT_FG	=	0x00d8
+                           0000D9   508 _USB_INT_ST	=	0x00d9
+                           0000DA   509 _USB_MIS_ST	=	0x00da
+                           0000DB   510 _USB_HUB_ST	=	0x00db
+                           0000DC   511 _UEP0_CTRL	=	0x00dc
+                           0000DD   512 _UEP0_T_LEN	=	0x00dd
+                           0000DE   513 _UEP4_CTRL	=	0x00de
+                           0000DF   514 _UEP4_T_LEN	=	0x00df
+                           0000E1   515 _USB_INT_EN	=	0x00e1
+                           0000E2   516 _USB_CTRL	=	0x00e2
+                           0000E3   517 _USB_DEV_AD	=	0x00e3
+                           0000E4   518 _UDEV_CTRL	=	0x00e4
+                           0000E5   519 _UHUB1_CTRL	=	0x00e5
+                           00E7E6   520 _USB_DMA	=	0xe7e6
+                           0000E6   521 _USB_DMA_AL	=	0x00e6
+                           0000E7   522 _USB_DMA_AH	=	0x00e7
+                                    523 ;--------------------------------------------------------
+                                    524 ; special function bits
+                                    525 ;--------------------------------------------------------
+                                    526 	.area RSEG    (ABS,DATA)
+      000000                        527 	.org 0x0000
+                           0000D7   528 _CY	=	0x00d7
+                           0000D6   529 _AC	=	0x00d6
+                           0000D5   530 _F0	=	0x00d5
+                           0000D4   531 _RS1	=	0x00d4
+                           0000D3   532 _RS0	=	0x00d3
+                           0000D2   533 _OV	=	0x00d2
+                           0000D1   534 _F1	=	0x00d1
+                           0000D0   535 _P	=	0x00d0
+                           0000AF   536 _EA	=	0x00af
+                           0000AE   537 _E_DIS	=	0x00ae
+                           0000AD   538 _ET2	=	0x00ad
+                           0000AC   539 _ES	=	0x00ac
+                           0000AB   540 _ET1	=	0x00ab
+                           0000AA   541 _EX1	=	0x00aa
+                           0000A9   542 _ET0	=	0x00a9
+                           0000A8   543 _EX0	=	0x00a8
+                           0000BF   544 _PH_FLAG	=	0x00bf
+                           0000BE   545 _PL_FLAG	=	0x00be
+                           0000BD   546 _PT2	=	0x00bd
+                           0000BC   547 _PS	=	0x00bc
+                           0000BB   548 _PT1	=	0x00bb
+                           0000BA   549 _PX1	=	0x00ba
+                           0000B9   550 _PT0	=	0x00b9
+                           0000B8   551 _PX0	=	0x00b8
+                           0000EF   552 _IE_WDOG	=	0x00ef
+                           0000EE   553 _IE_GPIO	=	0x00ee
+                           0000ED   554 _IE_PWM1	=	0x00ed
+                           0000EC   555 _IE_UART1	=	0x00ec
+                           0000EB   556 _IE_ADC	=	0x00eb
+                           0000EA   557 _IE_USB	=	0x00ea
+                           0000E9   558 _IE_TMR3	=	0x00e9
+                           0000E8   559 _IE_SPI0	=	0x00e8
+                           000087   560 _UDCD	=	0x0087
+                           000086   561 _URI	=	0x0086
+                           000085   562 _UDSR	=	0x0085
+                           000084   563 _UCTS	=	0x0084
+                           000083   564 _TXD_	=	0x0083
+                           000082   565 _RXD_	=	0x0082
+                           000081   566 _URTS	=	0x0081
+                           000080   567 _UDTR	=	0x0080
+                           000087   568 _P0_7	=	0x0087
+                           000086   569 _P0_6	=	0x0086
+                           000085   570 _P0_5	=	0x0085
+                           000084   571 _P0_4	=	0x0084
+                           000083   572 _P0_3	=	0x0083
+                           000082   573 _P0_2	=	0x0082
+                           000081   574 _P0_1	=	0x0081
+                           000080   575 _P0_0	=	0x0080
+                           000097   576 _AIN7	=	0x0097
+                           000096   577 _AIN6	=	0x0096
+                           000095   578 _AIN5	=	0x0095
+                           000094   579 _AIN4	=	0x0094
+                           000093   580 _AIN3	=	0x0093
+                           000092   581 _AIN2	=	0x0092
+                           000091   582 _AIN1	=	0x0091
+                           000090   583 _AIN0	=	0x0090
+                           000097   584 _SCK	=	0x0097
+                           000096   585 _MISO	=	0x0096
+                           000095   586 _MOSI	=	0x0095
+                           000094   587 _SCS	=	0x0094
+                           000092   588 _PWM3	=	0x0092
+                           000092   589 _CAP3	=	0x0092
+                           000091   590 _T2EX	=	0x0091
+                           000091   591 _CAP2	=	0x0091
+                           000090   592 _T2	=	0x0090
+                           000090   593 _CAP1	=	0x0090
+                           000097   594 _P1_7	=	0x0097
+                           000096   595 _P1_6	=	0x0096
+                           000095   596 _P1_5	=	0x0095
+                           000094   597 _P1_4	=	0x0094
+                           000093   598 _P1_3	=	0x0093
+                           000092   599 _P1_2	=	0x0092
+                           000091   600 _P1_1	=	0x0091
+                           000090   601 _P1_0	=	0x0090
+                           0000A7   602 _TXD1	=	0x00a7
+                           0000A7   603 _DA7	=	0x00a7
+                           0000A6   604 _RXD1	=	0x00a6
+                           0000A5   605 _TNOW	=	0x00a5
+                           0000A5   606 _PWM2	=	0x00a5
+                           0000A5   607 _T2EX_	=	0x00a5
+                           0000A5   608 _CAP2_	=	0x00a5
+                           0000A4   609 _PWM1	=	0x00a4
+                           0000A3   610 _SCK1	=	0x00a3
+                           0000A2   611 _MISO1	=	0x00a2
+                           0000A1   612 _MOSI1	=	0x00a1
+                           0000A7   613 _P2_7	=	0x00a7
+                           0000A6   614 _P2_6	=	0x00a6
+                           0000A5   615 _P2_5	=	0x00a5
+                           0000A4   616 _P2_4	=	0x00a4
+                           0000A3   617 _P2_3	=	0x00a3
+                           0000A2   618 _P2_2	=	0x00a2
+                           0000A1   619 _P2_1	=	0x00a1
+                           0000A0   620 _P2_0	=	0x00a0
+                           0000B7   621 _RD	=	0x00b7
+                           0000B6   622 _WR	=	0x00b6
+                           0000B5   623 _DA6	=	0x00b5
+                           0000B5   624 _T1	=	0x00b5
+                           0000B4   625 _LEDC	=	0x00b4
+                           0000B4   626 _XCS0	=	0x00b4
+                           0000B4   627 _T0	=	0x00b4
+                           0000B3   628 _LED1	=	0x00b3
+                           0000B3   629 _INT1	=	0x00b3
+                           0000B2   630 _LED0	=	0x00b2
+                           0000B2   631 _INT0	=	0x00b2
+                           0000B1   632 _TXD	=	0x00b1
+                           0000B0   633 _RXD	=	0x00b0
+                           0000B7   634 _P3_7	=	0x00b7
+                           0000B6   635 _P3_6	=	0x00b6
+                           0000B5   636 _P3_5	=	0x00b5
+                           0000B4   637 _P3_4	=	0x00b4
+                           0000B3   638 _P3_3	=	0x00b3
+                           0000B2   639 _P3_2	=	0x00b2
+                           0000B1   640 _P3_1	=	0x00b1
+                           0000B0   641 _P3_0	=	0x00b0
+                           0000C7   642 _SCK_	=	0x00c7
+                           0000C6   643 _SCS_	=	0x00c6
+                           0000C5   644 _PWM2_	=	0x00c5
+                           0000C4   645 _LED3	=	0x00c4
+                           0000C4   646 _TNOW_	=	0x00c4
+                           0000C4   647 _TXD1_	=	0x00c4
+                           0000C3   648 _PWM1_	=	0x00c3
+                           0000C2   649 _PWM3_	=	0x00c2
+                           0000C2   650 _CAP3_	=	0x00c2
+                           0000C0   651 _LED2	=	0x00c0
+                           0000C0   652 _RXD1_	=	0x00c0
+                           0000C7   653 _P4_OUT_7	=	0x00c7
+                           0000C6   654 _P4_OUT_6	=	0x00c6
+                           0000C5   655 _P4_OUT_5	=	0x00c5
+                           0000C4   656 _P4_OUT_4	=	0x00c4
+                           0000C3   657 _P4_OUT_3	=	0x00c3
+                           0000C2   658 _P4_OUT_2	=	0x00c2
+                           0000C1   659 _P4_OUT_1	=	0x00c1
+                           0000C0   660 _P4_OUT_0	=	0x00c0
+                           00008F   661 _TF1	=	0x008f
+                           00008E   662 _TR1	=	0x008e
+                           00008D   663 _TF0	=	0x008d
+                           00008C   664 _TR0	=	0x008c
+                           00008B   665 _IE1	=	0x008b
+                           00008A   666 _IT1	=	0x008a
+                           000089   667 _IE0	=	0x0089
+                           000088   668 _IT0	=	0x0088
+                           00009F   669 _SM0	=	0x009f
+                           00009E   670 _SM1	=	0x009e
+                           00009D   671 _SM2	=	0x009d
+                           00009C   672 _REN	=	0x009c
+                           00009B   673 _TB8	=	0x009b
+                           00009A   674 _RB8	=	0x009a
+                           000099   675 _TI	=	0x0099
+                           000098   676 _RI	=	0x0098
+                           0000CF   677 _TF2	=	0x00cf
+                           0000CF   678 _CAP1F	=	0x00cf
+                           0000CE   679 _EXF2	=	0x00ce
+                           0000CD   680 _RCLK	=	0x00cd
+                           0000CC   681 _TCLK	=	0x00cc
+                           0000CB   682 _EXEN2	=	0x00cb
+                           0000CA   683 _TR2	=	0x00ca
+                           0000C9   684 _C_T2	=	0x00c9
+                           0000C8   685 _CP_RL2	=	0x00c8
+                           0000FF   686 _S0_FST_ACT	=	0x00ff
+                           0000FE   687 _S0_IF_OV	=	0x00fe
+                           0000FD   688 _S0_IF_FIRST	=	0x00fd
+                           0000FC   689 _S0_IF_BYTE	=	0x00fc
+                           0000FB   690 _S0_FREE	=	0x00fb
+                           0000FA   691 _S0_T_FIFO	=	0x00fa
+                           0000F9   692 _S0_R_FIFO1	=	0x00f9
+                           0000F8   693 _S0_R_FIFO0	=	0x00f8
+                           0000DF   694 _U_IS_NAK	=	0x00df
+                           0000DE   695 _U_TOG_OK	=	0x00de
+                           0000DD   696 _U_SIE_FREE	=	0x00dd
+                           0000DC   697 _UIF_FIFO_OV	=	0x00dc
+                           0000DB   698 _UIF_HST_SOF	=	0x00db
+                           0000DA   699 _UIF_SUSPEND	=	0x00da
+                           0000D9   700 _UIF_TRANSFER	=	0x00d9
+                           0000D8   701 _UIF_DETECT	=	0x00d8
+                           0000D8   702 _UIF_BUS_RST	=	0x00d8
+                                    703 ;--------------------------------------------------------
+                                    704 ; overlayable register banks
+                                    705 ;--------------------------------------------------------
+                                    706 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        707 	.ds 8
+                                    708 ;--------------------------------------------------------
+                                    709 ; internal ram data
+                                    710 ;--------------------------------------------------------
+                                    711 	.area DSEG    (DATA)
+                                    712 ;--------------------------------------------------------
+                                    713 ; overlayable items in internal ram
+                                    714 ;--------------------------------------------------------
+                                    715 ;--------------------------------------------------------
+                                    716 ; indirectly addressable internal ram data
+                                    717 ;--------------------------------------------------------
+                                    718 	.area ISEG    (DATA)
+                                    719 ;--------------------------------------------------------
+                                    720 ; absolute internal ram data
+                                    721 ;--------------------------------------------------------
+                                    722 	.area IABS    (ABS,DATA)
+                                    723 	.area IABS    (ABS,DATA)
+                                    724 ;--------------------------------------------------------
+                                    725 ; bit data
+                                    726 ;--------------------------------------------------------
+                                    727 	.area BSEG    (BIT)
+                                    728 ;--------------------------------------------------------
+                                    729 ; paged external ram data
+                                    730 ;--------------------------------------------------------
+                                    731 	.area PSEG    (PAG,XDATA)
+                           002546   732 _pUEP4_1_MOD	=	0x2546
+                           002547   733 _pUEP2_3_MOD	=	0x2547
+                           002548   734 _pUEP0_DMA_H	=	0x2548
+                           002549   735 _pUEP0_DMA_L	=	0x2549
+                           00254A   736 _pUEP1_DMA_H	=	0x254a
+                           00254B   737 _pUEP1_DMA_L	=	0x254b
+                           00254C   738 _pUEP2_DMA_H	=	0x254c
+                           00254D   739 _pUEP2_DMA_L	=	0x254d
+                           00254E   740 _pUEP3_DMA_H	=	0x254e
+                           00254F   741 _pUEP3_DMA_L	=	0x254f
+                           002980   742 _pLED_STAT	=	0x2980
+                           002981   743 _pLED_CTRL	=	0x2981
+                           002982   744 _pLED_DATA	=	0x2982
+                           002983   745 _pLED_CK_SE	=	0x2983
+                           002984   746 _pLED_DMA_AH	=	0x2984
+                           002985   747 _pLED_DMA_AL	=	0x2985
+                           002986   748 _pLED_DMA_CN	=	0x2986
+                           002988   749 _pLED_DMA_XH	=	0x2988
+                           002989   750 _pLED_DMA_XL	=	0x2989
+                                    751 ;--------------------------------------------------------
+                                    752 ; uninitialized external ram data
+                                    753 ;--------------------------------------------------------
+                                    754 	.area XSEG    (XDATA)
+                           002446   755 _UEP4_1_MOD	=	0x2446
+                           002447   756 _UEP2_3_MOD	=	0x2447
+                           002448   757 _UEP0_DMA_H	=	0x2448
+                           002449   758 _UEP0_DMA_L	=	0x2449
+                           00244A   759 _UEP1_DMA_H	=	0x244a
+                           00244B   760 _UEP1_DMA_L	=	0x244b
+                           00244C   761 _UEP2_DMA_H	=	0x244c
+                           00244D   762 _UEP2_DMA_L	=	0x244d
+                           00244E   763 _UEP3_DMA_H	=	0x244e
+                           00244F   764 _UEP3_DMA_L	=	0x244f
+                           002880   765 _LED_STAT	=	0x2880
+                           002881   766 _LED_CTRL	=	0x2881
+                           002882   767 _LED_DATA	=	0x2882
+                           002883   768 _LED_CK_SE	=	0x2883
+                           002884   769 _LED_DMA_AH	=	0x2884
+                           002885   770 _LED_DMA_AL	=	0x2885
+                           002886   771 _LED_DMA_CN	=	0x2886
+                           002888   772 _LED_DMA_XH	=	0x2888
+                           002889   773 _LED_DMA_XL	=	0x2889
+      000000                        774 _USBSerial_print_ib_func_PARM_2:
+      000000                        775 	.ds 1
+      000001                        776 _USBSerial_print_ub_func_PARM_2:
+      000001                        777 	.ds 1
+      000002                        778 _USBSerial_print_sn_func_PARM_2:
+      000002                        779 	.ds 1
+                                    780 ;--------------------------------------------------------
+                                    781 ; absolute external ram data
+                                    782 ;--------------------------------------------------------
+                                    783 	.area XABS    (ABS,XDATA)
+                                    784 ;--------------------------------------------------------
+                                    785 ; initialized external ram data
+                                    786 ;--------------------------------------------------------
+                                    787 	.area XISEG   (XDATA)
+                                    788 	.area HOME    (CODE)
+                                    789 	.area GSINIT0 (CODE)
+                                    790 	.area GSINIT1 (CODE)
+                                    791 	.area GSINIT2 (CODE)
+                                    792 	.area GSINIT3 (CODE)
+                                    793 	.area GSINIT4 (CODE)
+                                    794 	.area GSINIT5 (CODE)
+                                    795 	.area GSINIT  (CODE)
+                                    796 	.area GSFINAL (CODE)
+                                    797 	.area CSEG    (CODE)
+                                    798 ;--------------------------------------------------------
+                                    799 ; global & static initialisations
+                                    800 ;--------------------------------------------------------
+                                    801 	.area HOME    (CODE)
+                                    802 	.area GSINIT  (CODE)
+                                    803 	.area GSFINAL (CODE)
+                                    804 	.area GSINIT  (CODE)
+                                    805 ;--------------------------------------------------------
+                                    806 ; Home
+                                    807 ;--------------------------------------------------------
+                                    808 	.area HOME    (CODE)
+                                    809 	.area HOME    (CODE)
+                                    810 ;--------------------------------------------------------
+                                    811 ; code
+                                    812 ;--------------------------------------------------------
+                                    813 	.area CSEG    (CODE)
+                                    814 ;------------------------------------------------------------
+                                    815 ;Allocation info for local variables in function 'printNothing'
+                                    816 ;------------------------------------------------------------
+                                    817 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:8: void printNothing() { // only appear in this file
+                                    818 ;	-----------------------------------------
+                                    819 ;	 function printNothing
+                                    820 ;	-----------------------------------------
+      000000                        821 _printNothing:
+                           000007   822 	ar7 = 0x07
+                           000006   823 	ar6 = 0x06
+                           000005   824 	ar5 = 0x05
+                           000004   825 	ar4 = 0x04
+                           000003   826 	ar3 = 0x03
+                           000002   827 	ar2 = 0x02
+                           000001   828 	ar1 = 0x01
+                           000000   829 	ar0 = 0x00
+                                    830 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:9: }
+      000000 22               [24]  831 	ret
+                                    832 ;------------------------------------------------------------
+                                    833 ;Allocation info for local variables in function 'USBSerial_print_i_func'
+                                    834 ;------------------------------------------------------------
+                                    835 ;i                         Allocated to registers r4 r5 r6 r7 
+                                    836 ;------------------------------------------------------------
+                                    837 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:11: void USBSerial_print_i_func(__data long i) {
+                                    838 ;	-----------------------------------------
+                                    839 ;	 function USBSerial_print_i_func
+                                    840 ;	-----------------------------------------
+      000001                        841 _USBSerial_print_i_func:
+      000001 AC 82            [24]  842 	mov	r4,dpl
+      000003 AD 83            [24]  843 	mov	r5,dph
+      000005 AE F0            [24]  844 	mov	r6,b
+      000007 FF               [12]  845 	mov	r7,a
+                                    846 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:12: Print_print_i(USBSerial_write, i);
+      000008 90r00r00         [24]  847 	mov	dptr,#_Print_print_i_PARM_2
+      00000B EC               [12]  848 	mov	a,r4
+      00000C F0               [24]  849 	movx	@dptr,a
+      00000D ED               [12]  850 	mov	a,r5
+      00000E A3               [24]  851 	inc	dptr
+      00000F F0               [24]  852 	movx	@dptr,a
+      000010 EE               [12]  853 	mov	a,r6
+      000011 A3               [24]  854 	inc	dptr
+      000012 F0               [24]  855 	movx	@dptr,a
+      000013 EF               [12]  856 	mov	a,r7
+      000014 A3               [24]  857 	inc	dptr
+      000015 F0               [24]  858 	movx	@dptr,a
+      000016 90r00r00         [24]  859 	mov	dptr,#_USBSerial_write
+                                    860 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:13: }
+      000019 02r00r00         [24]  861 	ljmp	_Print_print_i
+                                    862 ;------------------------------------------------------------
+                                    863 ;Allocation info for local variables in function 'USBSerial_print_ib_func'
+                                    864 ;------------------------------------------------------------
+                                    865 ;i                         Allocated to registers r4 r5 r6 r7 
+                                    866 ;base                      Allocated with name '_USBSerial_print_ib_func_PARM_2'
+                                    867 ;------------------------------------------------------------
+                                    868 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:14: void USBSerial_print_ib_func(__data long i, __xdata uint8_t base) {
+                                    869 ;	-----------------------------------------
+                                    870 ;	 function USBSerial_print_ib_func
+                                    871 ;	-----------------------------------------
+      00001C                        872 _USBSerial_print_ib_func:
+      00001C AC 82            [24]  873 	mov	r4,dpl
+      00001E AD 83            [24]  874 	mov	r5,dph
+      000020 AE F0            [24]  875 	mov	r6,b
+      000022 FF               [12]  876 	mov	r7,a
+                                    877 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:15: Print_print_ib(USBSerial_write, i, base);
+      000023 90r00r00         [24]  878 	mov	dptr,#_USBSerial_print_ib_func_PARM_2
+      000026 E0               [24]  879 	movx	a,@dptr
+      000027 FB               [12]  880 	mov	r3,a
+      000028 90r00r00         [24]  881 	mov	dptr,#_Print_print_ib_PARM_2
+      00002B EC               [12]  882 	mov	a,r4
+      00002C F0               [24]  883 	movx	@dptr,a
+      00002D ED               [12]  884 	mov	a,r5
+      00002E A3               [24]  885 	inc	dptr
+      00002F F0               [24]  886 	movx	@dptr,a
+      000030 EE               [12]  887 	mov	a,r6
+      000031 A3               [24]  888 	inc	dptr
+      000032 F0               [24]  889 	movx	@dptr,a
+      000033 EF               [12]  890 	mov	a,r7
+      000034 A3               [24]  891 	inc	dptr
+      000035 F0               [24]  892 	movx	@dptr,a
+      000036 90r00r00         [24]  893 	mov	dptr,#_Print_print_ib_PARM_3
+      000039 EB               [12]  894 	mov	a,r3
+      00003A F0               [24]  895 	movx	@dptr,a
+      00003B 90r00r00         [24]  896 	mov	dptr,#_USBSerial_write
+                                    897 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:16: }
+      00003E 02r00r00         [24]  898 	ljmp	_Print_print_ib
+                                    899 ;------------------------------------------------------------
+                                    900 ;Allocation info for local variables in function 'USBSerial_print_u_func'
+                                    901 ;------------------------------------------------------------
+                                    902 ;u                         Allocated to registers r4 r5 r6 r7 
+                                    903 ;------------------------------------------------------------
+                                    904 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:17: void USBSerial_print_u_func(__data unsigned long u) {
+                                    905 ;	-----------------------------------------
+                                    906 ;	 function USBSerial_print_u_func
+                                    907 ;	-----------------------------------------
+      000041                        908 _USBSerial_print_u_func:
+      000041 AC 82            [24]  909 	mov	r4,dpl
+      000043 AD 83            [24]  910 	mov	r5,dph
+      000045 AE F0            [24]  911 	mov	r6,b
+      000047 FF               [12]  912 	mov	r7,a
+                                    913 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:18: Print_print_u(USBSerial_write, u);
+      000048 90r00r00         [24]  914 	mov	dptr,#_Print_print_u_PARM_2
+      00004B EC               [12]  915 	mov	a,r4
+      00004C F0               [24]  916 	movx	@dptr,a
+      00004D ED               [12]  917 	mov	a,r5
+      00004E A3               [24]  918 	inc	dptr
+      00004F F0               [24]  919 	movx	@dptr,a
+      000050 EE               [12]  920 	mov	a,r6
+      000051 A3               [24]  921 	inc	dptr
+      000052 F0               [24]  922 	movx	@dptr,a
+      000053 EF               [12]  923 	mov	a,r7
+      000054 A3               [24]  924 	inc	dptr
+      000055 F0               [24]  925 	movx	@dptr,a
+      000056 90r00r00         [24]  926 	mov	dptr,#_USBSerial_write
+                                    927 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:19: }
+      000059 02r00r00         [24]  928 	ljmp	_Print_print_u
+                                    929 ;------------------------------------------------------------
+                                    930 ;Allocation info for local variables in function 'USBSerial_print_ub_func'
+                                    931 ;------------------------------------------------------------
+                                    932 ;u                         Allocated to registers r4 r5 r6 r7 
+                                    933 ;base                      Allocated with name '_USBSerial_print_ub_func_PARM_2'
+                                    934 ;------------------------------------------------------------
+                                    935 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:20: void USBSerial_print_ub_func(__data unsigned long u, __xdata uint8_t base) {
+                                    936 ;	-----------------------------------------
+                                    937 ;	 function USBSerial_print_ub_func
+                                    938 ;	-----------------------------------------
+      00005C                        939 _USBSerial_print_ub_func:
+      00005C AC 82            [24]  940 	mov	r4,dpl
+      00005E AD 83            [24]  941 	mov	r5,dph
+      000060 AE F0            [24]  942 	mov	r6,b
+      000062 FF               [12]  943 	mov	r7,a
+                                    944 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:21: Print_print_ib(USBSerial_write, u, base);
+      000063 90r00r01         [24]  945 	mov	dptr,#_USBSerial_print_ub_func_PARM_2
+      000066 E0               [24]  946 	movx	a,@dptr
+      000067 FB               [12]  947 	mov	r3,a
+      000068 90r00r00         [24]  948 	mov	dptr,#_Print_print_ib_PARM_2
+      00006B EC               [12]  949 	mov	a,r4
+      00006C F0               [24]  950 	movx	@dptr,a
+      00006D ED               [12]  951 	mov	a,r5
+      00006E A3               [24]  952 	inc	dptr
+      00006F F0               [24]  953 	movx	@dptr,a
+      000070 EE               [12]  954 	mov	a,r6
+      000071 A3               [24]  955 	inc	dptr
+      000072 F0               [24]  956 	movx	@dptr,a
+      000073 EF               [12]  957 	mov	a,r7
+      000074 A3               [24]  958 	inc	dptr
+      000075 F0               [24]  959 	movx	@dptr,a
+      000076 90r00r00         [24]  960 	mov	dptr,#_Print_print_ib_PARM_3
+      000079 EB               [12]  961 	mov	a,r3
+      00007A F0               [24]  962 	movx	@dptr,a
+      00007B 90r00r00         [24]  963 	mov	dptr,#_USBSerial_write
+                                    964 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:22: }
+      00007E 02r00r00         [24]  965 	ljmp	_Print_print_ib
+                                    966 ;------------------------------------------------------------
+                                    967 ;Allocation info for local variables in function 'USBSerial_print_s_func'
+                                    968 ;------------------------------------------------------------
+                                    969 ;s                         Allocated to registers r5 r6 r7 
+                                    970 ;------------------------------------------------------------
+                                    971 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:23: void USBSerial_print_s_func(char *__data s) {
+                                    972 ;	-----------------------------------------
+                                    973 ;	 function USBSerial_print_s_func
+                                    974 ;	-----------------------------------------
+      000081                        975 _USBSerial_print_s_func:
+      000081 AD 82            [24]  976 	mov	r5,dpl
+      000083 AE 83            [24]  977 	mov	r6,dph
+      000085 AF F0            [24]  978 	mov	r7,b
+                                    979 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:24: Print_print_s(USBSerial_write, s);
+      000087 90r00r00         [24]  980 	mov	dptr,#_Print_print_s_PARM_2
+      00008A ED               [12]  981 	mov	a,r5
+      00008B F0               [24]  982 	movx	@dptr,a
+      00008C EE               [12]  983 	mov	a,r6
+      00008D A3               [24]  984 	inc	dptr
+      00008E F0               [24]  985 	movx	@dptr,a
+      00008F EF               [12]  986 	mov	a,r7
+      000090 A3               [24]  987 	inc	dptr
+      000091 F0               [24]  988 	movx	@dptr,a
+      000092 90r00r00         [24]  989 	mov	dptr,#_USBSerial_write
+                                    990 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:25: }
+      000095 02r00r00         [24]  991 	ljmp	_Print_print_s
+                                    992 ;------------------------------------------------------------
+                                    993 ;Allocation info for local variables in function 'USBSerial_print_sn_func'
+                                    994 ;------------------------------------------------------------
+                                    995 ;s                         Allocated to registers r5 r6 r7 
+                                    996 ;size                      Allocated with name '_USBSerial_print_sn_func_PARM_2'
+                                    997 ;------------------------------------------------------------
+                                    998 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:26: void USBSerial_print_sn_func(char *__data s, __xdata uint8_t size) {
+                                    999 ;	-----------------------------------------
+                                   1000 ;	 function USBSerial_print_sn_func
+                                   1001 ;	-----------------------------------------
+      000098                       1002 _USBSerial_print_sn_func:
+      000098 AD 82            [24] 1003 	mov	r5,dpl
+      00009A AE 83            [24] 1004 	mov	r6,dph
+      00009C AF F0            [24] 1005 	mov	r7,b
+                                   1006 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:27: Print_print_sn(USBSerial_write, s, size);
+      00009E 90r00r02         [24] 1007 	mov	dptr,#_USBSerial_print_sn_func_PARM_2
+      0000A1 E0               [24] 1008 	movx	a,@dptr
+      0000A2 FC               [12] 1009 	mov	r4,a
+      0000A3 90r00r00         [24] 1010 	mov	dptr,#_Print_print_sn_PARM_2
+      0000A6 ED               [12] 1011 	mov	a,r5
+      0000A7 F0               [24] 1012 	movx	@dptr,a
+      0000A8 EE               [12] 1013 	mov	a,r6
+      0000A9 A3               [24] 1014 	inc	dptr
+      0000AA F0               [24] 1015 	movx	@dptr,a
+      0000AB EF               [12] 1016 	mov	a,r7
+      0000AC A3               [24] 1017 	inc	dptr
+      0000AD F0               [24] 1018 	movx	@dptr,a
+      0000AE 90r00r00         [24] 1019 	mov	dptr,#_Print_print_sn_PARM_3
+      0000B1 EC               [12] 1020 	mov	a,r4
+      0000B2 F0               [24] 1021 	movx	@dptr,a
+      0000B3 90r00r00         [24] 1022 	mov	dptr,#_USBSerial_write
+                                   1023 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\genericPrintUSBSerial.c:28: }
+      0000B6 02r00r00         [24] 1024 	ljmp	_Print_print_sn
+                                   1025 	.area CSEG    (CODE)
+                                   1026 	.area CONST   (CODE)
+                                   1027 	.area XINIT   (CODE)
+                                   1028 	.area CABS    (ABS,CODE)

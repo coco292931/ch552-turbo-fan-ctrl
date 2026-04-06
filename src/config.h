@@ -7,25 +7,45 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+// ==================== 固件裁剪配置 ====================
+
+// CH552 默认启用精简固件配置，优先保证可编译与核心控制链路可用。
+#if defined(CH552)
+#define FEATURE_USB_PROTOCOL 0
+#define FEATURE_TEMP_CONTROL 1
+#define FEATURE_VERBOSE_LOG  0
+#define FEATURE_THERMISTOR_ADC 0
+#define FEATURE_DS18B20_CRC    0
+#define FEATURE_DS18B20_RETRY  0
+#else
+#define FEATURE_USB_PROTOCOL 1
+#define FEATURE_TEMP_CONTROL 1
+#define FEATURE_VERBOSE_LOG  1
+#define FEATURE_THERMISTOR_ADC 0
+#define FEATURE_DS18B20_CRC    1
+#define FEATURE_DS18B20_RETRY  1
+#endif
+
 // ==================== 硬件引脚定义 ====================
 
 // PWM输出引脚 - 注入XL4015的FB节点
 #define PIN_PWM_OUTPUT    34      // P3.4 - PWM输出
 
 // ADC电压检测引脚 - 检测输出电压
-#define PIN_VOLTAGE_ADC   11      // P1.1 - 电压检测
+// 临时排查：借用 AIN1(P1.4=14) 作为电压采样输入，原 P1.1 方案后续可切回。
+#define PIN_VOLTAGE_ADC   11      // P1.4 - 电压检测(测试)
 
 // 风扇转速检测引脚 - FG信号
 #define PIN_FAN_TACH      32      // P3.2 - 转速检测 (或使用P1.4=14)
 
 // 温度传感器引脚 - DS18B20单总线
-#define PIN_TEMP_SENSOR   15      // P1.5 - 温度传感器
+#define PIN_TEMP_SENSOR   17      // P1.7 - 飞线引脚 (原为 P1.5=15，防硬件冲突)
 
 
 // ==================== 控制参数 ====================
 
 // 输出电压范围
-#define VOUT_MIN          5.0f    // 最小输出电压(V)
+#define VOUT_MIN          5.2f    // 最小输出电压(V)
 #define VOUT_MAX          12.0f   // 最大输出电压(V) 硬件锁死了，不要改这里
 #define VOUT_DEFAULT      12.0f   // 默认电压(Fail-Safe)
 
@@ -35,13 +55,13 @@
 #define TEMP_OVERHEAT     50.0f   // 超温保护阈值(°C) 报警温度
 
 // 风扇转速
-#define RPM_MIN           500     // 最小有效转速(RPM)
-#define RPM_STALL_THRESH  100     // 堵转判定阈值(RPM)
-#define RPM_TARGET_MIN    600     // 温度最低时的目标转速(RPM)，对应TEMP_MIN
-#define RPM_TARGET_MAX    3000    // 温度最高时的目标转速(RPM)，对应TEMP_MAX
+#define RPM_MIN           1000     // 最小有效转速(RPM)
+#define RPM_STALL_THRESH  200     // 堵转判定阈值(RPM)
+#define RPM_TARGET_MIN    800    // 温度最低时的目标转速 (RPM)，对应TEMP_MIN (即最低电压下的转速)
+#define RPM_TARGET_MAX    2800    // 温度最高时的目标转速 (RPM)，对应TEMP_MAX (即最高电压下的转速)
 
 // PWM参数
-#define PWM_FREQ          10000   // PWM频率 10kHz (避免音频噪声)
+#define PWM_FREQ          10000   // PWM频率 10kHz
 #define PWM_RESOLUTION    255     // PWM分辨率 (8位)
 
 
@@ -52,8 +72,8 @@
 
 // 一次函数参数: V = k*T + b
 //计算参数 5V~30°C,12V~45°C
-#define TEMP_VOLTAGE_K    0.5f   // 斜率
-#define TEMP_VOLTAGE_B    10    // 截距
+#define TEMP_VOLTAGE_K    0.4666667f   // 斜率 = (12-5)/(45-30)
+#define TEMP_VOLTAGE_B   -9.0f         // 截距，使 30°C 对应 5V
 
 // 二次函数参数: V = Vmin + (Vmax-Vmin) * ((T-Tmin)/(Tmax-Tmin))^2
 // 通过TEMP_MIN, TEMP_MAX, VOUT_MIN, VOUT_MAX自动计算
@@ -70,6 +90,13 @@
 // USB通信
 #define USB_HEARTBEAT_TIMEOUT  5000   // USB心跳超时(ms)
 #define USB_BAUD_RATE          115200 // 串口波特率
+#define USB_CMD_MAX_LEN        64     // USB命令最大长度（不含结尾\0）
+
+// ADC热敏电阻温控（CH552精简配置默认启用）
+// 以下是线性标定点：在 TEMP_MIN/TEMP_MAX 对应的 ADC 读数。
+// 若使用 NTC 且温度升高 ADC 下降，通常 THERM_ADC_AT_TEMP_MIN > THERM_ADC_AT_TEMP_MAX。
+#define THERM_ADC_AT_TEMP_MIN  200
+#define THERM_ADC_AT_TEMP_MAX  110
 
 // 异常保护
 #define STALL_RETRY_DELAY      3000   // 堵转重试延迟(ms)

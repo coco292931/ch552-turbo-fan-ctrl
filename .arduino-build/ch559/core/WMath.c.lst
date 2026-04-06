@@ -1,0 +1,477 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.2 #13407 (MINGW32)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module WMath
+                                      6 	.optsdcc -mmcs51 --model-large
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _map
+                                     12 	.globl _random_minmax
+                                     13 	.globl _random
+                                     14 	.globl _randomSeed
+                                     15 	.globl _srand
+                                     16 	.globl _rand
+                                     17 	.globl _map_PARM_5
+                                     18 	.globl _map_PARM_4
+                                     19 	.globl _map_PARM_3
+                                     20 	.globl _map_PARM_2
+                                     21 	.globl _random_minmax_PARM_2
+                                     22 ;--------------------------------------------------------
+                                     23 ; special function registers
+                                     24 ;--------------------------------------------------------
+                                     25 	.area RSEG    (ABS,DATA)
+      000000                         26 	.org 0x0000
+                                     27 ;--------------------------------------------------------
+                                     28 ; special function bits
+                                     29 ;--------------------------------------------------------
+                                     30 	.area RSEG    (ABS,DATA)
+      000000                         31 	.org 0x0000
+                                     32 ;--------------------------------------------------------
+                                     33 ; overlayable register banks
+                                     34 ;--------------------------------------------------------
+                                     35 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                         36 	.ds 8
+                                     37 ;--------------------------------------------------------
+                                     38 ; internal ram data
+                                     39 ;--------------------------------------------------------
+                                     40 	.area DSEG    (DATA)
+      000000                         41 _map_sloc0_1_0:
+      000000                         42 	.ds 4
+      000004                         43 _map_sloc1_1_0:
+      000004                         44 	.ds 4
+                                     45 ;--------------------------------------------------------
+                                     46 ; overlayable items in internal ram
+                                     47 ;--------------------------------------------------------
+                                     48 ;--------------------------------------------------------
+                                     49 ; indirectly addressable internal ram data
+                                     50 ;--------------------------------------------------------
+                                     51 	.area ISEG    (DATA)
+                                     52 ;--------------------------------------------------------
+                                     53 ; absolute internal ram data
+                                     54 ;--------------------------------------------------------
+                                     55 	.area IABS    (ABS,DATA)
+                                     56 	.area IABS    (ABS,DATA)
+                                     57 ;--------------------------------------------------------
+                                     58 ; bit data
+                                     59 ;--------------------------------------------------------
+                                     60 	.area BSEG    (BIT)
+                                     61 ;--------------------------------------------------------
+                                     62 ; paged external ram data
+                                     63 ;--------------------------------------------------------
+                                     64 	.area PSEG    (PAG,XDATA)
+                                     65 ;--------------------------------------------------------
+                                     66 ; uninitialized external ram data
+                                     67 ;--------------------------------------------------------
+                                     68 	.area XSEG    (XDATA)
+      000000                         69 _random_minmax_PARM_2:
+      000000                         70 	.ds 4
+      000004                         71 _map_PARM_2:
+      000004                         72 	.ds 4
+      000008                         73 _map_PARM_3:
+      000008                         74 	.ds 4
+      00000C                         75 _map_PARM_4:
+      00000C                         76 	.ds 4
+      000010                         77 _map_PARM_5:
+      000010                         78 	.ds 4
+                                     79 ;--------------------------------------------------------
+                                     80 ; absolute external ram data
+                                     81 ;--------------------------------------------------------
+                                     82 	.area XABS    (ABS,XDATA)
+                                     83 ;--------------------------------------------------------
+                                     84 ; initialized external ram data
+                                     85 ;--------------------------------------------------------
+                                     86 	.area XISEG   (XDATA)
+                                     87 	.area HOME    (CODE)
+                                     88 	.area GSINIT0 (CODE)
+                                     89 	.area GSINIT1 (CODE)
+                                     90 	.area GSINIT2 (CODE)
+                                     91 	.area GSINIT3 (CODE)
+                                     92 	.area GSINIT4 (CODE)
+                                     93 	.area GSINIT5 (CODE)
+                                     94 	.area GSINIT  (CODE)
+                                     95 	.area GSFINAL (CODE)
+                                     96 	.area CSEG    (CODE)
+                                     97 ;--------------------------------------------------------
+                                     98 ; global & static initialisations
+                                     99 ;--------------------------------------------------------
+                                    100 	.area HOME    (CODE)
+                                    101 	.area GSINIT  (CODE)
+                                    102 	.area GSFINAL (CODE)
+                                    103 	.area GSINIT  (CODE)
+                                    104 ;--------------------------------------------------------
+                                    105 ; Home
+                                    106 ;--------------------------------------------------------
+                                    107 	.area HOME    (CODE)
+                                    108 	.area HOME    (CODE)
+                                    109 ;--------------------------------------------------------
+                                    110 ; code
+                                    111 ;--------------------------------------------------------
+                                    112 	.area CSEG    (CODE)
+                                    113 ;------------------------------------------------------------
+                                    114 ;Allocation info for local variables in function 'randomSeed'
+                                    115 ;------------------------------------------------------------
+                                    116 ;seed                      Allocated to registers r4 r5 r6 r7 
+                                    117 ;------------------------------------------------------------
+                                    118 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:32: void randomSeed(__data unsigned long seed) {
+                                    119 ;	-----------------------------------------
+                                    120 ;	 function randomSeed
+                                    121 ;	-----------------------------------------
+      000000                        122 _randomSeed:
+                           000007   123 	ar7 = 0x07
+                           000006   124 	ar6 = 0x06
+                           000005   125 	ar5 = 0x05
+                           000004   126 	ar4 = 0x04
+                           000003   127 	ar3 = 0x03
+                           000002   128 	ar2 = 0x02
+                           000001   129 	ar1 = 0x01
+                           000000   130 	ar0 = 0x00
+      000000 AC 82            [24]  131 	mov	r4,dpl
+      000002 AD 83            [24]  132 	mov	r5,dph
+      000004 AE F0            [24]  133 	mov	r6,b
+      000006 FF               [12]  134 	mov	r7,a
+                                    135 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:33: if (seed != 0) {
+      000007 EC               [12]  136 	mov	a,r4
+      000008 4D               [12]  137 	orl	a,r5
+      000009 4E               [12]  138 	orl	a,r6
+      00000A 4F               [12]  139 	orl	a,r7
+      00000B 60 07            [24]  140 	jz	00103$
+                                    141 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:34: srand(seed);
+      00000D 8C 82            [24]  142 	mov	dpl,r4
+      00000F 8D 83            [24]  143 	mov	dph,r5
+                                    144 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:36: }
+      000011 02r00r00         [24]  145 	ljmp	_srand
+      000014                        146 00103$:
+      000014 22               [24]  147 	ret
+                                    148 ;------------------------------------------------------------
+                                    149 ;Allocation info for local variables in function 'random'
+                                    150 ;------------------------------------------------------------
+                                    151 ;howbig                    Allocated to registers r4 r5 r6 r7 
+                                    152 ;------------------------------------------------------------
+                                    153 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:38: long random(__data long howbig) {
+                                    154 ;	-----------------------------------------
+                                    155 ;	 function random
+                                    156 ;	-----------------------------------------
+      000015                        157 _random:
+      000015 AC 82            [24]  158 	mov	r4,dpl
+      000017 AD 83            [24]  159 	mov	r5,dph
+      000019 AE F0            [24]  160 	mov	r6,b
+      00001B FF               [12]  161 	mov	r7,a
+                                    162 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:39: if (howbig == 0) {
+      00001C EC               [12]  163 	mov	a,r4
+      00001D 4D               [12]  164 	orl	a,r5
+      00001E 4E               [12]  165 	orl	a,r6
+      00001F 4F               [12]  166 	orl	a,r7
+      000020 70 07            [24]  167 	jnz	00102$
+                                    168 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:40: return 0;
+      000022 90 00 00         [24]  169 	mov	dptr,#(0x00&0x00ff)
+      000025 E4               [12]  170 	clr	a
+      000026 F5 F0            [12]  171 	mov	b,a
+      000028 22               [24]  172 	ret
+      000029                        173 00102$:
+                                    174 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:42: return rand() % howbig;
+      000029 C0 07            [24]  175 	push	ar7
+      00002B C0 06            [24]  176 	push	ar6
+      00002D C0 05            [24]  177 	push	ar5
+      00002F C0 04            [24]  178 	push	ar4
+      000031 12r00r00         [24]  179 	lcall	_rand
+      000034 AA 82            [24]  180 	mov	r2,dpl
+      000036 AB 83            [24]  181 	mov	r3,dph
+      000038 D0 04            [24]  182 	pop	ar4
+      00003A D0 05            [24]  183 	pop	ar5
+      00003C D0 06            [24]  184 	pop	ar6
+      00003E D0 07            [24]  185 	pop	ar7
+      000040 8A 00            [24]  186 	mov	ar0,r2
+      000042 EB               [12]  187 	mov	a,r3
+      000043 F9               [12]  188 	mov	r1,a
+      000044 33               [12]  189 	rlc	a
+      000045 95 E0            [12]  190 	subb	a,acc
+      000047 FA               [12]  191 	mov	r2,a
+      000048 FB               [12]  192 	mov	r3,a
+      000049 C0 04            [24]  193 	push	ar4
+      00004B C0 05            [24]  194 	push	ar5
+      00004D C0 06            [24]  195 	push	ar6
+      00004F C0 07            [24]  196 	push	ar7
+      000051 88 82            [24]  197 	mov	dpl,r0
+      000053 89 83            [24]  198 	mov	dph,r1
+      000055 8A F0            [24]  199 	mov	b,r2
+      000057 EB               [12]  200 	mov	a,r3
+      000058 12r00r00         [24]  201 	lcall	__modslong
+      00005B AC 82            [24]  202 	mov	r4,dpl
+      00005D AD 83            [24]  203 	mov	r5,dph
+      00005F AE F0            [24]  204 	mov	r6,b
+      000061 FF               [12]  205 	mov	r7,a
+      000062 E5 81            [12]  206 	mov	a,sp
+      000064 24 FC            [12]  207 	add	a,#0xfc
+      000066 F5 81            [12]  208 	mov	sp,a
+      000068 8C 82            [24]  209 	mov	dpl,r4
+      00006A 8D 83            [24]  210 	mov	dph,r5
+      00006C 8E F0            [24]  211 	mov	b,r6
+      00006E EF               [12]  212 	mov	a,r7
+                                    213 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:43: }
+      00006F 22               [24]  214 	ret
+                                    215 ;------------------------------------------------------------
+                                    216 ;Allocation info for local variables in function 'random_minmax'
+                                    217 ;------------------------------------------------------------
+                                    218 ;howsmall                  Allocated to registers r4 r5 r6 r7 
+                                    219 ;diff                      Allocated to registers r0 r1 r2 r3 
+                                    220 ;howbig                    Allocated with name '_random_minmax_PARM_2'
+                                    221 ;------------------------------------------------------------
+                                    222 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:45: long random_minmax(__data long howsmall, __xdata long howbig) {
+                                    223 ;	-----------------------------------------
+                                    224 ;	 function random_minmax
+                                    225 ;	-----------------------------------------
+      000070                        226 _random_minmax:
+      000070 AC 82            [24]  227 	mov	r4,dpl
+      000072 AD 83            [24]  228 	mov	r5,dph
+      000074 AE F0            [24]  229 	mov	r6,b
+      000076 FF               [12]  230 	mov	r7,a
+                                    231 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:48: if (howsmall >= howbig) {
+      000077 90r00r00         [24]  232 	mov	dptr,#_random_minmax_PARM_2
+      00007A E0               [24]  233 	movx	a,@dptr
+      00007B F8               [12]  234 	mov	r0,a
+      00007C A3               [24]  235 	inc	dptr
+      00007D E0               [24]  236 	movx	a,@dptr
+      00007E F9               [12]  237 	mov	r1,a
+      00007F A3               [24]  238 	inc	dptr
+      000080 E0               [24]  239 	movx	a,@dptr
+      000081 FA               [12]  240 	mov	r2,a
+      000082 A3               [24]  241 	inc	dptr
+      000083 E0               [24]  242 	movx	a,@dptr
+      000084 FB               [12]  243 	mov	r3,a
+      000085 C3               [12]  244 	clr	c
+      000086 EC               [12]  245 	mov	a,r4
+      000087 98               [12]  246 	subb	a,r0
+      000088 ED               [12]  247 	mov	a,r5
+      000089 99               [12]  248 	subb	a,r1
+      00008A EE               [12]  249 	mov	a,r6
+      00008B 9A               [12]  250 	subb	a,r2
+      00008C EF               [12]  251 	mov	a,r7
+      00008D 64 80            [12]  252 	xrl	a,#0x80
+      00008F 8B F0            [24]  253 	mov	b,r3
+      000091 63 F0 80         [24]  254 	xrl	b,#0x80
+      000094 95 F0            [12]  255 	subb	a,b
+      000096 40 08            [24]  256 	jc	00102$
+                                    257 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:49: return howsmall;
+      000098 8C 82            [24]  258 	mov	dpl,r4
+      00009A 8D 83            [24]  259 	mov	dph,r5
+      00009C 8E F0            [24]  260 	mov	b,r6
+      00009E EF               [12]  261 	mov	a,r7
+      00009F 22               [24]  262 	ret
+      0000A0                        263 00102$:
+                                    264 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:51: diff = howbig - howsmall;
+      0000A0 E8               [12]  265 	mov	a,r0
+      0000A1 C3               [12]  266 	clr	c
+      0000A2 9C               [12]  267 	subb	a,r4
+      0000A3 F8               [12]  268 	mov	r0,a
+      0000A4 E9               [12]  269 	mov	a,r1
+      0000A5 9D               [12]  270 	subb	a,r5
+      0000A6 F9               [12]  271 	mov	r1,a
+      0000A7 EA               [12]  272 	mov	a,r2
+      0000A8 9E               [12]  273 	subb	a,r6
+      0000A9 FA               [12]  274 	mov	r2,a
+      0000AA EB               [12]  275 	mov	a,r3
+      0000AB 9F               [12]  276 	subb	a,r7
+                                    277 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:52: return random(diff) + howsmall;
+      0000AC 88 82            [24]  278 	mov	dpl,r0
+      0000AE 89 83            [24]  279 	mov	dph,r1
+      0000B0 8A F0            [24]  280 	mov	b,r2
+      0000B2 C0 07            [24]  281 	push	ar7
+      0000B4 C0 06            [24]  282 	push	ar6
+      0000B6 C0 05            [24]  283 	push	ar5
+      0000B8 C0 04            [24]  284 	push	ar4
+      0000BA 12r00r15         [24]  285 	lcall	_random
+      0000BD A8 82            [24]  286 	mov	r0,dpl
+      0000BF A9 83            [24]  287 	mov	r1,dph
+      0000C1 AA F0            [24]  288 	mov	r2,b
+      0000C3 FB               [12]  289 	mov	r3,a
+      0000C4 D0 04            [24]  290 	pop	ar4
+      0000C6 D0 05            [24]  291 	pop	ar5
+      0000C8 D0 06            [24]  292 	pop	ar6
+      0000CA D0 07            [24]  293 	pop	ar7
+      0000CC EC               [12]  294 	mov	a,r4
+      0000CD 28               [12]  295 	add	a,r0
+      0000CE FC               [12]  296 	mov	r4,a
+      0000CF ED               [12]  297 	mov	a,r5
+      0000D0 39               [12]  298 	addc	a,r1
+      0000D1 FD               [12]  299 	mov	r5,a
+      0000D2 EE               [12]  300 	mov	a,r6
+      0000D3 3A               [12]  301 	addc	a,r2
+      0000D4 FE               [12]  302 	mov	r6,a
+      0000D5 EF               [12]  303 	mov	a,r7
+      0000D6 3B               [12]  304 	addc	a,r3
+      0000D7 8C 82            [24]  305 	mov	dpl,r4
+      0000D9 8D 83            [24]  306 	mov	dph,r5
+      0000DB 8E F0            [24]  307 	mov	b,r6
+                                    308 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:53: }
+      0000DD 22               [24]  309 	ret
+                                    310 ;------------------------------------------------------------
+                                    311 ;Allocation info for local variables in function 'map'
+                                    312 ;------------------------------------------------------------
+                                    313 ;x                         Allocated to registers r4 r5 r6 r7 
+                                    314 ;sloc0                     Allocated with name '_map_sloc0_1_0'
+                                    315 ;sloc1                     Allocated with name '_map_sloc1_1_0'
+                                    316 ;in_min                    Allocated with name '_map_PARM_2'
+                                    317 ;in_max                    Allocated with name '_map_PARM_3'
+                                    318 ;out_min                   Allocated with name '_map_PARM_4'
+                                    319 ;out_max                   Allocated with name '_map_PARM_5'
+                                    320 ;------------------------------------------------------------
+                                    321 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:55: long map(__data long x, __xdata long in_min, __xdata long in_max,
+                                    322 ;	-----------------------------------------
+                                    323 ;	 function map
+                                    324 ;	-----------------------------------------
+      0000DE                        325 _map:
+      0000DE AC 82            [24]  326 	mov	r4,dpl
+      0000E0 AD 83            [24]  327 	mov	r5,dph
+      0000E2 AE F0            [24]  328 	mov	r6,b
+      0000E4 FF               [12]  329 	mov	r7,a
+                                    330 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:57: return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+      0000E5 90r00r04         [24]  331 	mov	dptr,#_map_PARM_2
+      0000E8 E0               [24]  332 	movx	a,@dptr
+      0000E9 F8               [12]  333 	mov	r0,a
+      0000EA A3               [24]  334 	inc	dptr
+      0000EB E0               [24]  335 	movx	a,@dptr
+      0000EC F9               [12]  336 	mov	r1,a
+      0000ED A3               [24]  337 	inc	dptr
+      0000EE E0               [24]  338 	movx	a,@dptr
+      0000EF FA               [12]  339 	mov	r2,a
+      0000F0 A3               [24]  340 	inc	dptr
+      0000F1 E0               [24]  341 	movx	a,@dptr
+      0000F2 FB               [12]  342 	mov	r3,a
+      0000F3 EC               [12]  343 	mov	a,r4
+      0000F4 C3               [12]  344 	clr	c
+      0000F5 98               [12]  345 	subb	a,r0
+      0000F6 F5*00            [12]  346 	mov	_map_sloc0_1_0,a
+      0000F8 ED               [12]  347 	mov	a,r5
+      0000F9 99               [12]  348 	subb	a,r1
+      0000FA F5*01            [12]  349 	mov	(_map_sloc0_1_0 + 1),a
+      0000FC EE               [12]  350 	mov	a,r6
+      0000FD 9A               [12]  351 	subb	a,r2
+      0000FE F5*02            [12]  352 	mov	(_map_sloc0_1_0 + 2),a
+      000100 EF               [12]  353 	mov	a,r7
+      000101 9B               [12]  354 	subb	a,r3
+      000102 F5*03            [12]  355 	mov	(_map_sloc0_1_0 + 3),a
+      000104 90r00r0C         [24]  356 	mov	dptr,#_map_PARM_4
+      000107 E0               [24]  357 	movx	a,@dptr
+      000108 F5*04            [12]  358 	mov	_map_sloc1_1_0,a
+      00010A A3               [24]  359 	inc	dptr
+      00010B E0               [24]  360 	movx	a,@dptr
+      00010C F5*05            [12]  361 	mov	(_map_sloc1_1_0 + 1),a
+      00010E A3               [24]  362 	inc	dptr
+      00010F E0               [24]  363 	movx	a,@dptr
+      000110 F5*06            [12]  364 	mov	(_map_sloc1_1_0 + 2),a
+      000112 A3               [24]  365 	inc	dptr
+      000113 E0               [24]  366 	movx	a,@dptr
+      000114 F5*07            [12]  367 	mov	(_map_sloc1_1_0 + 3),a
+      000116 90r00r10         [24]  368 	mov	dptr,#_map_PARM_5
+      000119 E0               [24]  369 	movx	a,@dptr
+      00011A FC               [12]  370 	mov	r4,a
+      00011B A3               [24]  371 	inc	dptr
+      00011C E0               [24]  372 	movx	a,@dptr
+      00011D FD               [12]  373 	mov	r5,a
+      00011E A3               [24]  374 	inc	dptr
+      00011F E0               [24]  375 	movx	a,@dptr
+      000120 FE               [12]  376 	mov	r6,a
+      000121 A3               [24]  377 	inc	dptr
+      000122 E0               [24]  378 	movx	a,@dptr
+      000123 FF               [12]  379 	mov	r7,a
+      000124 EC               [12]  380 	mov	a,r4
+      000125 C3               [12]  381 	clr	c
+      000126 95*04            [12]  382 	subb	a,_map_sloc1_1_0
+      000128 FC               [12]  383 	mov	r4,a
+      000129 ED               [12]  384 	mov	a,r5
+      00012A 95*05            [12]  385 	subb	a,(_map_sloc1_1_0 + 1)
+      00012C FD               [12]  386 	mov	r5,a
+      00012D EE               [12]  387 	mov	a,r6
+      00012E 95*06            [12]  388 	subb	a,(_map_sloc1_1_0 + 2)
+      000130 FE               [12]  389 	mov	r6,a
+      000131 EF               [12]  390 	mov	a,r7
+      000132 95*07            [12]  391 	subb	a,(_map_sloc1_1_0 + 3)
+      000134 FF               [12]  392 	mov	r7,a
+      000135 C0 03            [24]  393 	push	ar3
+      000137 C0 02            [24]  394 	push	ar2
+      000139 C0 01            [24]  395 	push	ar1
+      00013B C0 00            [24]  396 	push	ar0
+      00013D C0 04            [24]  397 	push	ar4
+      00013F C0 05            [24]  398 	push	ar5
+      000141 C0 06            [24]  399 	push	ar6
+      000143 C0 07            [24]  400 	push	ar7
+      000145 85*00 82         [24]  401 	mov	dpl,_map_sloc0_1_0
+      000148 85*01 83         [24]  402 	mov	dph,(_map_sloc0_1_0 + 1)
+      00014B 85*02 F0         [24]  403 	mov	b,(_map_sloc0_1_0 + 2)
+      00014E E5*03            [12]  404 	mov	a,(_map_sloc0_1_0 + 3)
+      000150 12r00r00         [24]  405 	lcall	__mullong
+      000153 85 82*00         [24]  406 	mov	_map_sloc0_1_0,dpl
+      000156 85 83*01         [24]  407 	mov	(_map_sloc0_1_0 + 1),dph
+      000159 85 F0*02         [24]  408 	mov	(_map_sloc0_1_0 + 2),b
+      00015C F5*03            [12]  409 	mov	(_map_sloc0_1_0 + 3),a
+      00015E E5 81            [12]  410 	mov	a,sp
+      000160 24 FC            [12]  411 	add	a,#0xfc
+      000162 F5 81            [12]  412 	mov	sp,a
+      000164 D0 00            [24]  413 	pop	ar0
+      000166 D0 01            [24]  414 	pop	ar1
+      000168 D0 02            [24]  415 	pop	ar2
+      00016A D0 03            [24]  416 	pop	ar3
+      00016C 90r00r08         [24]  417 	mov	dptr,#_map_PARM_3
+      00016F E0               [24]  418 	movx	a,@dptr
+      000170 FC               [12]  419 	mov	r4,a
+      000171 A3               [24]  420 	inc	dptr
+      000172 E0               [24]  421 	movx	a,@dptr
+      000173 FD               [12]  422 	mov	r5,a
+      000174 A3               [24]  423 	inc	dptr
+      000175 E0               [24]  424 	movx	a,@dptr
+      000176 FE               [12]  425 	mov	r6,a
+      000177 A3               [24]  426 	inc	dptr
+      000178 E0               [24]  427 	movx	a,@dptr
+      000179 FF               [12]  428 	mov	r7,a
+      00017A EC               [12]  429 	mov	a,r4
+      00017B C3               [12]  430 	clr	c
+      00017C 98               [12]  431 	subb	a,r0
+      00017D F8               [12]  432 	mov	r0,a
+      00017E ED               [12]  433 	mov	a,r5
+      00017F 99               [12]  434 	subb	a,r1
+      000180 F9               [12]  435 	mov	r1,a
+      000181 EE               [12]  436 	mov	a,r6
+      000182 9A               [12]  437 	subb	a,r2
+      000183 FA               [12]  438 	mov	r2,a
+      000184 EF               [12]  439 	mov	a,r7
+      000185 9B               [12]  440 	subb	a,r3
+      000186 FB               [12]  441 	mov	r3,a
+      000187 C0 00            [24]  442 	push	ar0
+      000189 C0 01            [24]  443 	push	ar1
+      00018B C0 02            [24]  444 	push	ar2
+      00018D C0 03            [24]  445 	push	ar3
+      00018F 85*00 82         [24]  446 	mov	dpl,_map_sloc0_1_0
+      000192 85*01 83         [24]  447 	mov	dph,(_map_sloc0_1_0 + 1)
+      000195 85*02 F0         [24]  448 	mov	b,(_map_sloc0_1_0 + 2)
+      000198 E5*03            [12]  449 	mov	a,(_map_sloc0_1_0 + 3)
+      00019A 12r00r00         [24]  450 	lcall	__divslong
+      00019D AC 82            [24]  451 	mov	r4,dpl
+      00019F AD 83            [24]  452 	mov	r5,dph
+      0001A1 AE F0            [24]  453 	mov	r6,b
+      0001A3 FF               [12]  454 	mov	r7,a
+      0001A4 E5 81            [12]  455 	mov	a,sp
+      0001A6 24 FC            [12]  456 	add	a,#0xfc
+      0001A8 F5 81            [12]  457 	mov	sp,a
+      0001AA E5*04            [12]  458 	mov	a,_map_sloc1_1_0
+      0001AC 2C               [12]  459 	add	a,r4
+      0001AD FC               [12]  460 	mov	r4,a
+      0001AE E5*05            [12]  461 	mov	a,(_map_sloc1_1_0 + 1)
+      0001B0 3D               [12]  462 	addc	a,r5
+      0001B1 FD               [12]  463 	mov	r5,a
+      0001B2 E5*06            [12]  464 	mov	a,(_map_sloc1_1_0 + 2)
+      0001B4 3E               [12]  465 	addc	a,r6
+      0001B5 FE               [12]  466 	mov	r6,a
+      0001B6 E5*07            [12]  467 	mov	a,(_map_sloc1_1_0 + 3)
+      0001B8 3F               [12]  468 	addc	a,r7
+      0001B9 8C 82            [24]  469 	mov	dpl,r4
+      0001BB 8D 83            [24]  470 	mov	dph,r5
+      0001BD 8E F0            [24]  471 	mov	b,r6
+                                    472 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\WMath.c:58: }
+      0001BF 22               [24]  473 	ret
+                                    474 	.area CSEG    (CODE)
+                                    475 	.area CONST   (CODE)
+                                    476 	.area XINIT   (CODE)
+                                    477 	.area CABS    (ABS,CODE)

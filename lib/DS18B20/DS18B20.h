@@ -7,7 +7,7 @@
 #ifndef DS18B20_H
 #define DS18B20_H
 
-#include <Arduino.h>
+#include "../../src/arduino_compat.h"
 
 // DS18B20命令
 #define DS18B20_CMD_CONVERT         0x44  // 启动温度转换
@@ -29,68 +29,15 @@ typedef enum {
     DS18B20_RESOLUTION_12BIT = 0x7F   // 12位 (750ms转换时间，默认)
 } ds18b20_resolution_t;
 
-/**
- * @class DS18B20
- * @brief DS18B20温度传感器类（Arduino风格）
- */
-class DS18B20 {
-private:
-    uint8_t pin;  // 数据引脚
-    
-    // OneWire协议底层操作
-    void pinOutput();
-    void pinInput();
-    void pinHigh();
-    void pinLow();
-    uint8_t pinRead();
-    void delayUs(uint16_t us);
-    
-    // DS18B20复位
-    uint8_t reset();
-    
-    // 读写字节
-    void writeByte(uint8_t byte);
-    uint8_t readByte();
-    
-    // 读取暂存器
-    uint8_t readScratchpad(uint8_t *data);
-    
-public:
-    /**
-     * @brief 构造函数
-     * @param data_pin 数据引脚
-     */
-    DS18B20(uint8_t data_pin);
-    
-    /**
-     * @brief 初始化
-     */
-    void begin();
-    
-    /**
-     * @brief 读取温度（标准方式，固定等待750ms）
-     * @return 温度值(°C)，失败返回-999.0
-     */
-    float readTemperature();
-    
-    /**
-     * @brief 读取温度（快速方式，根据分辨率自动调整等待时间）
-     * @return 温度值(°C)，失败返回-999.0
-     */
-    float readTemperatureFast();
-    
-    /**
-     * @brief 设置分辨率
-     * @param resolution 分辨率配置
-     */
-    void setResolution(ds18b20_resolution_t resolution);
-    
-    /**
-     * @brief 设置报警温度范围
-     * @param temp_high 温度上限
-     * @param temp_low 温度下限
-     */
-    void setAlarmTemperature(int8_t temp_high, int8_t temp_low);
-};
+typedef struct {
+    uint8_t pin;
+} DS18B20;
+
+void DS18B20_init(DS18B20* dev, uint8_t data_pin);
+void DS18B20_begin(DS18B20* dev);
+float DS18B20_readTemperature(DS18B20* dev);
+float DS18B20_readTemperatureFast(DS18B20* dev);
+void DS18B20_setResolution(DS18B20* dev, ds18b20_resolution_t resolution);
+void DS18B20_setAlarmTemperature(DS18B20* dev, int8_t temp_high, int8_t temp_low);
 
 #endif // DS18B20_H

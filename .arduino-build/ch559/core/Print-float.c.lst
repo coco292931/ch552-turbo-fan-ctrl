@@ -1,0 +1,1459 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.2 #13407 (MINGW32)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module Print_float
+                                      6 	.optsdcc -mmcs51 --model-large
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _Print_print_ub
+                                     12 	.globl _Print_print_s
+                                     13 	.globl _isinf
+                                     14 	.globl _isnan
+                                     15 	.globl _UIF_BUS_RST
+                                     16 	.globl _UIF_DETECT
+                                     17 	.globl _UIF_TRANSFER
+                                     18 	.globl _UIF_SUSPEND
+                                     19 	.globl _UIF_HST_SOF
+                                     20 	.globl _UIF_FIFO_OV
+                                     21 	.globl _U_SIE_FREE
+                                     22 	.globl _U_TOG_OK
+                                     23 	.globl _U_IS_NAK
+                                     24 	.globl _S0_R_FIFO0
+                                     25 	.globl _S0_R_FIFO1
+                                     26 	.globl _S0_T_FIFO
+                                     27 	.globl _S0_FREE
+                                     28 	.globl _S0_IF_BYTE
+                                     29 	.globl _S0_IF_FIRST
+                                     30 	.globl _S0_IF_OV
+                                     31 	.globl _S0_FST_ACT
+                                     32 	.globl _CP_RL2
+                                     33 	.globl _C_T2
+                                     34 	.globl _TR2
+                                     35 	.globl _EXEN2
+                                     36 	.globl _TCLK
+                                     37 	.globl _RCLK
+                                     38 	.globl _EXF2
+                                     39 	.globl _CAP1F
+                                     40 	.globl _TF2
+                                     41 	.globl _RI
+                                     42 	.globl _TI
+                                     43 	.globl _RB8
+                                     44 	.globl _TB8
+                                     45 	.globl _REN
+                                     46 	.globl _SM2
+                                     47 	.globl _SM1
+                                     48 	.globl _SM0
+                                     49 	.globl _IT0
+                                     50 	.globl _IE0
+                                     51 	.globl _IT1
+                                     52 	.globl _IE1
+                                     53 	.globl _TR0
+                                     54 	.globl _TF0
+                                     55 	.globl _TR1
+                                     56 	.globl _TF1
+                                     57 	.globl _P4_OUT_0
+                                     58 	.globl _P4_OUT_1
+                                     59 	.globl _P4_OUT_2
+                                     60 	.globl _P4_OUT_3
+                                     61 	.globl _P4_OUT_4
+                                     62 	.globl _P4_OUT_5
+                                     63 	.globl _P4_OUT_6
+                                     64 	.globl _P4_OUT_7
+                                     65 	.globl _RXD1_
+                                     66 	.globl _LED2
+                                     67 	.globl _CAP3_
+                                     68 	.globl _PWM3_
+                                     69 	.globl _PWM1_
+                                     70 	.globl _TXD1_
+                                     71 	.globl _TNOW_
+                                     72 	.globl _LED3
+                                     73 	.globl _PWM2_
+                                     74 	.globl _SCS_
+                                     75 	.globl _SCK_
+                                     76 	.globl _P3_0
+                                     77 	.globl _P3_1
+                                     78 	.globl _P3_2
+                                     79 	.globl _P3_3
+                                     80 	.globl _P3_4
+                                     81 	.globl _P3_5
+                                     82 	.globl _P3_6
+                                     83 	.globl _P3_7
+                                     84 	.globl _RXD
+                                     85 	.globl _TXD
+                                     86 	.globl _INT0
+                                     87 	.globl _LED0
+                                     88 	.globl _INT1
+                                     89 	.globl _LED1
+                                     90 	.globl _T0
+                                     91 	.globl _XCS0
+                                     92 	.globl _LEDC
+                                     93 	.globl _T1
+                                     94 	.globl _DA6
+                                     95 	.globl _WR
+                                     96 	.globl _RD
+                                     97 	.globl _P2_0
+                                     98 	.globl _P2_1
+                                     99 	.globl _P2_2
+                                    100 	.globl _P2_3
+                                    101 	.globl _P2_4
+                                    102 	.globl _P2_5
+                                    103 	.globl _P2_6
+                                    104 	.globl _P2_7
+                                    105 	.globl _MOSI1
+                                    106 	.globl _MISO1
+                                    107 	.globl _SCK1
+                                    108 	.globl _PWM1
+                                    109 	.globl _CAP2_
+                                    110 	.globl _T2EX_
+                                    111 	.globl _PWM2
+                                    112 	.globl _TNOW
+                                    113 	.globl _RXD1
+                                    114 	.globl _DA7
+                                    115 	.globl _TXD1
+                                    116 	.globl _P1_0
+                                    117 	.globl _P1_1
+                                    118 	.globl _P1_2
+                                    119 	.globl _P1_3
+                                    120 	.globl _P1_4
+                                    121 	.globl _P1_5
+                                    122 	.globl _P1_6
+                                    123 	.globl _P1_7
+                                    124 	.globl _CAP1
+                                    125 	.globl _T2
+                                    126 	.globl _CAP2
+                                    127 	.globl _T2EX
+                                    128 	.globl _CAP3
+                                    129 	.globl _PWM3
+                                    130 	.globl _SCS
+                                    131 	.globl _MOSI
+                                    132 	.globl _MISO
+                                    133 	.globl _SCK
+                                    134 	.globl _AIN0
+                                    135 	.globl _AIN1
+                                    136 	.globl _AIN2
+                                    137 	.globl _AIN3
+                                    138 	.globl _AIN4
+                                    139 	.globl _AIN5
+                                    140 	.globl _AIN6
+                                    141 	.globl _AIN7
+                                    142 	.globl _P0_0
+                                    143 	.globl _P0_1
+                                    144 	.globl _P0_2
+                                    145 	.globl _P0_3
+                                    146 	.globl _P0_4
+                                    147 	.globl _P0_5
+                                    148 	.globl _P0_6
+                                    149 	.globl _P0_7
+                                    150 	.globl _UDTR
+                                    151 	.globl _URTS
+                                    152 	.globl _RXD_
+                                    153 	.globl _TXD_
+                                    154 	.globl _UCTS
+                                    155 	.globl _UDSR
+                                    156 	.globl _URI
+                                    157 	.globl _UDCD
+                                    158 	.globl _IE_SPI0
+                                    159 	.globl _IE_TMR3
+                                    160 	.globl _IE_USB
+                                    161 	.globl _IE_ADC
+                                    162 	.globl _IE_UART1
+                                    163 	.globl _IE_PWM1
+                                    164 	.globl _IE_GPIO
+                                    165 	.globl _IE_WDOG
+                                    166 	.globl _PX0
+                                    167 	.globl _PT0
+                                    168 	.globl _PX1
+                                    169 	.globl _PT1
+                                    170 	.globl _PS
+                                    171 	.globl _PT2
+                                    172 	.globl _PL_FLAG
+                                    173 	.globl _PH_FLAG
+                                    174 	.globl _EX0
+                                    175 	.globl _ET0
+                                    176 	.globl _EX1
+                                    177 	.globl _ET1
+                                    178 	.globl _ES
+                                    179 	.globl _ET2
+                                    180 	.globl _E_DIS
+                                    181 	.globl _EA
+                                    182 	.globl _P
+                                    183 	.globl _F1
+                                    184 	.globl _OV
+                                    185 	.globl _RS0
+                                    186 	.globl _RS1
+                                    187 	.globl _F0
+                                    188 	.globl _AC
+                                    189 	.globl _CY
+                                    190 	.globl _USB_DMA_AH
+                                    191 	.globl _USB_DMA_AL
+                                    192 	.globl _USB_DMA
+                                    193 	.globl _UHUB1_CTRL
+                                    194 	.globl _UDEV_CTRL
+                                    195 	.globl _USB_DEV_AD
+                                    196 	.globl _USB_CTRL
+                                    197 	.globl _USB_INT_EN
+                                    198 	.globl _UEP4_T_LEN
+                                    199 	.globl _UEP4_CTRL
+                                    200 	.globl _UEP0_T_LEN
+                                    201 	.globl _UEP0_CTRL
+                                    202 	.globl _USB_HUB_ST
+                                    203 	.globl _USB_MIS_ST
+                                    204 	.globl _USB_INT_ST
+                                    205 	.globl _USB_INT_FG
+                                    206 	.globl _UEP3_T_LEN
+                                    207 	.globl _UEP3_CTRL
+                                    208 	.globl _UEP2_T_LEN
+                                    209 	.globl _UEP2_CTRL
+                                    210 	.globl _UEP1_T_LEN
+                                    211 	.globl _UEP1_CTRL
+                                    212 	.globl _USB_RX_LEN
+                                    213 	.globl _ADC_EX_SW
+                                    214 	.globl _ADC_SETUP
+                                    215 	.globl _ADC_FIFO_H
+                                    216 	.globl _ADC_FIFO_L
+                                    217 	.globl _ADC_FIFO
+                                    218 	.globl _ADC_CHANN
+                                    219 	.globl _ADC_CTRL
+                                    220 	.globl _ADC_STAT
+                                    221 	.globl _ADC_CK_SE
+                                    222 	.globl _ADC_DMA_CN
+                                    223 	.globl _ADC_DMA_AH
+                                    224 	.globl _ADC_DMA_AL
+                                    225 	.globl _ADC_DMA
+                                    226 	.globl _SER1_ADDR
+                                    227 	.globl _SER1_MSR
+                                    228 	.globl _SER1_LSR
+                                    229 	.globl _SER1_MCR
+                                    230 	.globl _SER1_LCR
+                                    231 	.globl _SER1_IIR
+                                    232 	.globl _SER1_IER
+                                    233 	.globl _SER1_FIFO
+                                    234 	.globl _SPI1_CK_SE
+                                    235 	.globl _SPI1_CTRL
+                                    236 	.globl _SPI1_DATA
+                                    237 	.globl _SPI1_STAT
+                                    238 	.globl _SPI0_SETUP
+                                    239 	.globl _SPI0_CK_SE
+                                    240 	.globl _SPI0_CTRL
+                                    241 	.globl _SPI0_DATA
+                                    242 	.globl _SPI0_STAT
+                                    243 	.globl _PWM_CYCLE
+                                    244 	.globl _PWM_CK_SE
+                                    245 	.globl _PWM_CTRL
+                                    246 	.globl _PWM_DATA
+                                    247 	.globl _PWM_DATA2
+                                    248 	.globl _T3_FIFO_H
+                                    249 	.globl _T3_FIFO_L
+                                    250 	.globl _T3_FIFO
+                                    251 	.globl _T3_DMA_AH
+                                    252 	.globl _T3_DMA_AL
+                                    253 	.globl _T3_DMA
+                                    254 	.globl _T3_DMA_CN
+                                    255 	.globl _T3_CTRL
+                                    256 	.globl _T3_STAT
+                                    257 	.globl _T3_END_H
+                                    258 	.globl _T3_END_L
+                                    259 	.globl _T3_END
+                                    260 	.globl _T3_COUNT_H
+                                    261 	.globl _T3_COUNT_L
+                                    262 	.globl _T3_COUNT
+                                    263 	.globl _T3_SETUP
+                                    264 	.globl _TH2
+                                    265 	.globl _TL2
+                                    266 	.globl _T2COUNT
+                                    267 	.globl _RCAP2H
+                                    268 	.globl _RCAP2L
+                                    269 	.globl _RCAP2
+                                    270 	.globl _T2MOD
+                                    271 	.globl _T2CON
+                                    272 	.globl _SBUF
+                                    273 	.globl _SCON
+                                    274 	.globl _TH1
+                                    275 	.globl _TH0
+                                    276 	.globl _TL1
+                                    277 	.globl _TL0
+                                    278 	.globl _TMOD
+                                    279 	.globl _TCON
+                                    280 	.globl _XBUS_SPEED
+                                    281 	.globl _XBUS_AUX
+                                    282 	.globl _PIN_FUNC
+                                    283 	.globl _PORT_CFG
+                                    284 	.globl _P5_IN
+                                    285 	.globl _P4_PU
+                                    286 	.globl _P4_DIR
+                                    287 	.globl _P4_IN
+                                    288 	.globl _P4_OUT
+                                    289 	.globl _P3_PU
+                                    290 	.globl _P3_DIR
+                                    291 	.globl _P3
+                                    292 	.globl _P2_PU
+                                    293 	.globl _P2_DIR
+                                    294 	.globl _P2
+                                    295 	.globl _P1_PU
+                                    296 	.globl _P1_DIR
+                                    297 	.globl _P1_IE
+                                    298 	.globl _P1
+                                    299 	.globl _P0_PU
+                                    300 	.globl _P0_DIR
+                                    301 	.globl _P0
+                                    302 	.globl _ROM_CTRL
+                                    303 	.globl _ROM_DATA_H
+                                    304 	.globl _ROM_DATA_L
+                                    305 	.globl _ROM_DATA
+                                    306 	.globl _ROM_ADDR_H
+                                    307 	.globl _ROM_ADDR_L
+                                    308 	.globl _ROM_ADDR
+                                    309 	.globl _GPIO_IE
+                                    310 	.globl _IP_EX
+                                    311 	.globl _IE_EX
+                                    312 	.globl _IP
+                                    313 	.globl _IE
+                                    314 	.globl _WDOG_COUNT
+                                    315 	.globl _RESET_KEEP
+                                    316 	.globl _WAKE_CTRL
+                                    317 	.globl _SLEEP_CTRL
+                                    318 	.globl _CLOCK_CFG
+                                    319 	.globl _PLL_CFG
+                                    320 	.globl _PCON
+                                    321 	.globl _GLOBAL_CFG
+                                    322 	.globl _SAFE_MOD
+                                    323 	.globl _DPH
+                                    324 	.globl _DPL
+                                    325 	.globl _SP
+                                    326 	.globl _B
+                                    327 	.globl _ACC
+                                    328 	.globl _PSW
+                                    329 	.globl _Print_print_fd_PARM_3
+                                    330 	.globl _Print_print_fd_PARM_2
+                                    331 	.globl _LED_DMA_XL
+                                    332 	.globl _LED_DMA_XH
+                                    333 	.globl _LED_DMA_CN
+                                    334 	.globl _LED_DMA_AL
+                                    335 	.globl _LED_DMA_AH
+                                    336 	.globl _LED_CK_SE
+                                    337 	.globl _LED_DATA
+                                    338 	.globl _LED_CTRL
+                                    339 	.globl _LED_STAT
+                                    340 	.globl _UEP3_DMA_L
+                                    341 	.globl _UEP3_DMA_H
+                                    342 	.globl _UEP2_DMA_L
+                                    343 	.globl _UEP2_DMA_H
+                                    344 	.globl _UEP1_DMA_L
+                                    345 	.globl _UEP1_DMA_H
+                                    346 	.globl _UEP0_DMA_L
+                                    347 	.globl _UEP0_DMA_H
+                                    348 	.globl _UEP2_3_MOD
+                                    349 	.globl _UEP4_1_MOD
+                                    350 	.globl _pLED_DMA_XL
+                                    351 	.globl _pLED_DMA_XH
+                                    352 	.globl _pLED_DMA_CN
+                                    353 	.globl _pLED_DMA_AL
+                                    354 	.globl _pLED_DMA_AH
+                                    355 	.globl _pLED_CK_SE
+                                    356 	.globl _pLED_DATA
+                                    357 	.globl _pLED_CTRL
+                                    358 	.globl _pLED_STAT
+                                    359 	.globl _pUEP3_DMA_L
+                                    360 	.globl _pUEP3_DMA_H
+                                    361 	.globl _pUEP2_DMA_L
+                                    362 	.globl _pUEP2_DMA_H
+                                    363 	.globl _pUEP1_DMA_L
+                                    364 	.globl _pUEP1_DMA_H
+                                    365 	.globl _pUEP0_DMA_L
+                                    366 	.globl _pUEP0_DMA_H
+                                    367 	.globl _pUEP2_3_MOD
+                                    368 	.globl _pUEP4_1_MOD
+                                    369 	.globl _Print_print_fd
+                                    370 ;--------------------------------------------------------
+                                    371 ; special function registers
+                                    372 ;--------------------------------------------------------
+                                    373 	.area RSEG    (ABS,DATA)
+      000000                        374 	.org 0x0000
+                           0000D0   375 _PSW	=	0x00d0
+                           0000E0   376 _ACC	=	0x00e0
+                           0000F0   377 _B	=	0x00f0
+                           000081   378 _SP	=	0x0081
+                           000082   379 _DPL	=	0x0082
+                           000083   380 _DPH	=	0x0083
+                           0000A1   381 _SAFE_MOD	=	0x00a1
+                           0000B1   382 _GLOBAL_CFG	=	0x00b1
+                           000087   383 _PCON	=	0x0087
+                           0000B2   384 _PLL_CFG	=	0x00b2
+                           0000B3   385 _CLOCK_CFG	=	0x00b3
+                           0000EA   386 _SLEEP_CTRL	=	0x00ea
+                           0000EB   387 _WAKE_CTRL	=	0x00eb
+                           0000FE   388 _RESET_KEEP	=	0x00fe
+                           0000FF   389 _WDOG_COUNT	=	0x00ff
+                           0000A8   390 _IE	=	0x00a8
+                           0000B8   391 _IP	=	0x00b8
+                           0000E8   392 _IE_EX	=	0x00e8
+                           0000E9   393 _IP_EX	=	0x00e9
+                           0000CF   394 _GPIO_IE	=	0x00cf
+                           008584   395 _ROM_ADDR	=	0x8584
+                           000084   396 _ROM_ADDR_L	=	0x0084
+                           000085   397 _ROM_ADDR_H	=	0x0085
+                           008F8E   398 _ROM_DATA	=	0x8f8e
+                           00008E   399 _ROM_DATA_L	=	0x008e
+                           00008F   400 _ROM_DATA_H	=	0x008f
+                           000086   401 _ROM_CTRL	=	0x0086
+                           000080   402 _P0	=	0x0080
+                           0000C4   403 _P0_DIR	=	0x00c4
+                           0000C5   404 _P0_PU	=	0x00c5
+                           000090   405 _P1	=	0x0090
+                           0000B9   406 _P1_IE	=	0x00b9
+                           0000BA   407 _P1_DIR	=	0x00ba
+                           0000BB   408 _P1_PU	=	0x00bb
+                           0000A0   409 _P2	=	0x00a0
+                           0000BC   410 _P2_DIR	=	0x00bc
+                           0000BD   411 _P2_PU	=	0x00bd
+                           0000B0   412 _P3	=	0x00b0
+                           0000BE   413 _P3_DIR	=	0x00be
+                           0000BF   414 _P3_PU	=	0x00bf
+                           0000C0   415 _P4_OUT	=	0x00c0
+                           0000C1   416 _P4_IN	=	0x00c1
+                           0000C2   417 _P4_DIR	=	0x00c2
+                           0000C3   418 _P4_PU	=	0x00c3
+                           0000C7   419 _P5_IN	=	0x00c7
+                           0000C6   420 _PORT_CFG	=	0x00c6
+                           0000CE   421 _PIN_FUNC	=	0x00ce
+                           0000A2   422 _XBUS_AUX	=	0x00a2
+                           0000FD   423 _XBUS_SPEED	=	0x00fd
+                           000088   424 _TCON	=	0x0088
+                           000089   425 _TMOD	=	0x0089
+                           00008A   426 _TL0	=	0x008a
+                           00008B   427 _TL1	=	0x008b
+                           00008C   428 _TH0	=	0x008c
+                           00008D   429 _TH1	=	0x008d
+                           000098   430 _SCON	=	0x0098
+                           000099   431 _SBUF	=	0x0099
+                           0000C8   432 _T2CON	=	0x00c8
+                           0000C9   433 _T2MOD	=	0x00c9
+                           00CBCA   434 _RCAP2	=	0xcbca
+                           0000CA   435 _RCAP2L	=	0x00ca
+                           0000CB   436 _RCAP2H	=	0x00cb
+                           00CDCC   437 _T2COUNT	=	0xcdcc
+                           0000CC   438 _TL2	=	0x00cc
+                           0000CD   439 _TH2	=	0x00cd
+                           0000A3   440 _T3_SETUP	=	0x00a3
+                           00A5A4   441 _T3_COUNT	=	0xa5a4
+                           0000A4   442 _T3_COUNT_L	=	0x00a4
+                           0000A5   443 _T3_COUNT_H	=	0x00a5
+                           00A7A6   444 _T3_END	=	0xa7a6
+                           0000A6   445 _T3_END_L	=	0x00a6
+                           0000A7   446 _T3_END_H	=	0x00a7
+                           0000A9   447 _T3_STAT	=	0x00a9
+                           0000AA   448 _T3_CTRL	=	0x00aa
+                           0000AB   449 _T3_DMA_CN	=	0x00ab
+                           00ADAC   450 _T3_DMA	=	0xadac
+                           0000AC   451 _T3_DMA_AL	=	0x00ac
+                           0000AD   452 _T3_DMA_AH	=	0x00ad
+                           00AFAE   453 _T3_FIFO	=	0xafae
+                           0000AE   454 _T3_FIFO_L	=	0x00ae
+                           0000AF   455 _T3_FIFO_H	=	0x00af
+                           00009B   456 _PWM_DATA2	=	0x009b
+                           00009C   457 _PWM_DATA	=	0x009c
+                           00009D   458 _PWM_CTRL	=	0x009d
+                           00009E   459 _PWM_CK_SE	=	0x009e
+                           00009F   460 _PWM_CYCLE	=	0x009f
+                           0000F8   461 _SPI0_STAT	=	0x00f8
+                           0000F9   462 _SPI0_DATA	=	0x00f9
+                           0000FA   463 _SPI0_CTRL	=	0x00fa
+                           0000FB   464 _SPI0_CK_SE	=	0x00fb
+                           0000FC   465 _SPI0_SETUP	=	0x00fc
+                           0000B4   466 _SPI1_STAT	=	0x00b4
+                           0000B5   467 _SPI1_DATA	=	0x00b5
+                           0000B6   468 _SPI1_CTRL	=	0x00b6
+                           0000B7   469 _SPI1_CK_SE	=	0x00b7
+                           00009A   470 _SER1_FIFO	=	0x009a
+                           000091   471 _SER1_IER	=	0x0091
+                           000092   472 _SER1_IIR	=	0x0092
+                           000093   473 _SER1_LCR	=	0x0093
+                           000094   474 _SER1_MCR	=	0x0094
+                           000095   475 _SER1_LSR	=	0x0095
+                           000096   476 _SER1_MSR	=	0x0096
+                           000097   477 _SER1_ADDR	=	0x0097
+                           00EDEC   478 _ADC_DMA	=	0xedec
+                           0000EC   479 _ADC_DMA_AL	=	0x00ec
+                           0000ED   480 _ADC_DMA_AH	=	0x00ed
+                           0000EE   481 _ADC_DMA_CN	=	0x00ee
+                           0000EF   482 _ADC_CK_SE	=	0x00ef
+                           0000F1   483 _ADC_STAT	=	0x00f1
+                           0000F2   484 _ADC_CTRL	=	0x00f2
+                           0000F3   485 _ADC_CHANN	=	0x00f3
+                           00F5F4   486 _ADC_FIFO	=	0xf5f4
+                           0000F4   487 _ADC_FIFO_L	=	0x00f4
+                           0000F5   488 _ADC_FIFO_H	=	0x00f5
+                           0000F6   489 _ADC_SETUP	=	0x00f6
+                           0000F7   490 _ADC_EX_SW	=	0x00f7
+                           0000D1   491 _USB_RX_LEN	=	0x00d1
+                           0000D2   492 _UEP1_CTRL	=	0x00d2
+                           0000D3   493 _UEP1_T_LEN	=	0x00d3
+                           0000D4   494 _UEP2_CTRL	=	0x00d4
+                           0000D5   495 _UEP2_T_LEN	=	0x00d5
+                           0000D6   496 _UEP3_CTRL	=	0x00d6
+                           0000D7   497 _UEP3_T_LEN	=	0x00d7
+                           0000D8   498 _USB_INT_FG	=	0x00d8
+                           0000D9   499 _USB_INT_ST	=	0x00d9
+                           0000DA   500 _USB_MIS_ST	=	0x00da
+                           0000DB   501 _USB_HUB_ST	=	0x00db
+                           0000DC   502 _UEP0_CTRL	=	0x00dc
+                           0000DD   503 _UEP0_T_LEN	=	0x00dd
+                           0000DE   504 _UEP4_CTRL	=	0x00de
+                           0000DF   505 _UEP4_T_LEN	=	0x00df
+                           0000E1   506 _USB_INT_EN	=	0x00e1
+                           0000E2   507 _USB_CTRL	=	0x00e2
+                           0000E3   508 _USB_DEV_AD	=	0x00e3
+                           0000E4   509 _UDEV_CTRL	=	0x00e4
+                           0000E5   510 _UHUB1_CTRL	=	0x00e5
+                           00E7E6   511 _USB_DMA	=	0xe7e6
+                           0000E6   512 _USB_DMA_AL	=	0x00e6
+                           0000E7   513 _USB_DMA_AH	=	0x00e7
+                                    514 ;--------------------------------------------------------
+                                    515 ; special function bits
+                                    516 ;--------------------------------------------------------
+                                    517 	.area RSEG    (ABS,DATA)
+      000000                        518 	.org 0x0000
+                           0000D7   519 _CY	=	0x00d7
+                           0000D6   520 _AC	=	0x00d6
+                           0000D5   521 _F0	=	0x00d5
+                           0000D4   522 _RS1	=	0x00d4
+                           0000D3   523 _RS0	=	0x00d3
+                           0000D2   524 _OV	=	0x00d2
+                           0000D1   525 _F1	=	0x00d1
+                           0000D0   526 _P	=	0x00d0
+                           0000AF   527 _EA	=	0x00af
+                           0000AE   528 _E_DIS	=	0x00ae
+                           0000AD   529 _ET2	=	0x00ad
+                           0000AC   530 _ES	=	0x00ac
+                           0000AB   531 _ET1	=	0x00ab
+                           0000AA   532 _EX1	=	0x00aa
+                           0000A9   533 _ET0	=	0x00a9
+                           0000A8   534 _EX0	=	0x00a8
+                           0000BF   535 _PH_FLAG	=	0x00bf
+                           0000BE   536 _PL_FLAG	=	0x00be
+                           0000BD   537 _PT2	=	0x00bd
+                           0000BC   538 _PS	=	0x00bc
+                           0000BB   539 _PT1	=	0x00bb
+                           0000BA   540 _PX1	=	0x00ba
+                           0000B9   541 _PT0	=	0x00b9
+                           0000B8   542 _PX0	=	0x00b8
+                           0000EF   543 _IE_WDOG	=	0x00ef
+                           0000EE   544 _IE_GPIO	=	0x00ee
+                           0000ED   545 _IE_PWM1	=	0x00ed
+                           0000EC   546 _IE_UART1	=	0x00ec
+                           0000EB   547 _IE_ADC	=	0x00eb
+                           0000EA   548 _IE_USB	=	0x00ea
+                           0000E9   549 _IE_TMR3	=	0x00e9
+                           0000E8   550 _IE_SPI0	=	0x00e8
+                           000087   551 _UDCD	=	0x0087
+                           000086   552 _URI	=	0x0086
+                           000085   553 _UDSR	=	0x0085
+                           000084   554 _UCTS	=	0x0084
+                           000083   555 _TXD_	=	0x0083
+                           000082   556 _RXD_	=	0x0082
+                           000081   557 _URTS	=	0x0081
+                           000080   558 _UDTR	=	0x0080
+                           000087   559 _P0_7	=	0x0087
+                           000086   560 _P0_6	=	0x0086
+                           000085   561 _P0_5	=	0x0085
+                           000084   562 _P0_4	=	0x0084
+                           000083   563 _P0_3	=	0x0083
+                           000082   564 _P0_2	=	0x0082
+                           000081   565 _P0_1	=	0x0081
+                           000080   566 _P0_0	=	0x0080
+                           000097   567 _AIN7	=	0x0097
+                           000096   568 _AIN6	=	0x0096
+                           000095   569 _AIN5	=	0x0095
+                           000094   570 _AIN4	=	0x0094
+                           000093   571 _AIN3	=	0x0093
+                           000092   572 _AIN2	=	0x0092
+                           000091   573 _AIN1	=	0x0091
+                           000090   574 _AIN0	=	0x0090
+                           000097   575 _SCK	=	0x0097
+                           000096   576 _MISO	=	0x0096
+                           000095   577 _MOSI	=	0x0095
+                           000094   578 _SCS	=	0x0094
+                           000092   579 _PWM3	=	0x0092
+                           000092   580 _CAP3	=	0x0092
+                           000091   581 _T2EX	=	0x0091
+                           000091   582 _CAP2	=	0x0091
+                           000090   583 _T2	=	0x0090
+                           000090   584 _CAP1	=	0x0090
+                           000097   585 _P1_7	=	0x0097
+                           000096   586 _P1_6	=	0x0096
+                           000095   587 _P1_5	=	0x0095
+                           000094   588 _P1_4	=	0x0094
+                           000093   589 _P1_3	=	0x0093
+                           000092   590 _P1_2	=	0x0092
+                           000091   591 _P1_1	=	0x0091
+                           000090   592 _P1_0	=	0x0090
+                           0000A7   593 _TXD1	=	0x00a7
+                           0000A7   594 _DA7	=	0x00a7
+                           0000A6   595 _RXD1	=	0x00a6
+                           0000A5   596 _TNOW	=	0x00a5
+                           0000A5   597 _PWM2	=	0x00a5
+                           0000A5   598 _T2EX_	=	0x00a5
+                           0000A5   599 _CAP2_	=	0x00a5
+                           0000A4   600 _PWM1	=	0x00a4
+                           0000A3   601 _SCK1	=	0x00a3
+                           0000A2   602 _MISO1	=	0x00a2
+                           0000A1   603 _MOSI1	=	0x00a1
+                           0000A7   604 _P2_7	=	0x00a7
+                           0000A6   605 _P2_6	=	0x00a6
+                           0000A5   606 _P2_5	=	0x00a5
+                           0000A4   607 _P2_4	=	0x00a4
+                           0000A3   608 _P2_3	=	0x00a3
+                           0000A2   609 _P2_2	=	0x00a2
+                           0000A1   610 _P2_1	=	0x00a1
+                           0000A0   611 _P2_0	=	0x00a0
+                           0000B7   612 _RD	=	0x00b7
+                           0000B6   613 _WR	=	0x00b6
+                           0000B5   614 _DA6	=	0x00b5
+                           0000B5   615 _T1	=	0x00b5
+                           0000B4   616 _LEDC	=	0x00b4
+                           0000B4   617 _XCS0	=	0x00b4
+                           0000B4   618 _T0	=	0x00b4
+                           0000B3   619 _LED1	=	0x00b3
+                           0000B3   620 _INT1	=	0x00b3
+                           0000B2   621 _LED0	=	0x00b2
+                           0000B2   622 _INT0	=	0x00b2
+                           0000B1   623 _TXD	=	0x00b1
+                           0000B0   624 _RXD	=	0x00b0
+                           0000B7   625 _P3_7	=	0x00b7
+                           0000B6   626 _P3_6	=	0x00b6
+                           0000B5   627 _P3_5	=	0x00b5
+                           0000B4   628 _P3_4	=	0x00b4
+                           0000B3   629 _P3_3	=	0x00b3
+                           0000B2   630 _P3_2	=	0x00b2
+                           0000B1   631 _P3_1	=	0x00b1
+                           0000B0   632 _P3_0	=	0x00b0
+                           0000C7   633 _SCK_	=	0x00c7
+                           0000C6   634 _SCS_	=	0x00c6
+                           0000C5   635 _PWM2_	=	0x00c5
+                           0000C4   636 _LED3	=	0x00c4
+                           0000C4   637 _TNOW_	=	0x00c4
+                           0000C4   638 _TXD1_	=	0x00c4
+                           0000C3   639 _PWM1_	=	0x00c3
+                           0000C2   640 _PWM3_	=	0x00c2
+                           0000C2   641 _CAP3_	=	0x00c2
+                           0000C0   642 _LED2	=	0x00c0
+                           0000C0   643 _RXD1_	=	0x00c0
+                           0000C7   644 _P4_OUT_7	=	0x00c7
+                           0000C6   645 _P4_OUT_6	=	0x00c6
+                           0000C5   646 _P4_OUT_5	=	0x00c5
+                           0000C4   647 _P4_OUT_4	=	0x00c4
+                           0000C3   648 _P4_OUT_3	=	0x00c3
+                           0000C2   649 _P4_OUT_2	=	0x00c2
+                           0000C1   650 _P4_OUT_1	=	0x00c1
+                           0000C0   651 _P4_OUT_0	=	0x00c0
+                           00008F   652 _TF1	=	0x008f
+                           00008E   653 _TR1	=	0x008e
+                           00008D   654 _TF0	=	0x008d
+                           00008C   655 _TR0	=	0x008c
+                           00008B   656 _IE1	=	0x008b
+                           00008A   657 _IT1	=	0x008a
+                           000089   658 _IE0	=	0x0089
+                           000088   659 _IT0	=	0x0088
+                           00009F   660 _SM0	=	0x009f
+                           00009E   661 _SM1	=	0x009e
+                           00009D   662 _SM2	=	0x009d
+                           00009C   663 _REN	=	0x009c
+                           00009B   664 _TB8	=	0x009b
+                           00009A   665 _RB8	=	0x009a
+                           000099   666 _TI	=	0x0099
+                           000098   667 _RI	=	0x0098
+                           0000CF   668 _TF2	=	0x00cf
+                           0000CF   669 _CAP1F	=	0x00cf
+                           0000CE   670 _EXF2	=	0x00ce
+                           0000CD   671 _RCLK	=	0x00cd
+                           0000CC   672 _TCLK	=	0x00cc
+                           0000CB   673 _EXEN2	=	0x00cb
+                           0000CA   674 _TR2	=	0x00ca
+                           0000C9   675 _C_T2	=	0x00c9
+                           0000C8   676 _CP_RL2	=	0x00c8
+                           0000FF   677 _S0_FST_ACT	=	0x00ff
+                           0000FE   678 _S0_IF_OV	=	0x00fe
+                           0000FD   679 _S0_IF_FIRST	=	0x00fd
+                           0000FC   680 _S0_IF_BYTE	=	0x00fc
+                           0000FB   681 _S0_FREE	=	0x00fb
+                           0000FA   682 _S0_T_FIFO	=	0x00fa
+                           0000F9   683 _S0_R_FIFO1	=	0x00f9
+                           0000F8   684 _S0_R_FIFO0	=	0x00f8
+                           0000DF   685 _U_IS_NAK	=	0x00df
+                           0000DE   686 _U_TOG_OK	=	0x00de
+                           0000DD   687 _U_SIE_FREE	=	0x00dd
+                           0000DC   688 _UIF_FIFO_OV	=	0x00dc
+                           0000DB   689 _UIF_HST_SOF	=	0x00db
+                           0000DA   690 _UIF_SUSPEND	=	0x00da
+                           0000D9   691 _UIF_TRANSFER	=	0x00d9
+                           0000D8   692 _UIF_DETECT	=	0x00d8
+                           0000D8   693 _UIF_BUS_RST	=	0x00d8
+                                    694 ;--------------------------------------------------------
+                                    695 ; overlayable register banks
+                                    696 ;--------------------------------------------------------
+                                    697 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        698 	.ds 8
+                                    699 ;--------------------------------------------------------
+                                    700 ; internal ram data
+                                    701 ;--------------------------------------------------------
+                                    702 	.area DSEG    (DATA)
+      000000                        703 _Print_print_fd_writefunc_65536_169:
+      000000                        704 	.ds 2
+      000002                        705 _Print_print_fd_sloc0_1_0:
+      000002                        706 	.ds 4
+      000006                        707 _Print_print_fd_sloc1_1_0:
+      000006                        708 	.ds 4
+                                    709 ;--------------------------------------------------------
+                                    710 ; overlayable items in internal ram
+                                    711 ;--------------------------------------------------------
+                                    712 ;--------------------------------------------------------
+                                    713 ; indirectly addressable internal ram data
+                                    714 ;--------------------------------------------------------
+                                    715 	.area ISEG    (DATA)
+                                    716 ;--------------------------------------------------------
+                                    717 ; absolute internal ram data
+                                    718 ;--------------------------------------------------------
+                                    719 	.area IABS    (ABS,DATA)
+                                    720 	.area IABS    (ABS,DATA)
+                                    721 ;--------------------------------------------------------
+                                    722 ; bit data
+                                    723 ;--------------------------------------------------------
+                                    724 	.area BSEG    (BIT)
+                                    725 ;--------------------------------------------------------
+                                    726 ; paged external ram data
+                                    727 ;--------------------------------------------------------
+                                    728 	.area PSEG    (PAG,XDATA)
+                           002546   729 _pUEP4_1_MOD	=	0x2546
+                           002547   730 _pUEP2_3_MOD	=	0x2547
+                           002548   731 _pUEP0_DMA_H	=	0x2548
+                           002549   732 _pUEP0_DMA_L	=	0x2549
+                           00254A   733 _pUEP1_DMA_H	=	0x254a
+                           00254B   734 _pUEP1_DMA_L	=	0x254b
+                           00254C   735 _pUEP2_DMA_H	=	0x254c
+                           00254D   736 _pUEP2_DMA_L	=	0x254d
+                           00254E   737 _pUEP3_DMA_H	=	0x254e
+                           00254F   738 _pUEP3_DMA_L	=	0x254f
+                           002980   739 _pLED_STAT	=	0x2980
+                           002981   740 _pLED_CTRL	=	0x2981
+                           002982   741 _pLED_DATA	=	0x2982
+                           002983   742 _pLED_CK_SE	=	0x2983
+                           002984   743 _pLED_DMA_AH	=	0x2984
+                           002985   744 _pLED_DMA_AL	=	0x2985
+                           002986   745 _pLED_DMA_CN	=	0x2986
+                           002988   746 _pLED_DMA_XH	=	0x2988
+                           002989   747 _pLED_DMA_XL	=	0x2989
+                                    748 ;--------------------------------------------------------
+                                    749 ; uninitialized external ram data
+                                    750 ;--------------------------------------------------------
+                                    751 	.area XSEG    (XDATA)
+                           002446   752 _UEP4_1_MOD	=	0x2446
+                           002447   753 _UEP2_3_MOD	=	0x2447
+                           002448   754 _UEP0_DMA_H	=	0x2448
+                           002449   755 _UEP0_DMA_L	=	0x2449
+                           00244A   756 _UEP1_DMA_H	=	0x244a
+                           00244B   757 _UEP1_DMA_L	=	0x244b
+                           00244C   758 _UEP2_DMA_H	=	0x244c
+                           00244D   759 _UEP2_DMA_L	=	0x244d
+                           00244E   760 _UEP3_DMA_H	=	0x244e
+                           00244F   761 _UEP3_DMA_L	=	0x244f
+                           002880   762 _LED_STAT	=	0x2880
+                           002881   763 _LED_CTRL	=	0x2881
+                           002882   764 _LED_DATA	=	0x2882
+                           002883   765 _LED_CK_SE	=	0x2883
+                           002884   766 _LED_DMA_AH	=	0x2884
+                           002885   767 _LED_DMA_AL	=	0x2885
+                           002886   768 _LED_DMA_CN	=	0x2886
+                           002888   769 _LED_DMA_XH	=	0x2888
+                           002889   770 _LED_DMA_XL	=	0x2889
+      000000                        771 _Print_print_fd_PARM_2:
+      000000                        772 	.ds 4
+      000004                        773 _Print_print_fd_PARM_3:
+      000004                        774 	.ds 1
+      000005                        775 _Print_print_fd_n_65536_170:
+      000005                        776 	.ds 1
+      000006                        777 _Print_print_fd_remainder_65536_170:
+      000006                        778 	.ds 4
+      00000A                        779 _Print_print_fd_rounding_65536_170:
+      00000A                        780 	.ds 4
+                                    781 ;--------------------------------------------------------
+                                    782 ; absolute external ram data
+                                    783 ;--------------------------------------------------------
+                                    784 	.area XABS    (ABS,XDATA)
+                                    785 ;--------------------------------------------------------
+                                    786 ; initialized external ram data
+                                    787 ;--------------------------------------------------------
+                                    788 	.area XISEG   (XDATA)
+                                    789 	.area HOME    (CODE)
+                                    790 	.area GSINIT0 (CODE)
+                                    791 	.area GSINIT1 (CODE)
+                                    792 	.area GSINIT2 (CODE)
+                                    793 	.area GSINIT3 (CODE)
+                                    794 	.area GSINIT4 (CODE)
+                                    795 	.area GSINIT5 (CODE)
+                                    796 	.area GSINIT  (CODE)
+                                    797 	.area GSFINAL (CODE)
+                                    798 	.area CSEG    (CODE)
+                                    799 ;--------------------------------------------------------
+                                    800 ; global & static initialisations
+                                    801 ;--------------------------------------------------------
+                                    802 	.area HOME    (CODE)
+                                    803 	.area GSINIT  (CODE)
+                                    804 	.area GSFINAL (CODE)
+                                    805 	.area GSINIT  (CODE)
+                                    806 ;--------------------------------------------------------
+                                    807 ; Home
+                                    808 ;--------------------------------------------------------
+                                    809 	.area HOME    (CODE)
+                                    810 	.area HOME    (CODE)
+                                    811 ;--------------------------------------------------------
+                                    812 ; code
+                                    813 ;--------------------------------------------------------
+                                    814 	.area CSEG    (CODE)
+                                    815 ;------------------------------------------------------------
+                                    816 ;Allocation info for local variables in function 'Print_print_fd'
+                                    817 ;------------------------------------------------------------
+                                    818 ;writefunc                 Allocated with name '_Print_print_fd_writefunc_65536_169'
+                                    819 ;sloc0                     Allocated with name '_Print_print_fd_sloc0_1_0'
+                                    820 ;sloc1                     Allocated with name '_Print_print_fd_sloc1_1_0'
+                                    821 ;number                    Allocated with name '_Print_print_fd_PARM_2'
+                                    822 ;digits                    Allocated with name '_Print_print_fd_PARM_3'
+                                    823 ;n                         Allocated with name '_Print_print_fd_n_65536_170'
+                                    824 ;i                         Allocated with name '_Print_print_fd_i_65536_170'
+                                    825 ;int_part                  Allocated with name '_Print_print_fd_int_part_65536_170'
+                                    826 ;remainder                 Allocated with name '_Print_print_fd_remainder_65536_170'
+                                    827 ;rounding                  Allocated with name '_Print_print_fd_rounding_65536_170'
+                                    828 ;toPrint                   Allocated with name '_Print_print_fd_toPrint_65536_170'
+                                    829 ;------------------------------------------------------------
+                                    830 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:38: uint8_t Print_print_fd(__data writefunc_p writefunc, __xdata double number,
+                                    831 ;	-----------------------------------------
+                                    832 ;	 function Print_print_fd
+                                    833 ;	-----------------------------------------
+      000000                        834 _Print_print_fd:
+                           000007   835 	ar7 = 0x07
+                           000006   836 	ar6 = 0x06
+                           000005   837 	ar5 = 0x05
+                           000004   838 	ar4 = 0x04
+                           000003   839 	ar3 = 0x03
+                           000002   840 	ar2 = 0x02
+                           000001   841 	ar1 = 0x01
+                           000000   842 	ar0 = 0x00
+      000000 85 82*00         [24]  843 	mov	_Print_print_fd_writefunc_65536_169,dpl
+      000003 85 83*01         [24]  844 	mov	(_Print_print_fd_writefunc_65536_169 + 1),dph
+                                    845 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:40: __xdata uint8_t n = 0;
+      000006 90r00r05         [24]  846 	mov	dptr,#_Print_print_fd_n_65536_170
+      000009 E4               [12]  847 	clr	a
+      00000A F0               [24]  848 	movx	@dptr,a
+                                    849 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:46: if (isnan(number))
+      00000B 90r00r00         [24]  850 	mov	dptr,#_Print_print_fd_PARM_2
+      00000E E0               [24]  851 	movx	a,@dptr
+      00000F FA               [12]  852 	mov	r2,a
+      000010 A3               [24]  853 	inc	dptr
+      000011 E0               [24]  854 	movx	a,@dptr
+      000012 FB               [12]  855 	mov	r3,a
+      000013 A3               [24]  856 	inc	dptr
+      000014 E0               [24]  857 	movx	a,@dptr
+      000015 FC               [12]  858 	mov	r4,a
+      000016 A3               [24]  859 	inc	dptr
+      000017 E0               [24]  860 	movx	a,@dptr
+      000018 FD               [12]  861 	mov	r5,a
+      000019 8A 82            [24]  862 	mov	dpl,r2
+      00001B 8B 83            [24]  863 	mov	dph,r3
+      00001D 8C F0            [24]  864 	mov	b,r4
+      00001F C0 05            [24]  865 	push	ar5
+      000021 C0 04            [24]  866 	push	ar4
+      000023 C0 03            [24]  867 	push	ar3
+      000025 C0 02            [24]  868 	push	ar2
+      000027 12r00r00         [24]  869 	lcall	_isnan
+      00002A E5 82            [12]  870 	mov	a,dpl
+      00002C 85 83 F0         [24]  871 	mov	b,dph
+      00002F D0 02            [24]  872 	pop	ar2
+      000031 D0 03            [24]  873 	pop	ar3
+      000033 D0 04            [24]  874 	pop	ar4
+      000035 D0 05            [24]  875 	pop	ar5
+      000037 45 F0            [12]  876 	orl	a,b
+      000039 60 17            [24]  877 	jz	00102$
+                                    878 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:47: return printStr(writefunc, "nan");
+      00003B 90r00r00         [24]  879 	mov	dptr,#_Print_print_s_PARM_2
+      00003E 74r00            [12]  880 	mov	a,#___str_0
+      000040 F0               [24]  881 	movx	@dptr,a
+      000041 74s00            [12]  882 	mov	a,#(___str_0 >> 8)
+      000043 A3               [24]  883 	inc	dptr
+      000044 F0               [24]  884 	movx	@dptr,a
+      000045 74 80            [12]  885 	mov	a,#0x80
+      000047 A3               [24]  886 	inc	dptr
+      000048 F0               [24]  887 	movx	@dptr,a
+      000049 85*00 82         [24]  888 	mov	dpl,_Print_print_fd_writefunc_65536_169
+      00004C 85*01 83         [24]  889 	mov	dph,(_Print_print_fd_writefunc_65536_169 + 1)
+      00004F 02r00r00         [24]  890 	ljmp	_Print_print_s
+      000052                        891 00102$:
+                                    892 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:48: if (isinf(number))
+      000052 8A 82            [24]  893 	mov	dpl,r2
+      000054 8B 83            [24]  894 	mov	dph,r3
+      000056 8C F0            [24]  895 	mov	b,r4
+      000058 ED               [12]  896 	mov	a,r5
+      000059 C0 05            [24]  897 	push	ar5
+      00005B C0 04            [24]  898 	push	ar4
+      00005D C0 03            [24]  899 	push	ar3
+      00005F C0 02            [24]  900 	push	ar2
+      000061 12r00r00         [24]  901 	lcall	_isinf
+      000064 E5 82            [12]  902 	mov	a,dpl
+      000066 85 83 F0         [24]  903 	mov	b,dph
+      000069 D0 02            [24]  904 	pop	ar2
+      00006B D0 03            [24]  905 	pop	ar3
+      00006D D0 04            [24]  906 	pop	ar4
+      00006F D0 05            [24]  907 	pop	ar5
+      000071 45 F0            [12]  908 	orl	a,b
+      000073 60 17            [24]  909 	jz	00104$
+                                    910 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:49: return printStr(writefunc, "inf");
+      000075 90r00r00         [24]  911 	mov	dptr,#_Print_print_s_PARM_2
+      000078 74r04            [12]  912 	mov	a,#___str_1
+      00007A F0               [24]  913 	movx	@dptr,a
+      00007B 74s00            [12]  914 	mov	a,#(___str_1 >> 8)
+      00007D A3               [24]  915 	inc	dptr
+      00007E F0               [24]  916 	movx	@dptr,a
+      00007F 74 80            [12]  917 	mov	a,#0x80
+      000081 A3               [24]  918 	inc	dptr
+      000082 F0               [24]  919 	movx	@dptr,a
+      000083 85*00 82         [24]  920 	mov	dpl,_Print_print_fd_writefunc_65536_169
+      000086 85*01 83         [24]  921 	mov	dph,(_Print_print_fd_writefunc_65536_169 + 1)
+      000089 02r00r00         [24]  922 	ljmp	_Print_print_s
+      00008C                        923 00104$:
+                                    924 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:50: if (number > 4294967040.0)
+      00008C C0 05            [24]  925 	push	ar5
+      00008E C0 04            [24]  926 	push	ar4
+      000090 C0 03            [24]  927 	push	ar3
+      000092 C0 02            [24]  928 	push	ar2
+      000094 C0 02            [24]  929 	push	ar2
+      000096 C0 03            [24]  930 	push	ar3
+      000098 C0 04            [24]  931 	push	ar4
+      00009A C0 05            [24]  932 	push	ar5
+      00009C 90 FF FF         [24]  933 	mov	dptr,#0xffff
+      00009F 75 F0 7F         [24]  934 	mov	b,#0x7f
+      0000A2 74 4F            [12]  935 	mov	a,#0x4f
+      0000A4 12r00r00         [24]  936 	lcall	___fslt
+      0000A7 A9 82            [24]  937 	mov	r1,dpl
+      0000A9 E5 81            [12]  938 	mov	a,sp
+      0000AB 24 FC            [12]  939 	add	a,#0xfc
+      0000AD F5 81            [12]  940 	mov	sp,a
+      0000AF D0 02            [24]  941 	pop	ar2
+      0000B1 D0 03            [24]  942 	pop	ar3
+      0000B3 D0 04            [24]  943 	pop	ar4
+      0000B5 D0 05            [24]  944 	pop	ar5
+      0000B7 E9               [12]  945 	mov	a,r1
+      0000B8 60 17            [24]  946 	jz	00106$
+                                    947 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:51: return printStr(writefunc, "ovf"); // constant determined empirically
+      0000BA 90r00r00         [24]  948 	mov	dptr,#_Print_print_s_PARM_2
+      0000BD 74r08            [12]  949 	mov	a,#___str_2
+      0000BF F0               [24]  950 	movx	@dptr,a
+      0000C0 74s00            [12]  951 	mov	a,#(___str_2 >> 8)
+      0000C2 A3               [24]  952 	inc	dptr
+      0000C3 F0               [24]  953 	movx	@dptr,a
+      0000C4 74 80            [12]  954 	mov	a,#0x80
+      0000C6 A3               [24]  955 	inc	dptr
+      0000C7 F0               [24]  956 	movx	@dptr,a
+      0000C8 85*00 82         [24]  957 	mov	dpl,_Print_print_fd_writefunc_65536_169
+      0000CB 85*01 83         [24]  958 	mov	dph,(_Print_print_fd_writefunc_65536_169 + 1)
+      0000CE 02r00r00         [24]  959 	ljmp	_Print_print_s
+      0000D1                        960 00106$:
+                                    961 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:52: if (number < -4294967040.0)
+      0000D1 C0 05            [24]  962 	push	ar5
+      0000D3 C0 04            [24]  963 	push	ar4
+      0000D5 C0 03            [24]  964 	push	ar3
+      0000D7 C0 02            [24]  965 	push	ar2
+      0000D9 74 FF            [12]  966 	mov	a,#0xff
+      0000DB C0 E0            [24]  967 	push	acc
+      0000DD C0 E0            [24]  968 	push	acc
+      0000DF 74 7F            [12]  969 	mov	a,#0x7f
+      0000E1 C0 E0            [24]  970 	push	acc
+      0000E3 74 CF            [12]  971 	mov	a,#0xcf
+      0000E5 C0 E0            [24]  972 	push	acc
+      0000E7 8A 82            [24]  973 	mov	dpl,r2
+      0000E9 8B 83            [24]  974 	mov	dph,r3
+      0000EB 8C F0            [24]  975 	mov	b,r4
+      0000ED ED               [12]  976 	mov	a,r5
+      0000EE 12r00r00         [24]  977 	lcall	___fslt
+      0000F1 A9 82            [24]  978 	mov	r1,dpl
+      0000F3 E5 81            [12]  979 	mov	a,sp
+      0000F5 24 FC            [12]  980 	add	a,#0xfc
+      0000F7 F5 81            [12]  981 	mov	sp,a
+      0000F9 D0 02            [24]  982 	pop	ar2
+      0000FB D0 03            [24]  983 	pop	ar3
+      0000FD D0 04            [24]  984 	pop	ar4
+      0000FF D0 05            [24]  985 	pop	ar5
+      000101 E9               [12]  986 	mov	a,r1
+      000102 60 17            [24]  987 	jz	00108$
+                                    988 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:53: return printStr(writefunc, "ovf"); // constant determined empirically
+      000104 90r00r00         [24]  989 	mov	dptr,#_Print_print_s_PARM_2
+      000107 74r08            [12]  990 	mov	a,#___str_2
+      000109 F0               [24]  991 	movx	@dptr,a
+      00010A 74s00            [12]  992 	mov	a,#(___str_2 >> 8)
+      00010C A3               [24]  993 	inc	dptr
+      00010D F0               [24]  994 	movx	@dptr,a
+      00010E 74 80            [12]  995 	mov	a,#0x80
+      000110 A3               [24]  996 	inc	dptr
+      000111 F0               [24]  997 	movx	@dptr,a
+      000112 85*00 82         [24]  998 	mov	dpl,_Print_print_fd_writefunc_65536_169
+      000115 85*01 83         [24]  999 	mov	dph,(_Print_print_fd_writefunc_65536_169 + 1)
+      000118 02r00r00         [24] 1000 	ljmp	_Print_print_s
+      00011B                       1001 00108$:
+                                   1002 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:56: if (number < 0.0) {
+      00011B C0 05            [24] 1003 	push	ar5
+      00011D C0 04            [24] 1004 	push	ar4
+      00011F C0 03            [24] 1005 	push	ar3
+      000121 C0 02            [24] 1006 	push	ar2
+      000123 E4               [12] 1007 	clr	a
+      000124 C0 E0            [24] 1008 	push	acc
+      000126 C0 E0            [24] 1009 	push	acc
+      000128 C0 E0            [24] 1010 	push	acc
+      00012A C0 E0            [24] 1011 	push	acc
+      00012C 8A 82            [24] 1012 	mov	dpl,r2
+      00012E 8B 83            [24] 1013 	mov	dph,r3
+      000130 8C F0            [24] 1014 	mov	b,r4
+      000132 ED               [12] 1015 	mov	a,r5
+      000133 12r00r00         [24] 1016 	lcall	___fslt
+      000136 A9 82            [24] 1017 	mov	r1,dpl
+      000138 E5 81            [12] 1018 	mov	a,sp
+      00013A 24 FC            [12] 1019 	add	a,#0xfc
+      00013C F5 81            [12] 1020 	mov	sp,a
+      00013E D0 02            [24] 1021 	pop	ar2
+      000140 D0 03            [24] 1022 	pop	ar3
+      000142 D0 04            [24] 1023 	pop	ar4
+      000144 D0 05            [24] 1024 	pop	ar5
+      000146 E9               [12] 1025 	mov	a,r1
+      000147 60 34            [24] 1026 	jz	00110$
+                                   1027 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:57: n += writefunc('-');
+      000149 C0 05            [24] 1028 	push	ar5
+      00014B C0 04            [24] 1029 	push	ar4
+      00014D C0 03            [24] 1030 	push	ar3
+      00014F C0 02            [24] 1031 	push	ar2
+      000151 12r01r56         [24] 1032 	lcall	00169$
+      000154 80 08            [24] 1033 	sjmp	00170$
+      000156                       1034 00169$:
+      000156 C0*00            [24] 1035 	push	_Print_print_fd_writefunc_65536_169
+      000158 C0*01            [24] 1036 	push	(_Print_print_fd_writefunc_65536_169 + 1)
+      00015A 75 82 2D         [24] 1037 	mov	dpl,#0x2d
+      00015D 22               [24] 1038 	ret
+      00015E                       1039 00170$:
+      00015E A9 82            [24] 1040 	mov	r1,dpl
+      000160 D0 02            [24] 1041 	pop	ar2
+      000162 D0 03            [24] 1042 	pop	ar3
+      000164 D0 04            [24] 1043 	pop	ar4
+      000166 D0 05            [24] 1044 	pop	ar5
+      000168 90r00r05         [24] 1045 	mov	dptr,#_Print_print_fd_n_65536_170
+      00016B E9               [12] 1046 	mov	a,r1
+      00016C F0               [24] 1047 	movx	@dptr,a
+                                   1048 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:58: number = -number;
+      00016D 90r00r00         [24] 1049 	mov	dptr,#_Print_print_fd_PARM_2
+      000170 EA               [12] 1050 	mov	a,r2
+      000171 F0               [24] 1051 	movx	@dptr,a
+      000172 EB               [12] 1052 	mov	a,r3
+      000173 A3               [24] 1053 	inc	dptr
+      000174 F0               [24] 1054 	movx	@dptr,a
+      000175 EC               [12] 1055 	mov	a,r4
+      000176 A3               [24] 1056 	inc	dptr
+      000177 F0               [24] 1057 	movx	@dptr,a
+      000178 ED               [12] 1058 	mov	a,r5
+      000179 B2 E7            [12] 1059 	cpl	acc.7
+      00017B A3               [24] 1060 	inc	dptr
+      00017C F0               [24] 1061 	movx	@dptr,a
+      00017D                       1062 00110$:
+                                   1063 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:62: rounding = 0.5;
+      00017D 90r00r0A         [24] 1064 	mov	dptr,#_Print_print_fd_rounding_65536_170
+      000180 E4               [12] 1065 	clr	a
+      000181 F0               [24] 1066 	movx	@dptr,a
+      000182 A3               [24] 1067 	inc	dptr
+      000183 F0               [24] 1068 	movx	@dptr,a
+      000184 A3               [24] 1069 	inc	dptr
+      000185 F0               [24] 1070 	movx	@dptr,a
+      000186 74 3F            [12] 1071 	mov	a,#0x3f
+      000188 A3               [24] 1072 	inc	dptr
+      000189 F0               [24] 1073 	movx	@dptr,a
+                                   1074 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:63: for (i = 0; i < digits; ++i)
+      00018A 90r00r04         [24] 1075 	mov	dptr,#_Print_print_fd_PARM_3
+      00018D E0               [24] 1076 	movx	a,@dptr
+      00018E FD               [12] 1077 	mov	r5,a
+      00018F 7C 00            [12] 1078 	mov	r4,#0x00
+      000191                       1079 00118$:
+      000191 C3               [12] 1080 	clr	c
+      000192 EC               [12] 1081 	mov	a,r4
+      000193 9D               [12] 1082 	subb	a,r5
+      000194 50 4B            [24] 1083 	jnc	00111$
+                                   1084 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:64: rounding /= 10.0;
+      000196 90r00r0A         [24] 1085 	mov	dptr,#_Print_print_fd_rounding_65536_170
+      000199 E0               [24] 1086 	movx	a,@dptr
+      00019A F8               [12] 1087 	mov	r0,a
+      00019B A3               [24] 1088 	inc	dptr
+      00019C E0               [24] 1089 	movx	a,@dptr
+      00019D F9               [12] 1090 	mov	r1,a
+      00019E A3               [24] 1091 	inc	dptr
+      00019F E0               [24] 1092 	movx	a,@dptr
+      0001A0 FA               [12] 1093 	mov	r2,a
+      0001A1 A3               [24] 1094 	inc	dptr
+      0001A2 E0               [24] 1095 	movx	a,@dptr
+      0001A3 FB               [12] 1096 	mov	r3,a
+      0001A4 C0 05            [24] 1097 	push	ar5
+      0001A6 C0 04            [24] 1098 	push	ar4
+      0001A8 E4               [12] 1099 	clr	a
+      0001A9 C0 E0            [24] 1100 	push	acc
+      0001AB C0 E0            [24] 1101 	push	acc
+      0001AD 74 20            [12] 1102 	mov	a,#0x20
+      0001AF C0 E0            [24] 1103 	push	acc
+      0001B1 74 41            [12] 1104 	mov	a,#0x41
+      0001B3 C0 E0            [24] 1105 	push	acc
+      0001B5 88 82            [24] 1106 	mov	dpl,r0
+      0001B7 89 83            [24] 1107 	mov	dph,r1
+      0001B9 8A F0            [24] 1108 	mov	b,r2
+      0001BB EB               [12] 1109 	mov	a,r3
+      0001BC 12r00r00         [24] 1110 	lcall	___fsdiv
+      0001BF A8 82            [24] 1111 	mov	r0,dpl
+      0001C1 A9 83            [24] 1112 	mov	r1,dph
+      0001C3 AA F0            [24] 1113 	mov	r2,b
+      0001C5 FB               [12] 1114 	mov	r3,a
+      0001C6 E5 81            [12] 1115 	mov	a,sp
+      0001C8 24 FC            [12] 1116 	add	a,#0xfc
+      0001CA F5 81            [12] 1117 	mov	sp,a
+      0001CC D0 04            [24] 1118 	pop	ar4
+      0001CE D0 05            [24] 1119 	pop	ar5
+      0001D0 90r00r0A         [24] 1120 	mov	dptr,#_Print_print_fd_rounding_65536_170
+      0001D3 E8               [12] 1121 	mov	a,r0
+      0001D4 F0               [24] 1122 	movx	@dptr,a
+      0001D5 E9               [12] 1123 	mov	a,r1
+      0001D6 A3               [24] 1124 	inc	dptr
+      0001D7 F0               [24] 1125 	movx	@dptr,a
+      0001D8 EA               [12] 1126 	mov	a,r2
+      0001D9 A3               [24] 1127 	inc	dptr
+      0001DA F0               [24] 1128 	movx	@dptr,a
+      0001DB EB               [12] 1129 	mov	a,r3
+      0001DC A3               [24] 1130 	inc	dptr
+      0001DD F0               [24] 1131 	movx	@dptr,a
+                                   1132 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:63: for (i = 0; i < digits; ++i)
+      0001DE 0C               [12] 1133 	inc	r4
+      0001DF 80 B0            [24] 1134 	sjmp	00118$
+      0001E1                       1135 00111$:
+                                   1136 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:66: number += rounding;
+      0001E1 90r00r00         [24] 1137 	mov	dptr,#_Print_print_fd_PARM_2
+      0001E4 E0               [24] 1138 	movx	a,@dptr
+      0001E5 F9               [12] 1139 	mov	r1,a
+      0001E6 A3               [24] 1140 	inc	dptr
+      0001E7 E0               [24] 1141 	movx	a,@dptr
+      0001E8 FA               [12] 1142 	mov	r2,a
+      0001E9 A3               [24] 1143 	inc	dptr
+      0001EA E0               [24] 1144 	movx	a,@dptr
+      0001EB FB               [12] 1145 	mov	r3,a
+      0001EC A3               [24] 1146 	inc	dptr
+      0001ED E0               [24] 1147 	movx	a,@dptr
+      0001EE FC               [12] 1148 	mov	r4,a
+      0001EF C0 05            [24] 1149 	push	ar5
+      0001F1 90r00r0A         [24] 1150 	mov	dptr,#_Print_print_fd_rounding_65536_170
+      0001F4 E0               [24] 1151 	movx	a,@dptr
+      0001F5 C0 E0            [24] 1152 	push	acc
+      0001F7 A3               [24] 1153 	inc	dptr
+      0001F8 E0               [24] 1154 	movx	a,@dptr
+      0001F9 C0 E0            [24] 1155 	push	acc
+      0001FB A3               [24] 1156 	inc	dptr
+      0001FC E0               [24] 1157 	movx	a,@dptr
+      0001FD C0 E0            [24] 1158 	push	acc
+      0001FF A3               [24] 1159 	inc	dptr
+      000200 E0               [24] 1160 	movx	a,@dptr
+      000201 C0 E0            [24] 1161 	push	acc
+      000203 89 82            [24] 1162 	mov	dpl,r1
+      000205 8A 83            [24] 1163 	mov	dph,r2
+      000207 8B F0            [24] 1164 	mov	b,r3
+      000209 EC               [12] 1165 	mov	a,r4
+      00020A 12r00r00         [24] 1166 	lcall	___fsadd
+      00020D A9 82            [24] 1167 	mov	r1,dpl
+      00020F AA 83            [24] 1168 	mov	r2,dph
+      000211 AB F0            [24] 1169 	mov	r3,b
+      000213 FC               [12] 1170 	mov	r4,a
+      000214 E5 81            [12] 1171 	mov	a,sp
+      000216 24 FC            [12] 1172 	add	a,#0xfc
+      000218 F5 81            [12] 1173 	mov	sp,a
+      00021A 90r00r00         [24] 1174 	mov	dptr,#_Print_print_fd_PARM_2
+      00021D E9               [12] 1175 	mov	a,r1
+      00021E F0               [24] 1176 	movx	@dptr,a
+      00021F EA               [12] 1177 	mov	a,r2
+      000220 A3               [24] 1178 	inc	dptr
+      000221 F0               [24] 1179 	movx	@dptr,a
+      000222 EB               [12] 1180 	mov	a,r3
+      000223 A3               [24] 1181 	inc	dptr
+      000224 F0               [24] 1182 	movx	@dptr,a
+      000225 EC               [12] 1183 	mov	a,r4
+      000226 A3               [24] 1184 	inc	dptr
+      000227 F0               [24] 1185 	movx	@dptr,a
+                                   1186 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:69: int_part = (unsigned long)number;
+      000228 90r00r00         [24] 1187 	mov	dptr,#_Print_print_fd_PARM_2
+      00022B E0               [24] 1188 	movx	a,@dptr
+      00022C F5*02            [12] 1189 	mov	_Print_print_fd_sloc0_1_0,a
+      00022E A3               [24] 1190 	inc	dptr
+      00022F E0               [24] 1191 	movx	a,@dptr
+      000230 F5*03            [12] 1192 	mov	(_Print_print_fd_sloc0_1_0 + 1),a
+      000232 A3               [24] 1193 	inc	dptr
+      000233 E0               [24] 1194 	movx	a,@dptr
+      000234 F5*04            [12] 1195 	mov	(_Print_print_fd_sloc0_1_0 + 2),a
+      000236 A3               [24] 1196 	inc	dptr
+      000237 E0               [24] 1197 	movx	a,@dptr
+      000238 F5*05            [12] 1198 	mov	(_Print_print_fd_sloc0_1_0 + 3),a
+      00023A 85*02 82         [24] 1199 	mov	dpl,_Print_print_fd_sloc0_1_0
+      00023D 85*03 83         [24] 1200 	mov	dph,(_Print_print_fd_sloc0_1_0 + 1)
+      000240 85*04 F0         [24] 1201 	mov	b,(_Print_print_fd_sloc0_1_0 + 2)
+      000243 12r00r00         [24] 1202 	lcall	___fs2ulong
+                                   1203 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:70: remainder = number - (double)int_part;
+      000246 85 82*06         [24] 1204 	mov	_Print_print_fd_sloc1_1_0,dpl
+      000249 85 83*07         [24] 1205 	mov	(_Print_print_fd_sloc1_1_0 + 1),dph
+      00024C 85 F0*08         [24] 1206 	mov	(_Print_print_fd_sloc1_1_0 + 2),b
+      00024F F5*09            [12] 1207 	mov	(_Print_print_fd_sloc1_1_0 + 3),a
+      000251 12r00r00         [24] 1208 	lcall	___ulong2fs
+      000254 A9 82            [24] 1209 	mov	r1,dpl
+      000256 AA 83            [24] 1210 	mov	r2,dph
+      000258 AB F0            [24] 1211 	mov	r3,b
+      00025A FF               [12] 1212 	mov	r7,a
+      00025B C0 01            [24] 1213 	push	ar1
+      00025D C0 02            [24] 1214 	push	ar2
+      00025F C0 03            [24] 1215 	push	ar3
+      000261 C0 07            [24] 1216 	push	ar7
+      000263 85*02 82         [24] 1217 	mov	dpl,_Print_print_fd_sloc0_1_0
+      000266 85*03 83         [24] 1218 	mov	dph,(_Print_print_fd_sloc0_1_0 + 1)
+      000269 85*04 F0         [24] 1219 	mov	b,(_Print_print_fd_sloc0_1_0 + 2)
+      00026C E5*05            [12] 1220 	mov	a,(_Print_print_fd_sloc0_1_0 + 3)
+      00026E 12r00r00         [24] 1221 	lcall	___fssub
+      000271 AB 82            [24] 1222 	mov	r3,dpl
+      000273 AC 83            [24] 1223 	mov	r4,dph
+      000275 AE F0            [24] 1224 	mov	r6,b
+      000277 FF               [12] 1225 	mov	r7,a
+      000278 E5 81            [12] 1226 	mov	a,sp
+      00027A 24 FC            [12] 1227 	add	a,#0xfc
+      00027C F5 81            [12] 1228 	mov	sp,a
+      00027E 90r00r06         [24] 1229 	mov	dptr,#_Print_print_fd_remainder_65536_170
+      000281 EB               [12] 1230 	mov	a,r3
+      000282 F0               [24] 1231 	movx	@dptr,a
+      000283 EC               [12] 1232 	mov	a,r4
+      000284 A3               [24] 1233 	inc	dptr
+      000285 F0               [24] 1234 	movx	@dptr,a
+      000286 EE               [12] 1235 	mov	a,r6
+      000287 A3               [24] 1236 	inc	dptr
+      000288 F0               [24] 1237 	movx	@dptr,a
+      000289 EF               [12] 1238 	mov	a,r7
+      00028A A3               [24] 1239 	inc	dptr
+      00028B F0               [24] 1240 	movx	@dptr,a
+                                   1241 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:71: n += printNumber(writefunc, int_part, 10);
+      00028C 90r00r00         [24] 1242 	mov	dptr,#_Print_print_ub_PARM_2
+      00028F E5*06            [12] 1243 	mov	a,_Print_print_fd_sloc1_1_0
+      000291 F0               [24] 1244 	movx	@dptr,a
+      000292 E5*07            [12] 1245 	mov	a,(_Print_print_fd_sloc1_1_0 + 1)
+      000294 A3               [24] 1246 	inc	dptr
+      000295 F0               [24] 1247 	movx	@dptr,a
+      000296 E5*08            [12] 1248 	mov	a,(_Print_print_fd_sloc1_1_0 + 2)
+      000298 A3               [24] 1249 	inc	dptr
+      000299 F0               [24] 1250 	movx	@dptr,a
+      00029A E5*09            [12] 1251 	mov	a,(_Print_print_fd_sloc1_1_0 + 3)
+      00029C A3               [24] 1252 	inc	dptr
+      00029D F0               [24] 1253 	movx	@dptr,a
+      00029E 90r00r00         [24] 1254 	mov	dptr,#_Print_print_ub_PARM_3
+      0002A1 74 0A            [12] 1255 	mov	a,#0x0a
+      0002A3 F0               [24] 1256 	movx	@dptr,a
+      0002A4 85*00 82         [24] 1257 	mov	dpl,_Print_print_fd_writefunc_65536_169
+      0002A7 85*01 83         [24] 1258 	mov	dph,(_Print_print_fd_writefunc_65536_169 + 1)
+      0002AA 12r00r00         [24] 1259 	lcall	_Print_print_ub
+      0002AD AF 82            [24] 1260 	mov	r7,dpl
+      0002AF D0 05            [24] 1261 	pop	ar5
+      0002B1 90r00r05         [24] 1262 	mov	dptr,#_Print_print_fd_n_65536_170
+      0002B4 E0               [24] 1263 	movx	a,@dptr
+      0002B5 2F               [12] 1264 	add	a,r7
+      0002B6 F0               [24] 1265 	movx	@dptr,a
+                                   1266 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:74: if (digits > 0) {
+      0002B7 ED               [12] 1267 	mov	a,r5
+      0002B8 60 19            [24] 1268 	jz	00131$
+                                   1269 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:75: n += writefunc('.');
+      0002BA C0 05            [24] 1270 	push	ar5
+      0002BC 12r02rC1         [24] 1271 	lcall	00173$
+      0002BF 80 08            [24] 1272 	sjmp	00174$
+      0002C1                       1273 00173$:
+      0002C1 C0*00            [24] 1274 	push	_Print_print_fd_writefunc_65536_169
+      0002C3 C0*01            [24] 1275 	push	(_Print_print_fd_writefunc_65536_169 + 1)
+      0002C5 75 82 2E         [24] 1276 	mov	dpl,#0x2e
+      0002C8 22               [24] 1277 	ret
+      0002C9                       1278 00174$:
+      0002C9 AF 82            [24] 1279 	mov	r7,dpl
+      0002CB D0 05            [24] 1280 	pop	ar5
+      0002CD 90r00r05         [24] 1281 	mov	dptr,#_Print_print_fd_n_65536_170
+      0002D0 E0               [24] 1282 	movx	a,@dptr
+      0002D1 2F               [12] 1283 	add	a,r7
+      0002D2 F0               [24] 1284 	movx	@dptr,a
+                                   1285 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:79: while (digits-- > 0) {
+      0002D3                       1286 00131$:
+      0002D3 8D 07            [24] 1287 	mov	ar7,r5
+      0002D5                       1288 00114$:
+      0002D5 8F 06            [24] 1289 	mov	ar6,r7
+      0002D7 1F               [12] 1290 	dec	r7
+      0002D8 EE               [12] 1291 	mov	a,r6
+      0002D9 70 03            [24] 1292 	jnz	00175$
+      0002DB 02r03rC3         [24] 1293 	ljmp	00116$
+      0002DE                       1294 00175$:
+                                   1295 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:80: remainder *= 10.0;
+      0002DE C0 07            [24] 1296 	push	ar7
+      0002E0 C0 07            [24] 1297 	push	ar7
+      0002E2 90r00r06         [24] 1298 	mov	dptr,#_Print_print_fd_remainder_65536_170
+      0002E5 E0               [24] 1299 	movx	a,@dptr
+      0002E6 C0 E0            [24] 1300 	push	acc
+      0002E8 A3               [24] 1301 	inc	dptr
+      0002E9 E0               [24] 1302 	movx	a,@dptr
+      0002EA C0 E0            [24] 1303 	push	acc
+      0002EC A3               [24] 1304 	inc	dptr
+      0002ED E0               [24] 1305 	movx	a,@dptr
+      0002EE C0 E0            [24] 1306 	push	acc
+      0002F0 A3               [24] 1307 	inc	dptr
+      0002F1 E0               [24] 1308 	movx	a,@dptr
+      0002F2 C0 E0            [24] 1309 	push	acc
+      0002F4 90 00 00         [24] 1310 	mov	dptr,#0x0000
+      0002F7 75 F0 20         [24] 1311 	mov	b,#0x20
+      0002FA 74 41            [12] 1312 	mov	a,#0x41
+      0002FC 12r00r00         [24] 1313 	lcall	___fsmul
+      0002FF AB 82            [24] 1314 	mov	r3,dpl
+      000301 AC 83            [24] 1315 	mov	r4,dph
+      000303 AD F0            [24] 1316 	mov	r5,b
+      000305 FE               [12] 1317 	mov	r6,a
+      000306 E5 81            [12] 1318 	mov	a,sp
+      000308 24 FC            [12] 1319 	add	a,#0xfc
+      00030A F5 81            [12] 1320 	mov	sp,a
+      00030C 90r00r06         [24] 1321 	mov	dptr,#_Print_print_fd_remainder_65536_170
+      00030F EB               [12] 1322 	mov	a,r3
+      000310 F0               [24] 1323 	movx	@dptr,a
+      000311 EC               [12] 1324 	mov	a,r4
+      000312 A3               [24] 1325 	inc	dptr
+      000313 F0               [24] 1326 	movx	@dptr,a
+      000314 ED               [12] 1327 	mov	a,r5
+      000315 A3               [24] 1328 	inc	dptr
+      000316 F0               [24] 1329 	movx	@dptr,a
+      000317 EE               [12] 1330 	mov	a,r6
+      000318 A3               [24] 1331 	inc	dptr
+      000319 F0               [24] 1332 	movx	@dptr,a
+                                   1333 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:81: toPrint = (unsigned int)(remainder);
+      00031A 90r00r06         [24] 1334 	mov	dptr,#_Print_print_fd_remainder_65536_170
+      00031D E0               [24] 1335 	movx	a,@dptr
+      00031E FB               [12] 1336 	mov	r3,a
+      00031F A3               [24] 1337 	inc	dptr
+      000320 E0               [24] 1338 	movx	a,@dptr
+      000321 FC               [12] 1339 	mov	r4,a
+      000322 A3               [24] 1340 	inc	dptr
+      000323 E0               [24] 1341 	movx	a,@dptr
+      000324 FD               [12] 1342 	mov	r5,a
+      000325 A3               [24] 1343 	inc	dptr
+      000326 E0               [24] 1344 	movx	a,@dptr
+      000327 FE               [12] 1345 	mov	r6,a
+      000328 8B 82            [24] 1346 	mov	dpl,r3
+      00032A 8C 83            [24] 1347 	mov	dph,r4
+      00032C 8D F0            [24] 1348 	mov	b,r5
+      00032E C0 06            [24] 1349 	push	ar6
+      000330 C0 05            [24] 1350 	push	ar5
+      000332 C0 04            [24] 1351 	push	ar4
+      000334 C0 03            [24] 1352 	push	ar3
+      000336 12r00r00         [24] 1353 	lcall	___fs2uint
+      000339 A9 82            [24] 1354 	mov	r1,dpl
+      00033B AA 83            [24] 1355 	mov	r2,dph
+                                   1356 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:82: n += printNumber(writefunc, toPrint, 10);
+      00033D 90r00r00         [24] 1357 	mov	dptr,#_Print_print_ub_PARM_2
+      000340 E9               [12] 1358 	mov	a,r1
+      000341 F0               [24] 1359 	movx	@dptr,a
+      000342 EA               [12] 1360 	mov	a,r2
+      000343 A3               [24] 1361 	inc	dptr
+      000344 F0               [24] 1362 	movx	@dptr,a
+      000345 E4               [12] 1363 	clr	a
+      000346 A3               [24] 1364 	inc	dptr
+      000347 F0               [24] 1365 	movx	@dptr,a
+      000348 A3               [24] 1366 	inc	dptr
+      000349 F0               [24] 1367 	movx	@dptr,a
+      00034A 90r00r00         [24] 1368 	mov	dptr,#_Print_print_ub_PARM_3
+      00034D 74 0A            [12] 1369 	mov	a,#0x0a
+      00034F F0               [24] 1370 	movx	@dptr,a
+      000350 85*00 82         [24] 1371 	mov	dpl,_Print_print_fd_writefunc_65536_169
+      000353 85*01 83         [24] 1372 	mov	dph,(_Print_print_fd_writefunc_65536_169 + 1)
+      000356 C0 02            [24] 1373 	push	ar2
+      000358 C0 01            [24] 1374 	push	ar1
+      00035A 12r00r00         [24] 1375 	lcall	_Print_print_ub
+      00035D A8 82            [24] 1376 	mov	r0,dpl
+      00035F D0 01            [24] 1377 	pop	ar1
+      000361 D0 02            [24] 1378 	pop	ar2
+      000363 D0 03            [24] 1379 	pop	ar3
+      000365 D0 04            [24] 1380 	pop	ar4
+      000367 D0 05            [24] 1381 	pop	ar5
+      000369 D0 06            [24] 1382 	pop	ar6
+      00036B D0 07            [24] 1383 	pop	ar7
+      00036D 90r00r05         [24] 1384 	mov	dptr,#_Print_print_fd_n_65536_170
+      000370 E0               [24] 1385 	movx	a,@dptr
+      000371 28               [12] 1386 	add	a,r0
+      000372 F0               [24] 1387 	movx	@dptr,a
+                                   1388 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:83: remainder -= toPrint;
+      000373 89 82            [24] 1389 	mov	dpl,r1
+      000375 8A 83            [24] 1390 	mov	dph,r2
+      000377 C0 06            [24] 1391 	push	ar6
+      000379 C0 05            [24] 1392 	push	ar5
+      00037B C0 04            [24] 1393 	push	ar4
+      00037D C0 03            [24] 1394 	push	ar3
+      00037F 12r00r00         [24] 1395 	lcall	___uint2fs
+      000382 A8 82            [24] 1396 	mov	r0,dpl
+      000384 A9 83            [24] 1397 	mov	r1,dph
+      000386 AA F0            [24] 1398 	mov	r2,b
+      000388 FF               [12] 1399 	mov	r7,a
+      000389 D0 03            [24] 1400 	pop	ar3
+      00038B D0 04            [24] 1401 	pop	ar4
+      00038D D0 05            [24] 1402 	pop	ar5
+      00038F D0 06            [24] 1403 	pop	ar6
+      000391 C0 00            [24] 1404 	push	ar0
+      000393 C0 01            [24] 1405 	push	ar1
+      000395 C0 02            [24] 1406 	push	ar2
+      000397 C0 07            [24] 1407 	push	ar7
+      000399 8B 82            [24] 1408 	mov	dpl,r3
+      00039B 8C 83            [24] 1409 	mov	dph,r4
+      00039D 8D F0            [24] 1410 	mov	b,r5
+      00039F EE               [12] 1411 	mov	a,r6
+      0003A0 12r00r00         [24] 1412 	lcall	___fssub
+      0003A3 AC 82            [24] 1413 	mov	r4,dpl
+      0003A5 AD 83            [24] 1414 	mov	r5,dph
+      0003A7 AE F0            [24] 1415 	mov	r6,b
+      0003A9 FF               [12] 1416 	mov	r7,a
+      0003AA E5 81            [12] 1417 	mov	a,sp
+      0003AC 24 FC            [12] 1418 	add	a,#0xfc
+      0003AE F5 81            [12] 1419 	mov	sp,a
+      0003B0 90r00r06         [24] 1420 	mov	dptr,#_Print_print_fd_remainder_65536_170
+      0003B3 EC               [12] 1421 	mov	a,r4
+      0003B4 F0               [24] 1422 	movx	@dptr,a
+      0003B5 ED               [12] 1423 	mov	a,r5
+      0003B6 A3               [24] 1424 	inc	dptr
+      0003B7 F0               [24] 1425 	movx	@dptr,a
+      0003B8 EE               [12] 1426 	mov	a,r6
+      0003B9 A3               [24] 1427 	inc	dptr
+      0003BA F0               [24] 1428 	movx	@dptr,a
+      0003BB EF               [12] 1429 	mov	a,r7
+      0003BC A3               [24] 1430 	inc	dptr
+      0003BD F0               [24] 1431 	movx	@dptr,a
+      0003BE D0 07            [24] 1432 	pop	ar7
+      0003C0 02r02rD5         [24] 1433 	ljmp	00114$
+      0003C3                       1434 00116$:
+                                   1435 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:86: return n;
+      0003C3 90r00r05         [24] 1436 	mov	dptr,#_Print_print_fd_n_65536_170
+      0003C6 E0               [24] 1437 	movx	a,@dptr
+                                   1438 ;	C:\Users\tonyp\AppData\Local\Arduino15\packages\CH55xDuino\hardware\mcs51\0.0.23\cores\ch55xduino\Print-float.c:87: }
+      0003C7 F5 82            [12] 1439 	mov	dpl,a
+      0003C9 22               [24] 1440 	ret
+                                   1441 	.area CSEG    (CODE)
+                                   1442 	.area CONST   (CODE)
+                                   1443 	.area CONST   (CODE)
+      000000                       1444 ___str_0:
+      000000 6E 61 6E              1445 	.ascii "nan"
+      000003 00                    1446 	.db 0x00
+                                   1447 	.area CSEG    (CODE)
+                                   1448 	.area CONST   (CODE)
+      000004                       1449 ___str_1:
+      000004 69 6E 66              1450 	.ascii "inf"
+      000007 00                    1451 	.db 0x00
+                                   1452 	.area CSEG    (CODE)
+                                   1453 	.area CONST   (CODE)
+      000008                       1454 ___str_2:
+      000008 6F 76 66              1455 	.ascii "ovf"
+      00000B 00                    1456 	.db 0x00
+                                   1457 	.area CSEG    (CODE)
+                                   1458 	.area XINIT   (CODE)
+                                   1459 	.area CABS    (ABS,CODE)
