@@ -1,5 +1,10 @@
-/referances/
 *.PDF
+
+# PlatformIO
+.pio/
+
+# VS Code
+.vscode/
 
 # Prerequisites
 *.d

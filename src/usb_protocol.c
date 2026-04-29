@@ -1,6 +1,6 @@
 /**
- * @file usb_protocol.cpp
- * @brief USB通信协议模块实现（C风格）
+ * @file usb_protocol.c
+ * @brief 串口文本协议模块实现（C 风格）
  */
 
 #include "usb_protocol.h"
@@ -8,13 +8,7 @@
 
 #if FEATURE_USB_PROTOCOL
 
-#ifdef __SDCC
-#define SDCC_REENTRANT __reentrant
-#else
-#define SDCC_REENTRANT
-#endif
-
-static bool usb_str_eq(const char* a, const char* b) SDCC_REENTRANT {
+static bool usb_str_eq(const char* a, const char* b) {
     while (*a && *b) {
         if (*a != *b) {
             return false;
@@ -25,7 +19,7 @@ static bool usb_str_eq(const char* a, const char* b) SDCC_REENTRANT {
     return (*a == '\0') && (*b == '\0');
 }
 
-static bool usb_starts_with(const char* s, const char* prefix) SDCC_REENTRANT {
+static bool usb_starts_with(const char* s, const char* prefix) {
     while (*prefix) {
         if (*s != *prefix) {
             return false;
@@ -36,7 +30,7 @@ static bool usb_starts_with(const char* s, const char* prefix) SDCC_REENTRANT {
     return true;
 }
 
-static const char* usb_find_char(const char* s, char c) SDCC_REENTRANT {
+static const char* usb_find_char(const char* s, char c) {
     while (*s) {
         if (*s == c) {
             return s;
@@ -46,7 +40,7 @@ static const char* usb_find_char(const char* s, char c) SDCC_REENTRANT {
     return (const char*)0;
 }
 
-static uint32_t usb_parse_u32(const char* s) SDCC_REENTRANT {
+static uint32_t usb_parse_u32(const char* s) {
     uint32_t v = 0;
     while (*s >= '0' && *s <= '9') {
         v = v * 10u + (uint32_t)(*s - '0');
@@ -55,7 +49,7 @@ static uint32_t usb_parse_u32(const char* s) SDCC_REENTRANT {
     return v;
 }
 
-static int usb_parse_i32(const char* s) SDCC_REENTRANT {
+static int usb_parse_i32(const char* s) {
     int sign = 1;
     int v = 0;
     if (*s == '-') {
@@ -71,7 +65,7 @@ static int usb_parse_i32(const char* s) SDCC_REENTRANT {
     return sign * v;
 }
 
-static float usb_parse_float(const char* s) SDCC_REENTRANT {
+static float usb_parse_float(const char* s) {
     int sign = 1;
     float int_part = 0.0f;
     float frac_part = 0.0f;
@@ -138,7 +132,7 @@ static void usb_reply_ok_key_float2(const char* key, float value) {
     serial_println_float(value, 2);
 }
 
-static bool usb_key_equals(const char* key, uint8_t key_len, const char* literal) SDCC_REENTRANT {
+static bool usb_key_equals(const char* key, uint8_t key_len, const char* literal) {
     uint8_t i;
     for (i = 0; i < key_len; i++) {
         if (literal[i] == '\0' || key[i] != literal[i]) {
@@ -155,7 +149,7 @@ static void usb_print_key_segment(const char* key, uint8_t key_len) {
     }
 }
 
-static bool usb_handle_get(USBController* uc, const char* key) SDCC_REENTRANT {
+static bool usb_handle_get(USBController* uc, const char* key) {
     if (usb_str_eq(key, "STATUS")) {
         uc->status_requested = true;
         return true;
@@ -163,11 +157,13 @@ static bool usb_handle_get(USBController* uc, const char* key) SDCC_REENTRANT {
     return false;
 }
 
-static bool usb_handle_set(USBController* uc, const char* key, uint8_t key_len, const char* value) SDCC_REENTRANT {
+static bool usb_handle_set(USBController* uc, const char* key, uint8_t key_len, const char* value) {
     if (usb_key_equals(key, key_len, "MODE")) {
         if (usb_str_eq(value, "AUTO")) {
             uc->override_active = false;
             uc->rpm_override_active = false;
+            uc->pwm_duty_overridden = false;
+            uc->temp_params_overridden = false;
             usb_reply_ok_key_value("MODE", "AUTO");
             return true;
         }
@@ -244,7 +240,7 @@ static bool usb_handle_set(USBController* uc, const char* key, uint8_t key_len, 
 static void usb_handleCommand(USBController* uc, const char* cmd) {
     if (usb_str_eq(cmd, "HELLO")) {
         usb_set_connected(uc);
-        serial_println_str("DEVICE:CH552G_FAN_CTRL_V1.0");
+        serial_println_str("DEVICE:ESP8266_FAN_CTRL_V1.0");
         return;
     }
 
@@ -332,6 +328,12 @@ void USBController_begin(USBController* uc) {
 void USBController_update(USBController* uc) {
     while (serial_available()) {
         char c = (char)serial_read();
+
+#if FEATURE_USB_ECHO
+        // 设备端回显：方便串口终端交互调试。
+        // 上位机若不希望看到回显，可在编译时关闭 FEATURE_USB_ECHO。
+        serial_write(c);
+#endif
 
         if (c == '\n' || c == '\r') {
             if (uc->rx_len > 0) {

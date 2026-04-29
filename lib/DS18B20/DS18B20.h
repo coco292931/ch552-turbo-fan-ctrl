@@ -1,7 +1,7 @@
 /**
  * @file DS18B20.h
  * @brief DS18B20温度传感器驱动 - Arduino风格封装
- * @note 移植自原始C驱动，适配CH552G + Arduino环境
+ * @note 移植自原始C驱动，适配ESP8266 + Arduino环境
  */
 
 #ifndef DS18B20_H

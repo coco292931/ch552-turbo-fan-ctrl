@@ -1,9 +1,0 @@
-{
-  "additionalFiles": "..\\..\\..,..\\..\\..,..\\..,..\\..\\..\\..,..\\..\\..\\..,..\\..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..\\..,..\\..",
-  "compiler.optimization_flags": "",
-  "customBuildProperties": "",
-  "fqbn": "CH55xDuino:mcs51:ch559",
-  "hardwareFolders": "C:\\Users\\tonyp\\AppData\\Local\\Arduino15\\packages\\CH55xDuino\\hardware\\mcs51\\0.0.23,C:\\Users\\tonyp\\AppData\\Local\\Arduino15\\packages\\CH55xDuino\\hardware\\mcs51\\0.0.23",
-  "otherLibrariesFolders": "C:\\Users\\tonyp\\Documents\\Arduino\\libraries",
-  "sketchLocation": "C:\\Users\\tonyp\\Downloads\\ch552-turbo-fan-ctrl"
-}

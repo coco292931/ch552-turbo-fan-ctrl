@@ -50,7 +50,6 @@ void VoltageController_setVoltage(VoltageController* vc, float voltage) {
 }
 
 float VoltageController_readVoltage(VoltageController* vc) {
-#if defined(ARDUINO_ARCH_ESP8266)
     int adc_value;
     float adc_voltage;
     float output_voltage;
@@ -67,27 +66,6 @@ float VoltageController_readVoltage(VoltageController* vc) {
     adc_voltage = (float)adc_value / (float)ADC_RESOLUTION * ADC_REF_VOLTAGE;
     output_voltage = adc_voltage * ADC_VOLTAGE_RATIO;
     return output_voltage;
-#else
-    // 硬件读不到，直接返回目标电压，避免无谓逻辑阻塞和体积消耗
-    return vc->target_voltage;
-    
-    /* 屏蔽原ADC逻辑
-    pinMode(vc->adc_pin, INPUT);
-    delayMicroseconds(8);
-    (void)analogRead(vc->adc_pin);
-    int adc_value = analogRead(vc->adc_pin);
-
-    if (adc_value <= 0 && vc->current_voltage > 0.05f) {
-        return vc->current_voltage;
-    }
-
-    // CH552 ADC 为 8-bit，码值范围 0..255，满量程应使用 255 作为分母。
-    float adc_voltage = (float)adc_value / ADC_RESOLUTION * ADC_REF_VOLTAGE;
-    float output_voltage = adc_voltage * ADC_VOLTAGE_RATIO;
-    
-    return output_voltage;
-    */
-#endif
 }
 
 float VoltageController_updateVoltage(VoltageController* vc) {

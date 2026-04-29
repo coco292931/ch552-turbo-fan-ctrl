@@ -6,11 +6,20 @@
 #include "arduino_compat.h"
 #include "fan_monitor.h"
 
-static FanMonitor* g_fan_monitor_instance = 0;
+#ifndef FANMON_ISR_ATTR
+#if defined(IRAM_ATTR)
+#define FANMON_ISR_ATTR IRAM_ATTR
+#else
+#define FANMON_ISR_ATTR ICACHE_RAM_ATTR
+#endif
+#endif
 
-static void fan_monitor_tachISR(void) {
-    if (g_fan_monitor_instance != 0) {
-        g_fan_monitor_instance->pulse_count++;
+static volatile FanMonitor* g_fan_monitor_instance = 0;
+
+static void FANMON_ISR_ATTR fan_monitor_tachISR(void) {
+    volatile FanMonitor* fm = g_fan_monitor_instance;
+    if (fm != 0) {
+        fm->pulse_count++;
     }
 }
 
@@ -27,12 +36,7 @@ void FanMonitor_begin(FanMonitor* fm, uint8_t pin) {
     
     // 注册中断（下降沿触发）
     g_fan_monitor_instance = fm;
-#if defined(ARDUINO_ARCH_ESP8266)
     attachInterrupt(digitalPinToInterrupt(fm->tach_pin), fan_monitor_tachISR, FALLING);
-#else
-    // CH55xDuino core uses raw external interrupt index (INT0 = 0).
-    attachInterrupt(0, fan_monitor_tachISR, FALLING);
-#endif
 }
 
 uint32_t FanMonitor_updateRPM(FanMonitor* fm) {

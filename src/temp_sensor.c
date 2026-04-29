@@ -1,5 +1,5 @@
 /**
- * @file temp_sensor.cpp
+ * @file temp_sensor.c
  * @brief 温度传感器控制模块实现
  */
 
@@ -7,13 +7,14 @@
 
 #if FEATURE_TEMP_CONTROL
 
+#if TEMP_MAPPING_MODE == 0
 static float TempController_mapTempToVoltageLinear(float temp) {
     float voltage = TEMP_VOLTAGE_K * temp + TEMP_VOLTAGE_B;
     if (voltage < VOUT_MIN) voltage = VOUT_MIN;
     if (voltage > VOUT_MAX) voltage = VOUT_MAX;
     return voltage;
 }
-
+#else
 static float TempController_mapTempToVoltageQuadratic(float temp) {
     float norm_temp = (temp - TEMP_MIN) / (TEMP_MAX - TEMP_MIN);
     float voltage;
@@ -26,33 +27,13 @@ static float TempController_mapTempToVoltageQuadratic(float temp) {
     if (voltage > VOUT_MAX) voltage = VOUT_MAX;
     return voltage;
 }
+#endif
 
 static uint32_t TempController_mapTempToRPM(float temp) {
     float norm = (temp - TEMP_MIN) / (TEMP_MAX - TEMP_MIN);
     norm = (norm < 0.0f) ? 0.0f : (norm > 1.0f) ? 1.0f : norm;
     return (uint32_t)(RPM_TARGET_MIN + (RPM_TARGET_MAX - RPM_TARGET_MIN) * norm);
 }
-
-#if FEATURE_THERMISTOR_ADC
-static float TempController_mapADCToTemp(int adc) {
-    float ratio;
-    float t;
-    int denom = (THERM_ADC_AT_TEMP_MAX - THERM_ADC_AT_TEMP_MIN);
-
-    if (denom == 0) {
-        return TEMP_MIN;
-    }
-
-    ratio = (float)(adc - THERM_ADC_AT_TEMP_MIN) / (float)denom;
-    if (ratio < 0.0f) ratio = 0.0f;
-    if (ratio > 1.0f) ratio = 1.0f;
-
-    t = TEMP_MIN + ratio * (TEMP_MAX - TEMP_MIN);
-    if (t < -40.0f) t = -40.0f;
-    if (t > 125.0f) t = 125.0f;
-    return t;
-}
-#endif
 
 void TempController_begin(TempController* tc, DS18B20* sensor, VoltageController* vc) {
     tc->tempSensor = sensor;
@@ -61,10 +42,6 @@ void TempController_begin(TempController* tc, DS18B20* sensor, VoltageController
     tc->target_rpm = RPM_TARGET_MIN;
     tc->sensor_ready = false;
 
-#if FEATURE_THERMISTOR_ADC
-    pinMode(PIN_TEMP_SENSOR, INPUT);
-    tc->sensor_ready = true;
-#else
     // 初始化DS18B20
     DS18B20_begin(tc->tempSensor);
 
@@ -75,7 +52,6 @@ void TempController_begin(TempController* tc, DS18B20* sensor, VoltageController
         tc->sensor_ready = true;
         tc->current_temp = test_temp;
     }
-#endif
 }
 
 bool TempController_update(TempController* tc) {
@@ -83,13 +59,6 @@ bool TempController_update(TempController* tc) {
         return false;
     }
 
-#if FEATURE_THERMISTOR_ADC
-    int adc = analogRead(PIN_TEMP_SENSOR);
-    if (adc < 0) {
-        return false;
-    }
-    tc->current_temp = TempController_mapADCToTemp(adc);
-#else
     float temp = DS18B20_readTemperatureFast(tc->tempSensor);
 
     if (temp == -999.0) {
@@ -97,7 +66,6 @@ bool TempController_update(TempController* tc) {
     }
 
     tc->current_temp = temp;
-#endif
 
     float target_voltage;
 

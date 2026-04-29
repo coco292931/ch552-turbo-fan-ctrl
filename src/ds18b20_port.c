@@ -1,15 +1,21 @@
 #include "config.h"
 
-#if FEATURE_TEMP_CONTROL && !FEATURE_THERMISTOR_ADC
+#if FEATURE_TEMP_CONTROL
 
 #include "../lib/DS18B20/DS18B20.h"
 
+#define OW_DISABLE_INTERRUPTS() noInterrupts()
+#define OW_ENABLE_INTERRUPTS()  interrupts()
+
 static void ow_drive_low(DS18B20* dev) {
+	// ESP8266 无开漏模式：通过 OUTPUT 拉低
+	pinMode(dev->pin, OUTPUT);
 	digitalWrite(dev->pin, LOW);
 }
 
 static void ow_release_bus(DS18B20* dev) {
-	digitalWrite(dev->pin, HIGH);
+	// 释放总线：切到输入并上拉（外部上拉存在时也兼容）
+	pinMode(dev->pin, INPUT_PULLUP);
 }
 
 static uint8_t ow_read_bus(DS18B20* dev) {
@@ -18,10 +24,7 @@ static uint8_t ow_read_bus(DS18B20* dev) {
 
 static uint8_t ow_reset(DS18B20* dev) {
 	uint8_t present;
-
-#if defined(ARDUINO) && !defined(__INTELLISENSE__)
-	EA = 0;
-#endif
+	OW_DISABLE_INTERRUPTS();
 	ow_drive_low(dev);
 	delayMicroseconds(480);
 
@@ -29,18 +32,14 @@ static uint8_t ow_reset(DS18B20* dev) {
 	delayMicroseconds(70);
 
 	present = (ow_read_bus(dev) == 0) ? 1 : 0;
-#if defined(ARDUINO) && !defined(__INTELLISENSE__)
-	EA = 1;
-#endif
+	OW_ENABLE_INTERRUPTS();
 	delayMicroseconds(410);
 
 	return present;
 }
 
 static void ow_write_bit(DS18B20* dev, uint8_t bitv) {
-#if defined(ARDUINO) && !defined(__INTELLISENSE__)
-	EA = 0;
-#endif
+	OW_DISABLE_INTERRUPTS();
 	ow_drive_low(dev);
 	delayMicroseconds(2);
 	if (bitv) {
@@ -50,27 +49,20 @@ static void ow_write_bit(DS18B20* dev, uint8_t bitv) {
 	}
 	delayMicroseconds(60);
 	ow_release_bus(dev);
-#if defined(ARDUINO) && !defined(__INTELLISENSE__)
-	EA = 1;
-#endif
+	OW_ENABLE_INTERRUPTS();
 	delayMicroseconds(2);
 }
 
 static uint8_t ow_read_bit(DS18B20* dev) {
 	uint8_t bitv;
-
-#if defined(ARDUINO) && !defined(__INTELLISENSE__)
-	EA = 0;
-#endif
+	OW_DISABLE_INTERRUPTS();
 	ow_drive_low(dev);
 	delayMicroseconds(2);
 	ow_release_bus(dev);
 	delayMicroseconds(12);
 
 	bitv = ow_read_bus(dev) ? 1 : 0;
-#if defined(ARDUINO) && !defined(__INTELLISENSE__)
-	EA = 1;
-#endif
+	OW_ENABLE_INTERRUPTS();
 	delayMicroseconds(50);
 	return bitv;
 }
@@ -99,7 +91,6 @@ void DS18B20_init(DS18B20* dev, uint8_t data_pin) {
 }
 
 void DS18B20_begin(DS18B20* dev) {
-	pinMode(dev->pin, OUTPUT_OD);
 	ow_release_bus(dev);
 }
 
