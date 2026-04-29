@@ -21,6 +21,96 @@
 #include "../lib/DS18B20/DS18B20.h"
 #include <stdio.h>
 
+#if defined(ARDUINO_ARCH_ESP8266)
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+
+static const char* WIFI_SSID = "CH552_FAN_CTRL";
+static const char* WIFI_PASS = "12345678";
+static ESP8266WebServer server(80);
+
+static void write_json_number(const char* key, float value, bool last) {
+    char buf[24];
+    dtostrf(value, 0, 2, buf);
+    server.print('"');
+    server.print(key);
+    server.print("\":");
+    server.print(buf);
+    if (!last) {
+        server.print(',');
+    }
+}
+
+static void write_json_u32(const char* key, uint32_t value, bool last) {
+    server.print('"');
+    server.print(key);
+    server.print("\":");
+    server.print(value);
+    if (!last) {
+        server.print(',');
+    }
+}
+
+static void write_json_bool(const char* key, bool value, bool last) {
+    server.print('"');
+    server.print(key);
+    server.print("\":");
+    server.print(value ? "true" : "false");
+    if (!last) {
+        server.print(',');
+    }
+}
+
+static void handle_status() {
+    server.setContentLength(CONTENT_LENGTH_UNKNOWN);
+    server.send(200, "application/json", "");
+    server.print('{');
+    write_json_number("temperature", sysStatus.temperature, false);
+    write_json_number("voltage", sysStatus.voltage, false);
+    write_json_number("target_voltage", sysStatus.target_voltage, false);
+    write_json_u32("rpm", sysStatus.rpm, false);
+    write_json_u32("target_rpm", sysStatus.target_rpm, false);
+    write_json_u32("pwm_duty", sysStatus.pwm_duty, false);
+    write_json_u32("error_flags", sysStatus.error_flags, false);
+    write_json_bool("auto_mode", sysStatus.auto_mode, true);
+    server.print('}');
+}
+
+static bool query_has(const char* key) {
+    return server.hasArg(key);
+}
+
+static void handle_control() {
+    if (query_has("target_voltage")) {
+        float v = server.arg("target_voltage").toFloat();
+        VoltageController_setVoltage(&voltageCtrl, v);
+        sysStatus.target_voltage = VoltageController_getTargetVoltage(&voltageCtrl);
+    }
+    if (query_has("pwm_duty")) {
+        int duty = server.arg("pwm_duty").toInt();
+        if (duty < 0) duty = 0;
+        if (duty > PWM_RESOLUTION) duty = PWM_RESOLUTION;
+        analogWrite(PIN_PWM_OUTPUT, (uint16_t)duty);
+        sysStatus.pwm_duty = (uint8_t)duty;
+    }
+    if (query_has("auto_mode")) {
+        int enable = server.arg("auto_mode").toInt();
+        sysStatus.auto_mode = (enable != 0);
+    }
+
+    handle_status();
+}
+
+static void wifi_setup() {
+    WiFi.mode(WIFI_AP);
+    WiFi.softAP(WIFI_SSID, WIFI_PASS);
+
+    server.on("/status", HTTP_GET, handle_status);
+    server.on("/control", HTTP_GET, handle_control);
+    server.begin();
+}
+#endif
+
 #if FEATURE_VERBOSE_LOG
 #define LOG_LINE(x) serial_println_str(x)
 #else
@@ -78,8 +168,12 @@ uint8_t read_adc_raw(uint8_t channel) {
 }
 
 void setup() {
+#if defined(ARDUINO_ARCH_ESP8266)
+    analogWriteRange(PWM_RESOLUTION);
+    analogWriteFreq(PWM_FREQ);
+#endif
     // AIN扫描模式下只保留USB串口，避免配置业务相关引脚。
-#if MAIN2_AIN_SCAN_ONLY
+#if MAIN2_AIN_SCAN_ONLY && !defined(ARDUINO_ARCH_ESP8266)
     USBController_begin(&usbCtrl);
     delay(500);
 
@@ -102,7 +196,9 @@ void setup() {
 #endif
 
     // P1.5 仍有连线但不再用作 DS 引脚，保持上拉输入避免悬空干扰。
+#if !defined(ARDUINO_ARCH_ESP8266)
     pinMode(15, INPUT_PULLUP);
+#endif
 
 #if FEATURE_TEMP_CONTROL && !FEATURE_THERMISTOR_ADC && !MAIN2_VOLTAGE_ONLY_TEST
     DS18B20_init(&tempSensor, PIN_TEMP_SENSOR);
@@ -112,6 +208,10 @@ void setup() {
     // 1. 初始化USB串口（优先，方便调试）
     USBController_begin(&usbCtrl);
     delay(500);
+
+#if defined(ARDUINO_ARCH_ESP8266)
+    wifi_setup();
+#endif
 
     LOG_LINE("=================================");
     LOG_LINE("CH552G Fan Control System v1.0");
@@ -271,7 +371,7 @@ void main2(void) {
     FanMonitor_updateRPM(&fanMonitor);
     rpm = FanMonitor_getRPM(&fanMonitor);
     // 实际电压：ADC 采样的当前输出电压
-    actual_v = VoltageController_updateVoltage(&voltageCtrl);
+    actual_v = VoltageController_updateVoltage(&voltageCtrl)*15.3;
     // 目标电压：当前控制器内部目标值（测试模式下可能长期保持默认值）
     target_v = VoltageController_getTargetVoltage(&voltageCtrl);
 #endif
@@ -443,6 +543,86 @@ static void loop_legacy_control_archived(void) {
 }
 #endif
 
+#if defined(ARDUINO_ARCH_ESP8266)
+static void loop_control(void) {
+    unsigned long now = millis();
+
+#if FEATURE_TEMP_CONTROL
+    if (sysStatus.auto_mode && (now - last_temp_update >= TEMP_UPDATE_INTERVAL)) {
+        if (!TempController_update(&tempCtrl)) {
+            sysStatus.error_flags |= ERROR_TEMP_SENSOR;
+        } else {
+            sysStatus.error_flags &= ~ERROR_TEMP_SENSOR;
+        }
+        last_temp_update = now;
+    }
+#endif
+
+    if (now - last_voltage_check >= VOLTAGE_CHECK_INTERVAL) {
+        VoltageController_updateVoltage(&voltageCtrl);
+        if (VoltageController_isVoltageAbnormal(&voltageCtrl)) {
+            sysStatus.error_flags |= ERROR_VOLTAGE_ABNORMAL;
+            VoltageController_lockOutput(&voltageCtrl);
+        } else {
+            sysStatus.error_flags &= ~ERROR_VOLTAGE_ABNORMAL;
+        }
+        last_voltage_check = now;
+    }
+
+    FanMonitor_updateRPM(&fanMonitor);
+
+    if (FanMonitor_isStalled(&fanMonitor)) {
+        sysStatus.error_flags |= ERROR_FAN_STALLED;
+        if (stall_detect_time == 0) {
+            stall_detect_time = now;
+            VoltageController_setVoltage(&voltageCtrl, VOUT_MIN);
+        }
+
+        if (now - stall_detect_time >= STALL_RETRY_DELAY) {
+            stall_retry_count++;
+            if (stall_retry_count >= STALL_MAX_RETRIES) {
+                VoltageController_lockOutput(&voltageCtrl);
+            } else {
+                FanMonitor_resetStall(&fanMonitor);
+                stall_detect_time = 0;
+            }
+        }
+    } else {
+        if (stall_detect_time != 0) {
+            sysStatus.error_flags &= ~ERROR_FAN_STALLED;
+            stall_detect_time = 0;
+            stall_retry_count = 0;
+        }
+    }
+
+#if FEATURE_TEMP_CONTROL
+    if (TempController_isOverheat(&tempCtrl)) {
+        sysStatus.error_flags |= ERROR_OVERHEAT;
+        sysStatus.auto_mode = true;
+    } else if (sysStatus.error_flags & ERROR_OVERHEAT) {
+        sysStatus.error_flags &= ~ERROR_OVERHEAT;
+    }
+#endif
+
+    sysStatus.temperature = TempController_getTemperature(&tempCtrl);
+    sysStatus.voltage = VoltageController_getCurrentVoltage(&voltageCtrl);
+    sysStatus.target_voltage = VoltageController_getTargetVoltage(&voltageCtrl);
+    sysStatus.rpm = FanMonitor_getRPM(&fanMonitor);
+    sysStatus.target_rpm = TempController_getTargetRPM(&tempCtrl);
+    sysStatus.pwm_duty = VoltageController_getPWMDuty(&voltageCtrl);
+
+#if defined(ARDUINO_ARCH_ESP8266)
+    server.handleClient();
+#endif
+
+    delay(20);
+}
+#endif
+
 void loop() {
+#if defined(ARDUINO_ARCH_ESP8266)
+    loop_control();
+#else
     main2();
+#endif
 }

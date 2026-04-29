@@ -50,6 +50,24 @@ void VoltageController_setVoltage(VoltageController* vc, float voltage) {
 }
 
 float VoltageController_readVoltage(VoltageController* vc) {
+#if defined(ARDUINO_ARCH_ESP8266)
+    int adc_value;
+    float adc_voltage;
+    float output_voltage;
+
+    pinMode(vc->adc_pin, INPUT);
+    delayMicroseconds(8);
+    (void)analogRead(vc->adc_pin);
+    adc_value = analogRead(vc->adc_pin);
+
+    if (adc_value < 0) {
+        return vc->current_voltage;
+    }
+
+    adc_voltage = (float)adc_value / (float)ADC_RESOLUTION * ADC_REF_VOLTAGE;
+    output_voltage = adc_voltage * ADC_VOLTAGE_RATIO;
+    return output_voltage;
+#else
     // 硬件读不到，直接返回目标电压，避免无谓逻辑阻塞和体积消耗
     return vc->target_voltage;
     
@@ -69,6 +87,7 @@ float VoltageController_readVoltage(VoltageController* vc) {
     
     return output_voltage;
     */
+#endif
 }
 
 float VoltageController_updateVoltage(VoltageController* vc) {

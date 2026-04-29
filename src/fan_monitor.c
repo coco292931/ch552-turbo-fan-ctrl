@@ -27,8 +27,12 @@ void FanMonitor_begin(FanMonitor* fm, uint8_t pin) {
     
     // 注册中断（下降沿触发）
     g_fan_monitor_instance = fm;
+#if defined(ARDUINO_ARCH_ESP8266)
+    attachInterrupt(digitalPinToInterrupt(fm->tach_pin), fan_monitor_tachISR, FALLING);
+#else
     // CH55xDuino core uses raw external interrupt index (INT0 = 0).
     attachInterrupt(0, fan_monitor_tachISR, FALLING);
+#endif
 }
 
 uint32_t FanMonitor_updateRPM(FanMonitor* fm) {

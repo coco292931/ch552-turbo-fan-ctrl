@@ -11,23 +11,73 @@
 
 // CH552 默认启用精简固件配置，优先保证可编译与核心控制链路可用。
 #if defined(CH552)
+#ifndef FEATURE_USB_PROTOCOL
 #define FEATURE_USB_PROTOCOL 0
+#endif
+#ifndef FEATURE_TEMP_CONTROL
 #define FEATURE_TEMP_CONTROL 1
+#endif
+#ifndef FEATURE_VERBOSE_LOG
 #define FEATURE_VERBOSE_LOG  0
+#endif
+#ifndef FEATURE_THERMISTOR_ADC
 #define FEATURE_THERMISTOR_ADC 0
+#endif
+#ifndef FEATURE_DS18B20_CRC
 #define FEATURE_DS18B20_CRC    0
+#endif
+#ifndef FEATURE_DS18B20_RETRY
 #define FEATURE_DS18B20_RETRY  0
-#else
-#define FEATURE_USB_PROTOCOL 1
+#endif
+#elif defined(ARDUINO_ARCH_ESP8266)
+#ifndef FEATURE_USB_PROTOCOL
+#define FEATURE_USB_PROTOCOL 0
+#endif
+#ifndef FEATURE_TEMP_CONTROL
 #define FEATURE_TEMP_CONTROL 1
+#endif
+#ifndef FEATURE_VERBOSE_LOG
 #define FEATURE_VERBOSE_LOG  1
+#endif
+#ifndef FEATURE_THERMISTOR_ADC
 #define FEATURE_THERMISTOR_ADC 0
+#endif
+#ifndef FEATURE_DS18B20_CRC
 #define FEATURE_DS18B20_CRC    1
+#endif
+#ifndef FEATURE_DS18B20_RETRY
 #define FEATURE_DS18B20_RETRY  1
+#endif
+#else
+#ifndef FEATURE_USB_PROTOCOL
+#define FEATURE_USB_PROTOCOL 1
+#endif
+#ifndef FEATURE_TEMP_CONTROL
+#define FEATURE_TEMP_CONTROL 1
+#endif
+#ifndef FEATURE_VERBOSE_LOG
+#define FEATURE_VERBOSE_LOG  1
+#endif
+#ifndef FEATURE_THERMISTOR_ADC
+#define FEATURE_THERMISTOR_ADC 0
+#endif
+#ifndef FEATURE_DS18B20_CRC
+#define FEATURE_DS18B20_CRC    1
+#endif
+#ifndef FEATURE_DS18B20_RETRY
+#define FEATURE_DS18B20_RETRY  1
+#endif
 #endif
 
 // ==================== 硬件引脚定义 ====================
 
+#if defined(ARDUINO_ARCH_ESP8266)
+// ESP8266 引脚映射
+#define PIN_PWM_OUTPUT    13      // GPIO13 - PWM输出(软件PWM)
+#define PIN_VOLTAGE_ADC   A0      // ADC0 - 输出电压检测
+#define PIN_FAN_TACH      4       // GPIO4  - 转速检测
+#define PIN_TEMP_SENSOR   5       // GPIO5  - DS18B20
+#else
 // PWM输出引脚 - 注入XL4015的FB节点
 #define PIN_PWM_OUTPUT    34      // P3.4 - PWM输出
 
@@ -40,6 +90,7 @@
 
 // 温度传感器引脚 - DS18B20单总线
 #define PIN_TEMP_SENSOR   17      // P1.7 - 飞线引脚 (原为 P1.5=15，防硬件冲突)
+#endif
 
 
 // ==================== 控制参数 ====================
@@ -107,9 +158,15 @@
 
 // ADC电压校准 (实测后调整)
 // 分压比: (10kΩ + 5.1kΩ) / 5.1kΩ = 2.96
+#if defined(ARDUINO_ARCH_ESP8266)
+#define ADC_VOLTAGE_RATIO     12.0f   // 1.0V满量程时对应12V输出
+#define ADC_REF_VOLTAGE       1.0f    // ESP8266 ADC参考电压
+#define ADC_RESOLUTION        1023    // 10位ADC
+#else
 #define ADC_VOLTAGE_RATIO     2.96f
 #define ADC_REF_VOLTAGE       5.0f    // CH552 ADC参考电压
 #define ADC_RESOLUTION        255     // 8位ADC
+#endif
 
 // PWM-电压映射校准系数 (需要实测后调整)
 // 这些系数需要通过实际测试确定
