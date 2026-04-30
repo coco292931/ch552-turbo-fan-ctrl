@@ -1,6 +1,12 @@
 /**
  * @file usb_protocol.c
  * @brief 串口文本协议模块实现（C 风格）
+ *
+ * 设计目标：
+ * - 初始状态：未连接=自主控制
+ * - 配对流程：HELLO -> 设备信息 -> CONNECT -> OK:CONNECTED
+ * - GET/SET：仅在连接建立后允许
+ * - 心跳：上位机定期发起请求（PING/GET 等），超时则断连并回到自主控制
  */
 
 #include "usb_protocol.h"
@@ -101,6 +107,31 @@ static void usb_set_connected(USBController* uc) {
     uc->last_heartbeat = millis();
 }
 
+static void usb_set_disconnected(USBController* uc, bool due_to_timeout) {
+    uc->is_connected = false;
+    uc->pairing_state = PAIRING_IDLE;
+    uc->last_heartbeat = millis();
+
+    // 断连即回到自主控制：清除所有上位机覆盖
+    uc->override_active = false;
+    uc->voltage_override_active = false;
+    uc->rpm_override_active = false;
+    uc->temp_params_overridden = false;
+    uc->pwm_duty_overridden = false;
+
+    if (due_to_timeout) {
+        uc->timeout_report_pending = true;
+    }
+}
+
+static void usb_clear_overrides(USBController* uc) {
+    uc->override_active = false;
+    uc->voltage_override_active = false;
+    uc->rpm_override_active = false;
+    uc->pwm_duty_overridden = false;
+    uc->temp_params_overridden = false;
+}
+
 static void usb_reply_ok_key_value(const char* key, const char* value) {
     serial_print_str("OK:");
     serial_print_str(key);
@@ -154,16 +185,116 @@ static bool usb_handle_get(USBController* uc, const char* key) {
         uc->status_requested = true;
         return true;
     }
+
+    if (usb_str_eq(key, "INFO")) {
+        serial_println_str("{\"device\":\"ESP8266_FAN_CTRL\",\"fw\":\"V1.0\",\"proto\":1}");
+        return true;
+    }
+
+    if (usb_str_eq(key, "MODE")) {
+        serial_print_str("OK:MODE=");
+        serial_println_str(uc->override_active ? "MANUAL" : "AUTO");
+        return true;
+    }
+
+    if (usb_str_eq(key, "ECHO")) {
+        serial_print_str("OK:ECHO=");
+        serial_println_uint(uc->echo_enabled ? 1u : 0u);
+        return true;
+    }
+
+    if (usb_str_eq(key, "OVERRIDE")) {
+        serial_print_str("{");
+        serial_print_str("\"manual\":");
+        serial_print_uint(uc->override_active ? 1u : 0u);
+        serial_print_str(",\"pwm\":");
+        serial_print_uint(uc->pwm_duty_overridden ? 1u : 0u);
+        serial_print_str(",\"voltage\":");
+        serial_print_uint(uc->voltage_override_active ? 1u : 0u);
+        serial_print_str(",\"rpm\":");
+        serial_print_uint(uc->rpm_override_active ? 1u : 0u);
+        serial_print_str(",\"pwm_val\":");
+        serial_print_uint((uint32_t)uc->override_pwm_duty);
+        serial_print_str(",\"voltage_val\":");
+        serial_print_float(uc->target_voltage_override, 2);
+        serial_print_str(",\"rpm_val\":");
+        serial_print_uint(uc->target_rpm_override);
+        serial_println_str("}");
+        return true;
+    }
+
+    if (usb_str_eq(key, "CONFIG")) {
+        serial_print_str("{");
+        serial_print_str("\"vout_min\":");
+        serial_print_float(VOUT_MIN, 2);
+        serial_print_str(",\"vout_max\":");
+        serial_print_float(VOUT_MAX, 2);
+        serial_print_str(",\"temp_min\":");
+        serial_print_float(uc->override_temp_min, 1);
+        serial_print_str(",\"temp_max\":");
+        serial_print_float(uc->override_temp_max, 1);
+        serial_print_str(",\"temp_overheat\":");
+        serial_print_float(uc->override_temp_overheat, 1);
+        serial_print_str(",\"rpm_min\":");
+        serial_print_uint(RPM_TARGET_MIN);
+        serial_print_str(",\"rpm_max\":");
+        serial_print_uint(RPM_TARGET_MAX);
+        serial_print_str(",\"pwm_freq\":");
+        serial_print_uint(PWM_FREQ);
+        serial_print_str(",\"pwm_res\":");
+        serial_print_uint(PWM_RESOLUTION);
+        serial_print_str(",\"adc_coeff\":");
+        serial_print_float(ADC_TO_VOLTAGE_COEFF, 6);
+        serial_print_str(",\"hb_to\":");
+        serial_print_uint(USB_HEARTBEAT_TIMEOUT);
+        serial_print_str(",\"pair_to\":");
+        serial_print_uint(USB_PAIRING_TIMEOUT);
+        serial_print_str(",\"echo\":");
+        serial_print_uint(uc->echo_enabled ? 1u : 0u);
+        serial_println_str("}");
+        return true;
+    }
     return false;
 }
 
 static bool usb_handle_set(USBController* uc, const char* key, uint8_t key_len, const char* value) {
+    if (usb_key_equals(key, key_len, "UNLOCK")) {
+#if FEATURE_HOST_UNLOCK_OUTPUT
+        int v = usb_parse_i32(value);
+        if (v != 0) {
+            uc->unlock_requested = true;
+            serial_println_str("OK:UNLOCK");
+            return true;
+        }
+        return false;
+#else
+        (void)value;
+        serial_println_str("ERR:UNLOCK_DISABLED");
+        return true;
+#endif
+    }
+
+    if (usb_key_equals(key, key_len, "ECHO")) {
+        int v = usb_parse_i32(value);
+        uc->echo_enabled = (v != 0);
+        serial_print_str("OK:ECHO=");
+        serial_println_uint(uc->echo_enabled ? 1u : 0u);
+        return true;
+    }
+
+    if (usb_key_equals(key, key_len, "CLEAR_OVERRIDES")) {
+        int v = usb_parse_i32(value);
+        if (v != 0) {
+            usb_clear_overrides(uc);
+            serial_println_str("OK:CLEAR_OVERRIDES");
+            return true;
+        }
+        return false;
+    }
+
     if (usb_key_equals(key, key_len, "MODE")) {
         if (usb_str_eq(value, "AUTO")) {
-            uc->override_active = false;
-            uc->rpm_override_active = false;
-            uc->pwm_duty_overridden = false;
-            uc->temp_params_overridden = false;
+            usb_clear_overrides(uc);
             usb_reply_ok_key_value("MODE", "AUTO");
             return true;
         }
@@ -182,6 +313,7 @@ static bool usb_handle_set(USBController* uc, const char* key, uint8_t key_len, 
             return true;
         }
         uc->target_voltage_override = v;
+        uc->voltage_override_active = true;
         uc->override_active = true;
         usb_reply_ok_key_float2("VOLTAGE", v);
         return true;
@@ -195,6 +327,7 @@ static bool usb_handle_set(USBController* uc, const char* key, uint8_t key_len, 
         }
         uc->target_rpm_override = rpm;
         uc->rpm_override_active = true;
+        uc->override_active = true;
         usb_reply_ok_key_uint("RPM", rpm);
         return true;
     }
@@ -238,19 +371,46 @@ static bool usb_handle_set(USBController* uc, const char* key, uint8_t key_len, 
 }
 
 static void usb_handleCommand(USBController* uc, const char* cmd) {
+    // 配对阶段：必须先 HELLO，再 CONNECT。
     if (usb_str_eq(cmd, "HELLO")) {
-        usb_set_connected(uc);
+        uc->pairing_state = PAIRING_WAITING_CONFIRM;
+        uc->last_heartbeat = millis();
         serial_println_str("DEVICE:ESP8266_FAN_CTRL_V1.0");
         return;
     }
 
     if (usb_str_eq(cmd, "CONNECT")) {
+        // 允许 CONNECT 幂等：
+        // - 已连接：刷新心跳并返回 OK
+        // - 未连接：要求先 HELLO
+        if (uc->is_connected) {
+            uc->last_heartbeat = millis();
+            serial_println_str("OK:CONNECTED");
+            return;
+        }
+        if (uc->pairing_state != PAIRING_WAITING_CONFIRM) {
+            serial_println_str("ERR:NEED_HELLO");
+            return;
+        }
         usb_set_connected(uc);
         serial_println_str("OK:CONNECTED");
         return;
     }
 
-    usb_set_connected(uc);
+    if (usb_str_eq(cmd, "DISCONNECT")) {
+        usb_set_disconnected(uc, false);
+        serial_println_str("OK:DISCONNECTED");
+        return;
+    }
+
+    // 未连接时：仅允许 HELLO / CONNECT。
+    if (!uc->is_connected) {
+        serial_println_str("ERR:NOT_CONNECTED");
+        return;
+    }
+
+    // 连接态：任何合法命令都刷新心跳
+    uc->last_heartbeat = millis();
 
     if (usb_str_eq(cmd, "PING")) {
         serial_println_str("PONG");
@@ -260,6 +420,16 @@ static void usb_handleCommand(USBController* uc, const char* cmd) {
     if (usb_str_eq(cmd, "RESET")) {
         uc->reset_requested = true;
         serial_println_str("OK:RESET");
+        return;
+    }
+
+    if (usb_str_eq(cmd, "UNLOCK")) {
+#if FEATURE_HOST_UNLOCK_OUTPUT
+        uc->unlock_requested = true;
+        serial_println_str("OK:UNLOCK");
+#else
+        serial_println_str("ERR:UNLOCK_DISABLED");
+#endif
         return;
     }
 
@@ -307,14 +477,18 @@ void USBController_begin(USBController* uc) {
     uc->is_connected = false;
     uc->pairing_state = PAIRING_IDLE;
     uc->last_heartbeat = 0;
+    uc->timeout_report_pending = false;
+    uc->echo_enabled = (FEATURE_USB_ECHO != 0);
     uc->rx_len = 0;
     uc->rx_buffer[0] = '\0';
 
+    uc->voltage_override_active = false;
     uc->override_active = false;
     uc->rpm_override_active = false;
     uc->temp_params_overridden = false;
     uc->pwm_duty_overridden = false;
     uc->reset_requested = false;
+    uc->unlock_requested = false;
     uc->status_requested = false;
 
     uc->target_voltage_override = VOUT_DEFAULT;
@@ -330,9 +504,11 @@ void USBController_update(USBController* uc) {
         char c = (char)serial_read();
 
 #if FEATURE_USB_ECHO
-        // 设备端回显：方便串口终端交互调试。
-        // 上位机若不希望看到回显，可在编译时关闭 FEATURE_USB_ECHO。
+    // 设备端回显：仅在“连接建立后”启用，避免干扰上位机 HELLO/CONNECT 严格解析。
+    // 上位机也可通过 SET:ECHO=0/1 动态控制。
+    if (uc->is_connected && uc->echo_enabled) {
         serial_write(c);
+    }
 #endif
 
         if (c == '\n' || c == '\r') {
@@ -352,19 +528,35 @@ void USBController_update(USBController* uc) {
         }
     }
 
+    // 配对超时：HELLO 后太久没 CONNECT，则回到 IDLE
+    if (!uc->is_connected && uc->pairing_state == PAIRING_WAITING_CONFIRM) {
+        if (millis() - uc->last_heartbeat > USB_PAIRING_TIMEOUT) {
+            uc->pairing_state = PAIRING_IDLE;
+        }
+    }
+
     if (uc->is_connected && (millis() - uc->last_heartbeat > USB_HEARTBEAT_TIMEOUT)) {
-        uc->is_connected = false;
-        uc->pairing_state = PAIRING_IDLE;
-        uc->override_active = false;
-        uc->rpm_override_active = false;
+        usb_set_disconnected(uc, true);
     }
 }
 
 void USBController_sendStatus(USBController* uc, const SystemStatus* status) {
-    (void)uc;
-
     serial_print_str("{");
-    serial_print_str("\"temp\":");
+    serial_print_str("\"conn\":");
+    serial_print_uint(uc->is_connected ? 1u : 0u);
+    serial_print_str(",\"locked\":");
+    serial_print_uint(status->output_locked ? 1u : 0u);
+    serial_print_str(",\"manual\":");
+    serial_print_uint(uc->override_active ? 1u : 0u);
+    serial_print_str(",\"ov_pwm\":");
+    serial_print_uint(uc->pwm_duty_overridden ? 1u : 0u);
+    serial_print_str(",\"ov_v\":");
+    serial_print_uint(uc->voltage_override_active ? 1u : 0u);
+    serial_print_str(",\"ov_rpm\":");
+    serial_print_uint(uc->rpm_override_active ? 1u : 0u);
+    serial_print_str(",\"echo\":");
+    serial_print_uint(uc->echo_enabled ? 1u : 0u);
+    serial_print_str(",\"temp\":");
     serial_print_float(status->temperature, 2);
     serial_print_str(",\"volt\":");
     serial_print_float(status->voltage, 2);

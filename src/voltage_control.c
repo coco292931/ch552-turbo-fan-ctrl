@@ -16,6 +16,15 @@ static uint8_t VoltageController_voltageToPWM(float voltage) {
     return (uint8_t)pwm_float;
 }
 
+static float VoltageController_pwmToVoltage(uint8_t duty) {
+    // Inverse of VoltageController_voltageToPWM() (approx). duty=0 => VOUT_MAX, duty=PWM_RESOLUTION => VOUT_MIN
+    float ratio = (float)duty / (float)PWM_RESOLUTION;
+    float voltage = VOUT_MAX - ratio * (VOUT_MAX - VOUT_MIN);
+    if (voltage < VOUT_MIN) voltage = VOUT_MIN;
+    if (voltage > VOUT_MAX) voltage = VOUT_MAX;
+    return voltage;
+}
+
 void VoltageController_begin(VoltageController* vc, uint8_t pwm_out, uint8_t adc_in) {
     vc->pwm_pin = pwm_out;
     vc->adc_pin = adc_in;
@@ -28,6 +37,10 @@ void VoltageController_begin(VoltageController* vc, uint8_t pwm_out, uint8_t adc
     vc->current_pwm_duty = 0;
     vc->target_voltage = VOUT_DEFAULT;
     vc->is_locked = false;
+
+    vc->begin_ms = millis();
+    vc->last_output_change_ms = vc->begin_ms;
+    vc->abnormal_count = 0;
     
     // 配置ADC引脚为高阻输入，避免数字输出级影响模拟采样。
     pinMode(vc->adc_pin, INPUT);
@@ -45,13 +58,35 @@ void VoltageController_setVoltage(VoltageController* vc, float voltage) {
     if (voltage < VOUT_MIN) voltage = VOUT_MIN;
     if (voltage > VOUT_MAX) voltage = VOUT_MAX;
     vc->target_voltage = voltage;
-    vc->current_pwm_duty = VoltageController_voltageToPWM(vc->target_voltage);
-    analogWrite(vc->pwm_pin, vc->current_pwm_duty);
+    uint8_t new_duty = VoltageController_voltageToPWM(vc->target_voltage);
+    if (new_duty != vc->current_pwm_duty) {
+        vc->current_pwm_duty = new_duty;
+        analogWrite(vc->pwm_pin, vc->current_pwm_duty);
+        vc->last_output_change_ms = millis();
+        vc->abnormal_count = 0;
+    }
+}
+
+void VoltageController_setPWMDuty(VoltageController* vc, uint8_t duty) {
+    if (vc->is_locked) {
+        return;
+    }
+
+    if (duty > PWM_RESOLUTION) {
+        duty = PWM_RESOLUTION;
+    }
+
+    if (duty != vc->current_pwm_duty) {
+        vc->current_pwm_duty = duty;
+        analogWrite(vc->pwm_pin, vc->current_pwm_duty);
+        vc->last_output_change_ms = millis();
+        vc->abnormal_count = 0;
+    }
+    vc->target_voltage = VoltageController_pwmToVoltage(vc->current_pwm_duty);
 }
 
 float VoltageController_readVoltage(VoltageController* vc) {
     int adc_value;
-    float adc_voltage;
     float output_voltage;
 
     pinMode(vc->adc_pin, INPUT);
@@ -63,8 +98,7 @@ float VoltageController_readVoltage(VoltageController* vc) {
         return vc->current_voltage;
     }
 
-    adc_voltage = (float)adc_value / (float)ADC_RESOLUTION * ADC_REF_VOLTAGE;
-    output_voltage = adc_voltage * ADC_VOLTAGE_RATIO;
+    output_voltage = (float)adc_value * ADC_TO_VOLTAGE_COEFF;
     return output_voltage;
 }
 
@@ -74,23 +108,45 @@ float VoltageController_updateVoltage(VoltageController* vc) {
 }
 
 bool VoltageController_isVoltageAbnormal(VoltageController* vc) {
-    VoltageController_updateVoltage(vc);
-
-    if (vc->current_voltage < vc->target_voltage - 1.0f) {
-        return true;
+    if (vc->is_locked) {
+        return false;
     }
 
-    return false;
+    unsigned long now = millis();
+    if (now - vc->begin_ms < (unsigned long)VOLTAGE_MONITOR_STARTUP_GRACE_MS) {
+        return false;
+    }
+
+    // 刚改变PWM/目标电压时，允许输出与ADC有瞬态
+    if (now - vc->last_output_change_ms < (unsigned long)VOLTAGE_ABNORMAL_SETTLE_MS) {
+        return false;
+    }
+
+    // 仅基于“已采样的 current_voltage”做判定，避免主循环内重复采样引入抖动
+    if (vc->current_voltage < (vc->target_voltage - (float)VOLTAGE_ABNORMAL_DROP_V)) {
+        if (vc->abnormal_count < 255) {
+            vc->abnormal_count++;
+        }
+    } else {
+        vc->abnormal_count = 0;
+    }
+
+    return (vc->abnormal_count >= (uint8_t)VOLTAGE_ABNORMAL_CONSECUTIVE);
 }
 
 void VoltageController_lockOutput(VoltageController* vc) {
     vc->is_locked = true;
     vc->current_pwm_duty = PWM_RESOLUTION;
     analogWrite(vc->pwm_pin, vc->current_pwm_duty);
+
+    vc->last_output_change_ms = millis();
+    vc->abnormal_count = 0;
 }
 
 void VoltageController_unlockOutput(VoltageController* vc) {
     vc->is_locked = false;
+    vc->last_output_change_ms = millis();
+    vc->abnormal_count = 0;
 }
 
 float VoltageController_getTargetVoltage(const VoltageController* vc) {

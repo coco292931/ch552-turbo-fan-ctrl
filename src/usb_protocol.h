@@ -1,6 +1,6 @@
 /**
  * @file usb_protocol.h
- * @brief USB通信协议模块
+ * @brief 串口文本协议模块
  */
 
 #ifndef USB_PROTOCOL_H
@@ -22,6 +22,7 @@ typedef struct {
     uint8_t pwm_duty;       // PWM占空比(0-255)
     uint8_t error_flags;    // 错误标志位
     bool auto_mode;         // 自主控制模式
+    bool output_locked;     // 输出是否被锁定（保护触发）
 } SystemStatus;
 
 /**
@@ -57,6 +58,8 @@ typedef struct {
     bool is_connected;
     PairingState pairing_state;
     unsigned long last_heartbeat;
+    bool timeout_report_pending;
+    bool echo_enabled;
     char rx_buffer[USB_CMD_MAX_LEN + 1];
     uint8_t rx_len;
 
@@ -67,11 +70,13 @@ typedef struct {
     float override_temp_overheat;
     uint8_t override_pwm_duty;
 
+    bool voltage_override_active;
     bool override_active;
     bool rpm_override_active;
     bool temp_params_overridden;
     bool pwm_duty_overridden;
     bool reset_requested;
+    bool unlock_requested;
     bool status_requested;
 } USBController;
 

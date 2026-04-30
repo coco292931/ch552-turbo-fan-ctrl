@@ -16,10 +16,16 @@ typedef struct {
     float current_voltage;
     uint8_t current_pwm_duty;
     bool is_locked;
+
+    // 保护/去抖状态
+    unsigned long begin_ms;
+    unsigned long last_output_change_ms;
+    uint8_t abnormal_count;
 } VoltageController;
 
 void VoltageController_begin(VoltageController* vc, uint8_t pwm_out, uint8_t adc_in);
 void VoltageController_setVoltage(VoltageController* vc, float voltage);
+void VoltageController_setPWMDuty(VoltageController* vc, uint8_t duty);
 float VoltageController_readVoltage(VoltageController* vc);
 float VoltageController_updateVoltage(VoltageController* vc);
 float VoltageController_getTargetVoltage(const VoltageController* vc);

@@ -86,22 +86,103 @@
 #define STATUS_SEND_INTERVAL   1000   // 状态上报间隔(ms)
 #define VOLTAGE_CHECK_INTERVAL 500    // 电压检测间隔(ms)
 
+// 电压异常检测（防误判参数）
+// 目标电压下调/刚上电时，输出与ADC会有瞬态，需做宽限与去抖，否则会误触发锁定(PWM=255)
+#ifndef VOLTAGE_MONITOR_STARTUP_GRACE_MS
+#define VOLTAGE_MONITOR_STARTUP_GRACE_MS 3000  // 上电后宽限时间(ms)
+#endif
+
+#ifndef VOLTAGE_ABNORMAL_SETTLE_MS
+#define VOLTAGE_ABNORMAL_SETTLE_MS 800         // 每次改变PWM/目标后，等待输出稳定(ms)
+#endif
+
+#ifndef VOLTAGE_ABNORMAL_DROP_V
+#define VOLTAGE_ABNORMAL_DROP_V 1.0f           // 跌落阈值：current < target - DROP(V)
+#endif
+
+#ifndef VOLTAGE_ABNORMAL_CONSECUTIVE
+#define VOLTAGE_ABNORMAL_CONSECUTIVE 3         // 连续异常次数才触发锁定
+#endif
+
+// 仅当目标电压达到一定水平时才启用“电压异常锁定”保护（低电压/停转区间ADC噪声更大，易误判）
+#ifndef VOLTAGE_ABNORMAL_ARM_MIN_TARGET
+#define VOLTAGE_ABNORMAL_ARM_MIN_TARGET 7.0f
+#endif
+
+// 堵转检测（防误判参数）
+// 注意：RPM 可能在上电初期/低电压区间为0，这是预期现象，必须在“确实在尝试起转”时才启用堵转保护。
+#ifndef STALL_MONITOR_STARTUP_GRACE_MS
+#define STALL_MONITOR_STARTUP_GRACE_MS 5000     // 上电后宽限(ms)
+#endif
+
+#ifndef STALL_SPINUP_GRACE_MS
+#define STALL_SPINUP_GRACE_MS 3000              // 每次进入“可起转目标电压区间”后的起转宽限(ms)
+#endif
+
+#ifndef STALL_ARM_MIN_VOLTAGE
+#define STALL_ARM_MIN_VOLTAGE 7.0f              // 目标电压达到该值以上才认为“在尝试起转”
+#endif
+
 // USB通信
 #define USB_HEARTBEAT_TIMEOUT  5000   // USB心跳超时(ms)
 #define USB_BAUD_RATE          115200 // 串口波特率
 #define USB_CMD_MAX_LEN        64     // USB命令最大长度（不含结尾\0）
 
+// 配对阶段（HELLO -> CONNECT）的超时：超过该时间未 CONNECT，则回到 IDLE
+#ifndef USB_PAIRING_TIMEOUT
+#define USB_PAIRING_TIMEOUT    3000   // ms
+#endif
+
 // 异常保护
 #define STALL_RETRY_DELAY      3000   // 堵转重试延迟(ms)
 #define STALL_MAX_RETRIES      2      // 最大重试次数
+
+// ==================== RPM 闭环控制（电压调节） ====================
+
+// 自动/手动 RPM 目标时，通过调节目标电压逼近目标转速。
+// 这是“基础功能：闭环调控转速”的最小实现（PI）。
+
+#ifndef RPM_CTRL_INTERVAL
+#define RPM_CTRL_INTERVAL      200    // RPM 控制回路更新周期(ms)
+#endif
+
+#ifndef RPM_CTRL_DEADBAND
+#define RPM_CTRL_DEADBAND      50     // 误差死区(RPM)
+#endif
+
+#ifndef RPM_CTRL_KP
+#define RPM_CTRL_KP            0.0020f  // 比例系数: 每 1RPM 误差调整多少 V
+#endif
+
+#ifndef RPM_CTRL_KI
+#define RPM_CTRL_KI            0.0002f  // 积分系数: 每周期积分项增量系数
+#endif
+
+#ifndef RPM_CTRL_MAX_TRIM
+#define RPM_CTRL_MAX_TRIM      1.5f   // 最大电压修正幅度(V)
+#endif
+
+// PI闭环单次调压最大步进（V/周期），用于抑制剧烈PWM跳变导致的掉压/采样瞬态
+#ifndef RPM_CTRL_MAX_V_STEP
+#define RPM_CTRL_MAX_V_STEP     0.25f
+#endif
+
+// 允许上位机发送解锁命令（仅用于调试；默认关闭）
+#ifndef FEATURE_HOST_UNLOCK_OUTPUT
+#define FEATURE_HOST_UNLOCK_OUTPUT 0
+#endif
+
+#ifndef OVERHEAT_HOST_GRACE_MS
+#define OVERHEAT_HOST_GRACE_MS 3000   // 手动模式超温后等待上位机响应的宽限(ms)
+#endif
 
 
 // ==================== 校准参数 ====================
 
 // ADC 电压校准 (实测后调整)
-#define ADC_VOLTAGE_RATIO     12.0f   // 1.0V满量程时对应12V输出
-#define ADC_REF_VOLTAGE       1.0f    // ESP8266 ADC参考电压
-#define ADC_RESOLUTION        1023    // 10位ADC
+// 实测映射：Vout ≈ adc * 15.2 / 1024
+// 说明：ESP8266 analogRead() 返回 0..1023，这里按 1024 标定系数（与实测脚本一致）
+#define ADC_TO_VOLTAGE_COEFF  (15.2f / 1024.0f)   // 每个ADC计数对应的输出电压(V)
 
 // PWM-电压映射校准系数 (需要实测后调整)
 // 这些系数需要通过实际测试确定
