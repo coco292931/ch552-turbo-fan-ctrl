@@ -44,7 +44,7 @@
 // ==================== 控制参数 ====================
 
 // 输出电压范围
-#define VOUT_MIN          5.2f    // 最小输出电压(V)
+#define VOUT_MIN          5.0f    // 最小输出电压(V)
 #define VOUT_MAX          12.0f   // 最大输出电压(V) 硬件锁死了，不要改这里
 #define VOUT_DEFAULT      12.0f   // 默认电压(Fail-Safe)
 
@@ -54,14 +54,20 @@
 #define TEMP_OVERHEAT     50.0f   // 超温保护阈值(°C) 报警温度
 
 // 风扇转速
-#define RPM_MIN           1000     // 最小有效转速(RPM)
+#define RPM_MIN           500     // 最小有效转速(RPM)
 #define RPM_STALL_THRESH  200     // 堵转判定阈值(RPM)
 #define RPM_TARGET_MIN    800    // 温度最低时的目标转速 (RPM)，对应TEMP_MIN (即最低电压下的转速)
-#define RPM_TARGET_MAX    2800    // 温度最高时的目标转速 (RPM)，对应TEMP_MAX (即最高电压下的转速)
+#define RPM_TARGET_MAX    3000    // 温度最高时的目标转速 (RPM)，对应TEMP_MAX (即最高电压下的转速)
 
 // PWM参数
 #define PWM_FREQ          10000   // PWM频率 10kHz
 #define PWM_RESOLUTION    255     // PWM分辨率 (8位)
+
+// 当前固件链路（状态上报/协议字段/内部 duty）按 8 位实现。
+// 若需要 >255 的分辨率，请先把相关 duty 字段与接口升级为 uint16_t 再修改本宏。
+#if PWM_RESOLUTION > 255
+#error "PWM_RESOLUTION > 255 requires full uint16_t duty migration (voltage/usb/status/gui path)."
+#endif
 
 
 // ==================== 温度-电压映射参数 ====================
@@ -92,12 +98,20 @@
 #define VOLTAGE_MONITOR_STARTUP_GRACE_MS 3000  // 上电后宽限时间(ms)
 #endif
 
+// ==================== RPM反馈控制参数 ====================
+
+#define RPM_FEEDBACK_UPDATE_MS  200   // RPM反馈更新周期(ms)
+#define RPM_FEEDBACK_KP         0.15f  // 比例增益
+#define RPM_FEEDBACK_KI         0.05f  // 积分增益  
+#define RPM_FEEDBACK_MAX_ADJUST 2.0f   // 最大电压调整(V)
+#define RPM_FEEDBACK_DEADZONE   50u    // 死区(RPM) - 偏差小于此值时不调整
+
 #ifndef VOLTAGE_ABNORMAL_SETTLE_MS
 #define VOLTAGE_ABNORMAL_SETTLE_MS 800         // 每次改变PWM/目标后，等待输出稳定(ms)
 #endif
 
 #ifndef VOLTAGE_ABNORMAL_DROP_V
-#define VOLTAGE_ABNORMAL_DROP_V 1.0f           // 跌落阈值：current < target - DROP(V)
+#define VOLTAGE_ABNORMAL_DROP_V 3.0f           // 跌落阈值：current < target - DROP(V)
 #endif
 
 #ifndef VOLTAGE_ABNORMAL_CONSECUTIVE
@@ -106,13 +120,13 @@
 
 // 仅当目标电压达到一定水平时才启用“电压异常锁定”保护（低电压/停转区间ADC噪声更大，易误判）
 #ifndef VOLTAGE_ABNORMAL_ARM_MIN_TARGET
-#define VOLTAGE_ABNORMAL_ARM_MIN_TARGET 7.0f
+#define VOLTAGE_ABNORMAL_ARM_MIN_TARGET 5.0f
 #endif
 
 // 堵转检测（防误判参数）
 // 注意：RPM 可能在上电初期/低电压区间为0，这是预期现象，必须在“确实在尝试起转”时才启用堵转保护。
 #ifndef STALL_MONITOR_STARTUP_GRACE_MS
-#define STALL_MONITOR_STARTUP_GRACE_MS 5000     // 上电后宽限(ms)
+#define STALL_MONITOR_STARTUP_GRACE_MS 3000     // 上电后宽限(ms)
 #endif
 
 #ifndef STALL_SPINUP_GRACE_MS
@@ -159,7 +173,7 @@
 #endif
 
 #ifndef RPM_CTRL_MAX_TRIM
-#define RPM_CTRL_MAX_TRIM      1.5f   // 最大电压修正幅度(V)
+#define RPM_CTRL_MAX_TRIM      3.0f   // 最大电压修正幅度(V)
 #endif
 
 // PI闭环单次调压最大步进（V/周期），用于抑制剧烈PWM跳变导致的掉压/采样瞬态
@@ -169,7 +183,7 @@
 
 // 允许上位机发送解锁命令（仅用于调试；默认关闭）
 #ifndef FEATURE_HOST_UNLOCK_OUTPUT
-#define FEATURE_HOST_UNLOCK_OUTPUT 0
+#define FEATURE_HOST_UNLOCK_OUTPUT 1
 #endif
 
 #ifndef OVERHEAT_HOST_GRACE_MS

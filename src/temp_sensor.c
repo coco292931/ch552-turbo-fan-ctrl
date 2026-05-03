@@ -43,6 +43,9 @@ static float TempController_mapTempToVoltageQuadratic(float temp, float temp_min
 static uint32_t TempController_mapTempToRPM(float temp, float temp_min, float temp_max) {
     float norm = (temp - temp_min) / (temp_max - temp_min);
     norm = (norm < 0.0f) ? 0.0f : (norm > 1.0f) ? 1.0f : norm;
+    if (temp < temp_min) {
+        return 0u;
+    }
     return (uint32_t)(RPM_TARGET_MIN + (RPM_TARGET_MAX - RPM_TARGET_MIN) * norm);
 }
 

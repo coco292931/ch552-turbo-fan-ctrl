@@ -132,6 +132,10 @@ static void usb_clear_overrides(USBController* uc) {
     uc->temp_params_overridden = false;
 }
 
+static void usb_set_debug_mode(USBController* uc, bool enabled) {
+    uc->debug_mode = enabled;
+}
+
 static void usb_reply_ok_key_value(const char* key, const char* value) {
     serial_print_str("OK:");
     serial_print_str(key);
@@ -194,6 +198,12 @@ static bool usb_handle_get(USBController* uc, const char* key) {
     if (usb_str_eq(key, "MODE")) {
         serial_print_str("OK:MODE=");
         serial_println_str(uc->override_active ? "MANUAL" : "AUTO");
+        return true;
+    }
+
+    if (usb_str_eq(key, "DEBUG")) {
+        serial_print_str("OK:DEBUG=");
+        serial_println_uint(uc->debug_mode ? 1u : 0u);
         return true;
     }
 
@@ -306,6 +316,14 @@ static bool usb_handle_set(USBController* uc, const char* key, uint8_t key_len, 
         return false;
     }
 
+    if (usb_key_equals(key, key_len, "DEBUG")) {
+        int v = usb_parse_i32(value);
+        usb_set_debug_mode(uc, (v != 0));
+        serial_print_str("OK:DEBUG=");
+        serial_println_uint(uc->debug_mode ? 1u : 0u);
+        return true;
+    }
+
     if (usb_key_equals(key, key_len, "VOLTAGE")) {
         float v = usb_parse_float(value);
         if (v < VOUT_MIN || v > VOUT_MAX) {
@@ -321,7 +339,7 @@ static bool usb_handle_set(USBController* uc, const char* key, uint8_t key_len, 
 
     if (usb_key_equals(key, key_len, "RPM")) {
         uint32_t rpm = usb_parse_u32(value);
-        if (rpm < RPM_TARGET_MIN || rpm > RPM_TARGET_MAX) {
+        if (rpm > RPM_TARGET_MAX) {
             serial_println_str("ERR:RPM_OUT_OF_RANGE");
             return true;
         }
@@ -423,6 +441,13 @@ static void usb_handleCommand(USBController* uc, const char* cmd) {
         return;
     }
 
+    if (usb_str_eq(cmd, "DEBUG")) {
+        uc->debug_mode = !uc->debug_mode;
+        serial_print_str("OK:DEBUG=");
+        serial_println_uint(uc->debug_mode ? 1u : 0u);
+        return;
+    }
+
     if (usb_str_eq(cmd, "UNLOCK")) {
 #if FEATURE_HOST_UNLOCK_OUTPUT
         uc->unlock_requested = true;
@@ -490,6 +515,7 @@ void USBController_begin(USBController* uc) {
     uc->reset_requested = false;
     uc->unlock_requested = false;
     uc->status_requested = false;
+    uc->debug_mode = false;
 
     uc->target_voltage_override = VOUT_DEFAULT;
     uc->target_rpm_override = RPM_TARGET_MIN;
@@ -536,7 +562,12 @@ void USBController_update(USBController* uc) {
     }
 
     if (uc->is_connected && (millis() - uc->last_heartbeat > USB_HEARTBEAT_TIMEOUT)) {
-        usb_set_disconnected(uc, true);
+        if (uc->debug_mode) {
+            serial_println_str("DBG:ERR_USB_TIMEOUT");
+            uc->last_heartbeat = millis();
+        } else {
+            usb_set_disconnected(uc, true);
+        }
     }
 }
 
@@ -556,6 +587,8 @@ void USBController_sendStatus(USBController* uc, const SystemStatus* status) {
     serial_print_uint(uc->rpm_override_active ? 1u : 0u);
     serial_print_str(",\"echo\":");
     serial_print_uint(uc->echo_enabled ? 1u : 0u);
+    serial_print_str(",\"debug\":");
+    serial_print_uint(uc->debug_mode ? 1u : 0u);
     serial_print_str(",\"temp\":");
     serial_print_float(status->temperature, 2);
     serial_print_str(",\"volt\":");
@@ -568,8 +601,10 @@ void USBController_sendStatus(USBController* uc, const SystemStatus* status) {
     serial_print_uint(status->target_rpm);
     serial_print_str(",\"pwm\":");
     serial_print_uint(status->pwm_duty);
+    serial_print_str(",\"ctrl\":");
+    serial_print_uint((uint32_t)status->control_mode);
     serial_print_str(",\"error\":\"0x");
-    serial_print_uint_base(status->error_flags, HEX);
+    serial_print_uint_base(status->error_flags, 16);
     serial_print_str("\",\"mode\":\"");
     serial_print_str(status->auto_mode ? "AUTO" : "MANUAL");
     serial_println_str("\"}");

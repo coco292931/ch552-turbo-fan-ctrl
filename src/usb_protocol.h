@@ -20,9 +20,11 @@ typedef struct {
     uint32_t rpm;           // 风扇转速(RPM)
     uint32_t target_rpm;    // 目标转速(RPM)
     uint8_t pwm_duty;       // PWM占空比(0-255)
+    uint8_t control_mode;   // 低层控制模式: 0=VOLTAGE,1=PWM,2=RPM
     uint8_t error_flags;    // 错误标志位
     bool auto_mode;         // 自主控制模式
     bool output_locked;     // 输出是否被锁定（保护触发）
+    bool debug_mode;        // 调试模式：仅记录错误，不影响实际控制状态
 } SystemStatus;
 
 /**
@@ -78,6 +80,7 @@ typedef struct {
     bool reset_requested;
     bool unlock_requested;
     bool status_requested;
+    bool debug_mode;
 } USBController;
 
 void USBController_begin(USBController* uc);
