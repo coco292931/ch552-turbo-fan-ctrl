@@ -35,9 +35,9 @@
 
 // ==================== 硬件引脚定义（ESP8266） ====================
 
-#define PIN_PWM_OUTPUT    13      // GPIO13 - PWM输出(软件PWM)
+#define PIN_PWM_OUTPUT    14      // GPIO13 - PWM输出(软件PWM)
 #define PIN_VOLTAGE_ADC   A0      // ADC0 - 输出电压检测
-#define PIN_FAN_TACH      4       // GPIO4  - 转速检测
+#define PIN_FAN_TACH      12      // GPIO4  - 转速检测
 #define PIN_TEMP_SENSOR   5       // GPIO5  - DS18B20
 
 
